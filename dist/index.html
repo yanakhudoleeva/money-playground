@@ -1637,6 +1637,22 @@ html&gt;body{padding:0}&lt;/style&gt;
   root.querySelector(&#x27;.on-pig&#x27;).src = original.querySelector(&#x27;.pb-pig&#x27;).src;
   const goalButtons = [...root.querySelectorAll(&#x27;[data-goal]&#x27;)];
   const q = selector =&gt; root.querySelector(selector);
+  // Match the focus underline to the visible amount, including decimal separators.
+  const amountMeasure = document.createElement(&#x27;canvas&#x27;).getContext(&#x27;2d&#x27;);
+  function sizeAmountUnderline(input) {
+    if (!input.matches(&#x27;input[inputmode=&quot;decimal&quot;]&#x27;)) return;
+    const style = getComputedStyle(input);
+    const value = input.value || input.placeholder || &#x27;0&#x27;;
+    if (amountMeasure) amountMeasure.font = style.font;
+    const textWidth = amountMeasure ? amountMeasure.measureText(value).width : value.length * parseFloat(style.fontSize) * 0.6;
+    const spacing = parseFloat(style.letterSpacing) || 0;
+    const available = Math.max(0, input.clientWidth - (parseFloat(style.paddingLeft) || 0) - (parseFloat(style.paddingRight) || 0));
+    input.style.setProperty(&#x27;--amount-line-width&#x27;, `${Math.min(available, Math.ceil(textWidth + Math.max(0, value.length - 1) * spacing + 2))}px`);
+  }
+  root.addEventListener(&#x27;focusin&#x27;, event =&gt; { if (event.target instanceof HTMLInputElement) sizeAmountUnderline(event.target); });
+  root.addEventListener(&#x27;input&#x27;, event =&gt; { if (event.target instanceof HTMLInputElement) sizeAmountUnderline(event.target); });
+  window.addEventListener(&#x27;resize&#x27;, () =&gt; { const input = document.activeElement; if (input instanceof HTMLInputElement &amp;&amp; root.contains(input)) sizeAmountUnderline(input); });
+  if (document.fonts) document.fonts.ready.then(() =&gt; { const input = document.activeElement; if (input instanceof HTMLInputElement &amp;&amp; root.contains(input)) sizeAmountUnderline(input); });
   const soundToggles = [...root.querySelectorAll(&#x27;.on-sound-toggle&#x27;)];
   let soundOn = true;
   soundToggles.forEach(toggle =&gt; toggle.addEventListener(&#x27;click&#x27;, () =&gt; {
@@ -2209,7 +2225,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-bank-plan [data-year],
   #piggy-bank-plan .pb-hero p strong{font-family:&#x27;DM Sans&#x27;,Arial,sans-serif;font-weight:600}
   /* A subtle underline replaces the browser&#x27;s rectangular numeric focus ring. */
-  #piggy-onboarding input[inputmode=&quot;decimal&quot;]:focus{outline:none;border-radius:0;box-shadow:none;background-image:linear-gradient(#a7ff27,#a7ff27);background-size:65% 2px;background-repeat:no-repeat;background-position:right bottom;caret-color:#a7ff27}
+  #piggy-onboarding input[inputmode=&quot;decimal&quot;]:focus{outline:none;border-radius:0;box-shadow:none;background-image:linear-gradient(#a7ff27,#a7ff27);background-size:var(--amount-line-width,1ch) 2px;background-repeat:no-repeat;background-position:right 2px bottom;caret-color:#a7ff27}
   #piggy-onboarding input[inputmode=&quot;decimal&quot;]:invalid:focus{background-image:linear-gradient(#f3759a,#f3759a)}
   @media(forced-colors:active){#piggy-onboarding input[inputmode=&quot;decimal&quot;]:focus{outline:2px solid Highlight;outline-offset:2px}}
 &lt;/style&gt;

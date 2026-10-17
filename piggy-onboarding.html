@@ -98,6 +98,22 @@
   root.querySelector('.on-pig').src = original.querySelector('.pb-pig').src;
   const goalButtons = [...root.querySelectorAll('[data-goal]')];
   const q = selector => root.querySelector(selector);
+  // Match the focus underline to the visible amount, including decimal separators.
+  const amountMeasure = document.createElement('canvas').getContext('2d');
+  function sizeAmountUnderline(input) {
+    if (!input.matches('input[inputmode="decimal"]')) return;
+    const style = getComputedStyle(input);
+    const value = input.value || input.placeholder || '0';
+    if (amountMeasure) amountMeasure.font = style.font;
+    const textWidth = amountMeasure ? amountMeasure.measureText(value).width : value.length * parseFloat(style.fontSize) * 0.6;
+    const spacing = parseFloat(style.letterSpacing) || 0;
+    const available = Math.max(0, input.clientWidth - (parseFloat(style.paddingLeft) || 0) - (parseFloat(style.paddingRight) || 0));
+    input.style.setProperty('--amount-line-width', `${Math.min(available, Math.ceil(textWidth + Math.max(0, value.length - 1) * spacing + 2))}px`);
+  }
+  root.addEventListener('focusin', event => { if (event.target instanceof HTMLInputElement) sizeAmountUnderline(event.target); });
+  root.addEventListener('input', event => { if (event.target instanceof HTMLInputElement) sizeAmountUnderline(event.target); });
+  window.addEventListener('resize', () => { const input = document.activeElement; if (input instanceof HTMLInputElement && root.contains(input)) sizeAmountUnderline(input); });
+  if (document.fonts) document.fonts.ready.then(() => { const input = document.activeElement; if (input instanceof HTMLInputElement && root.contains(input)) sizeAmountUnderline(input); });
   const soundToggles = [...root.querySelectorAll('.on-sound-toggle')];
   let soundOn = true;
   soundToggles.forEach(toggle => toggle.addEventListener('click', () => {
@@ -670,7 +686,7 @@
   #piggy-bank-plan [data-year],
   #piggy-bank-plan .pb-hero p strong{font-family:'DM Sans',Arial,sans-serif;font-weight:600}
   /* A subtle underline replaces the browser's rectangular numeric focus ring. */
-  #piggy-onboarding input[inputmode="decimal"]:focus{outline:none;border-radius:0;box-shadow:none;background-image:linear-gradient(#a7ff27,#a7ff27);background-size:65% 2px;background-repeat:no-repeat;background-position:right bottom;caret-color:#a7ff27}
+  #piggy-onboarding input[inputmode="decimal"]:focus{outline:none;border-radius:0;box-shadow:none;background-image:linear-gradient(#a7ff27,#a7ff27);background-size:var(--amount-line-width,1ch) 2px;background-repeat:no-repeat;background-position:right 2px bottom;caret-color:#a7ff27}
   #piggy-onboarding input[inputmode="decimal"]:invalid:focus{background-image:linear-gradient(#f3759a,#f3759a)}
   @media(forced-colors:active){#piggy-onboarding input[inputmode="decimal"]:focus{outline:2px solid Highlight;outline-offset:2px}}
 </style>
