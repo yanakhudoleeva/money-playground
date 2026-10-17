@@ -1977,8 +1977,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     const holder = q(&#x27;.on-personal&#x27;);
     holder.replaceChildren();
     const title = document.createElement(&#x27;div&#x27;); title.textContent = selectedGoal() &amp;&amp; goal !== &#x27;Just saving&#x27; ? `Your goal: ${selectedGoal()}` : &#x27;Saving at your own pace&#x27;; holder.append(title);
-    const savingsRow = document.createElement(&#x27;div&#x27;); savingsRow.append(&#x27;Planned savings: &#x27;); const savingsValue=document.createElement(&#x27;strong&#x27;); setMoney(savingsValue, planned / 100, &#x27;&#x27;, &#x27; / month&#x27;); savingsRow.append(savingsValue); holder.append(savingsRow);
-    const restRow = document.createElement(&#x27;div&#x27;); restRow.append(remainder &gt;= 0 ? &#x27;Left after expenses and savings: &#x27; : &#x27;Plan exceeds income by &#x27;); const restAmount = document.createElement(&#x27;span&#x27;); setMoney(restAmount, Math.abs(remainder) / 100); restRow.append(restAmount); if (remainder &lt; 0) restRow.append(&#x27; — adjust your numbers.&#x27;); holder.append(restRow);
+    const savingsRow = document.createElement(&#x27;div&#x27;); savingsRow.append(&#x27;Planned savings: &#x27;); const savingsValue=document.createElement(&#x27;strong&#x27;); savingsValue.className = &#x27;on-personal-amount&#x27;; setMoney(savingsValue, planned / 100, &#x27;&#x27;, &#x27; / month&#x27;); savingsRow.append(savingsValue); holder.append(savingsRow);
+    const restRow = document.createElement(&#x27;div&#x27;); restRow.append(remainder &gt;= 0 ? &#x27;Left after expenses and savings: &#x27; : &#x27;Plan exceeds income by &#x27;); const restAmount = document.createElement(&#x27;span&#x27;); restAmount.className = &#x27;on-personal-amount&#x27;; setMoney(restAmount, Math.abs(remainder) / 100); restRow.append(restAmount); if (remainder &lt; 0) restRow.append(&#x27; — adjust your numbers.&#x27;); holder.append(restRow);
     original.querySelector(&#x27;[data-result-label]&#x27;).textContent = income-housing-expenses-flexible &lt; 0 ? &#x27;НЕ ХВАТАЕТ В МЕСЯЦ&#x27; : &#x27;ОСТАЁТСЯ ПОСЛЕ РАСХОДОВ&#x27;;
     original.querySelector(&#x27;[data-result-note]&#x27;).textContent = income-housing-expenses-flexible &lt; 0 ? &#x27;Расходы выше дохода. Попробуй изменить план.&#x27; : &#x27;До запланированных накоплений, без незапланированных расходов.&#x27;;
   }
@@ -2189,6 +2189,18 @@ html&gt;body{padding:0}&lt;/style&gt;
   @keyframes celebration-pig{0%,28%,100%{transform:translateY(0) scale(1)}44%{transform:translateY(5%) scale(1.05,.94)}64%{transform:translateY(-15%) scale(.97,1.03)}82%{transform:translateY(0) scale(1.04,.96)}}
   @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-primary,#piggy-onboarding .on-goals button{transition:none}#piggy-onboarding .on-primary:active,#piggy-onboarding .on-goals button:active{transform:none;filter:brightness(.88)}#piggy-onboarding .on-goals button[aria-pressed=&quot;true&quot;] .on-icon{animation:none}#piggy-onboarding .on-pig-open-eye{animation:none;opacity:0}#piggy-onboarding .on-celebration{display:none}}
   @media(max-width:390px){#piggy-onboarding .on-phone,#piggy-onboarding .on-result-intro{padding:24px 18px;border-radius:26px}.on-screen h1{font-size:34px}.on-goals button{font-size:13px}.on-money input{width:60px}}
+  /* Keep the chosen number font consistent across setup and the finished plan. */
+  #piggy-onboarding .on-screen[data-step=&quot;2&quot;] input[inputmode=&quot;decimal&quot;],
+  #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-expenses-amount,
+  #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-expense-saved-amount,
+  #piggy-onboarding .on-personal .on-personal-amount,
+  #piggy-bank-plan input[inputmode=&quot;decimal&quot;],
+  #piggy-bank-plan [data-fixed-total],
+  #piggy-bank-plan [data-after-fixed],
+  #piggy-bank-plan [data-savings],
+  #piggy-bank-plan [data-six],
+  #piggy-bank-plan [data-year],
+  #piggy-bank-plan .pb-hero p strong{font-family:&#x27;DM Sans&#x27;,Arial,sans-serif;font-weight:600}
 &lt;/style&gt;
 
 &lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;

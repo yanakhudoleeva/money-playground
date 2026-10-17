@@ -438,8 +438,8 @@
     const holder = q('.on-personal');
     holder.replaceChildren();
     const title = document.createElement('div'); title.textContent = selectedGoal() && goal !== 'Just saving' ? `Your goal: ${selectedGoal()}` : 'Saving at your own pace'; holder.append(title);
-    const savingsRow = document.createElement('div'); savingsRow.append('Planned savings: '); const savingsValue=document.createElement('strong'); setMoney(savingsValue, planned / 100, '', ' / month'); savingsRow.append(savingsValue); holder.append(savingsRow);
-    const restRow = document.createElement('div'); restRow.append(remainder >= 0 ? 'Left after expenses and savings: ' : 'Plan exceeds income by '); const restAmount = document.createElement('span'); setMoney(restAmount, Math.abs(remainder) / 100); restRow.append(restAmount); if (remainder < 0) restRow.append(' — adjust your numbers.'); holder.append(restRow);
+    const savingsRow = document.createElement('div'); savingsRow.append('Planned savings: '); const savingsValue=document.createElement('strong'); savingsValue.className = 'on-personal-amount'; setMoney(savingsValue, planned / 100, '', ' / month'); savingsRow.append(savingsValue); holder.append(savingsRow);
+    const restRow = document.createElement('div'); restRow.append(remainder >= 0 ? 'Left after expenses and savings: ' : 'Plan exceeds income by '); const restAmount = document.createElement('span'); restAmount.className = 'on-personal-amount'; setMoney(restAmount, Math.abs(remainder) / 100); restRow.append(restAmount); if (remainder < 0) restRow.append(' — adjust your numbers.'); holder.append(restRow);
     original.querySelector('[data-result-label]').textContent = income-housing-expenses-flexible < 0 ? 'НЕ ХВАТАЕТ В МЕСЯЦ' : 'ОСТАЁТСЯ ПОСЛЕ РАСХОДОВ';
     original.querySelector('[data-result-note]').textContent = income-housing-expenses-flexible < 0 ? 'Расходы выше дохода. Попробуй изменить план.' : 'До запланированных накоплений, без незапланированных расходов.';
   }
@@ -650,4 +650,16 @@
   @keyframes celebration-pig{0%,28%,100%{transform:translateY(0) scale(1)}44%{transform:translateY(5%) scale(1.05,.94)}64%{transform:translateY(-15%) scale(.97,1.03)}82%{transform:translateY(0) scale(1.04,.96)}}
   @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-primary,#piggy-onboarding .on-goals button{transition:none}#piggy-onboarding .on-primary:active,#piggy-onboarding .on-goals button:active{transform:none;filter:brightness(.88)}#piggy-onboarding .on-goals button[aria-pressed="true"] .on-icon{animation:none}#piggy-onboarding .on-pig-open-eye{animation:none;opacity:0}#piggy-onboarding .on-celebration{display:none}}
   @media(max-width:390px){#piggy-onboarding .on-phone,#piggy-onboarding .on-result-intro{padding:24px 18px;border-radius:26px}.on-screen h1{font-size:34px}.on-goals button{font-size:13px}.on-money input{width:60px}}
+  /* Keep the chosen number font consistent across setup and the finished plan. */
+  #piggy-onboarding .on-screen[data-step="2"] input[inputmode="decimal"],
+  #piggy-onboarding .on-screen[data-step="2"] .on-expenses-amount,
+  #piggy-onboarding .on-screen[data-step="2"] .on-expense-saved-amount,
+  #piggy-onboarding .on-personal .on-personal-amount,
+  #piggy-bank-plan input[inputmode="decimal"],
+  #piggy-bank-plan [data-fixed-total],
+  #piggy-bank-plan [data-after-fixed],
+  #piggy-bank-plan [data-savings],
+  #piggy-bank-plan [data-six],
+  #piggy-bank-plan [data-year],
+  #piggy-bank-plan .pb-hero p strong{font-family:'DM Sans',Arial,sans-serif;font-weight:600}
 </style>
