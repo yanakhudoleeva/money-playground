@@ -1574,9 +1574,9 @@ html&gt;body{padding:0}&lt;/style&gt;
           &lt;button class=&quot;on-field-next&quot; type=&quot;button&quot; data-expenses-next&gt;Next: savings →&lt;/button&gt;
         &lt;/div&gt;
       &lt;/section&gt;
-      &lt;div class=&quot;on-money on-savings&quot;&gt;&lt;span class=&quot;on-icon pink&quot;&gt;&lt;i data-lucide=&quot;sparkles&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;I&#x27;d like to save&lt;/span&gt;&lt;div class=&quot;on-savings-amount&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt;&lt;input data-savings type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;done&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Desired monthly savings&quot;&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;button class=&quot;on-field-next&quot; type=&quot;button&quot; data-savings-done hidden&gt;Done&lt;/button&gt;
+      &lt;div class=&quot;on-money on-savings&quot;&gt;&lt;span class=&quot;on-icon pink&quot;&gt;&lt;i data-lucide=&quot;sparkles&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;I&#x27;d like to save&lt;/span&gt;&lt;div class=&quot;on-savings-amount&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt;&lt;input data-savings type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;done&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Desired monthly savings&quot;&gt;&lt;/div&gt;&lt;button class=&quot;on-savings-confirm&quot; type=&quot;button&quot; data-savings-done aria-label=&quot;Confirm monthly savings&quot; hidden&gt;&lt;span aria-hidden=&quot;true&quot;&gt;✓&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;
       &lt;p class=&quot;on-error&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;
+      &lt;p class=&quot;on-ready&quot; role=&quot;status&quot; hidden&gt;Ready to create your piggy bank ✨&lt;/p&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-primary&quot; data-next=&quot;2&quot; disabled&gt;Create my piggy bank &lt;span&gt;↗&lt;/span&gt;&lt;/button&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-back&quot;&gt;← Back&lt;/button&gt;
     &lt;/section&gt;
@@ -1818,14 +1818,16 @@ html&gt;body{padding:0}&lt;/style&gt;
   const rentInput = q(&#x27;[data-rent]&#x27;);
   const planButton = q(&#x27;[data-next=&quot;2&quot;]&#x27;);
   const hasValidAmount = input =&gt; input.value.trim() !== &#x27;&#x27; &amp;&amp; input.checkValidity();
+  let savingsConfirmed = false;
   function updatePlanReadiness() {
     const incomeReady = hasValidAmount(incomeInput);
     const savingsReady = hasValidAmount(savingsInput);
     incomeInput.closest(&#x27;.on-money&#x27;).classList.toggle(&#x27;is-complete&#x27;, incomeReady);
-    savingsInput.closest(&#x27;.on-money&#x27;).classList.toggle(&#x27;is-complete&#x27;, savingsReady);
+    savingsInput.closest(&#x27;.on-money&#x27;).classList.toggle(&#x27;is-complete&#x27;, savingsReady &amp;&amp; savingsConfirmed);
     q(&#x27;[data-income-next]&#x27;).hidden = !incomeReady || !expenseDetails.hidden;
-    q(&#x27;[data-savings-done]&#x27;).hidden = !savingsReady;
-    planButton.disabled = !incomeReady || !savingsReady || !rentInput.checkValidity() || !!expenseList.querySelector(&#x27;.on-expense-row[data-editing=&quot;true&quot;], .on-expense-row[data-saved=&quot;false&quot;]&#x27;);
+    q(&#x27;[data-savings-done]&#x27;).hidden = !savingsReady || savingsConfirmed;
+    planButton.disabled = !incomeReady || !savingsReady || !savingsConfirmed || !rentInput.checkValidity() || !!expenseList.querySelector(&#x27;.on-expense-row[data-editing=&quot;true&quot;], .on-expense-row[data-saved=&quot;false&quot;]&#x27;);
+    q(&#x27;.on-ready&#x27;).hidden = planButton.disabled;
   }
   function goToExpenses() {
     if (!hasValidAmount(incomeInput)) { incomeInput.focus(); return; }
@@ -1838,8 +1840,15 @@ html&gt;body{padding:0}&lt;/style&gt;
     if (!rentInput.checkValidity()) { rentInput.reportValidity(); rentInput.focus(); return; }
     savingsInput.focus();
   }
+  function goToExpenseEntry() {
+    if (!rentInput.checkValidity()) { rentInput.reportValidity(); rentInput.focus(); return; }
+    const editingName = expenseList.querySelector(&#x27;.on-expense-row[data-editing=&quot;true&quot;] .on-expense-name&#x27;);
+    if (editingName) editingName.focus();
+    else createExpenseRow();
+  }
   function finishSavings() {
     if (!hasValidAmount(savingsInput)) { savingsInput.focus(); return; }
+    savingsConfirmed = true;
     updatePlanReadiness();
     if (!planButton.disabled) planButton.focus();
     else savingsInput.blur();
@@ -1851,12 +1860,13 @@ html&gt;body{padding:0}&lt;/style&gt;
     });
   }
   onEnter(incomeInput, goToExpenses);
-  onEnter(rentInput, goToSavings);
+  onEnter(rentInput, goToExpenseEntry);
   onEnter(savingsInput, finishSavings);
   q(&#x27;[data-income-next]&#x27;).addEventListener(&#x27;click&#x27;, goToExpenses);
   q(&#x27;[data-expenses-next]&#x27;).addEventListener(&#x27;click&#x27;, goToSavings);
   q(&#x27;[data-savings-done]&#x27;).addEventListener(&#x27;click&#x27;, finishSavings);
-  [incomeInput, rentInput, savingsInput].forEach(input =&gt; input.addEventListener(&#x27;input&#x27;, updatePlanReadiness));
+  [incomeInput, rentInput].forEach(input =&gt; input.addEventListener(&#x27;input&#x27;, updatePlanReadiness));
+  savingsInput.addEventListener(&#x27;input&#x27;, () =&gt; { savingsConfirmed = false; updatePlanReadiness(); });
   function updateExpenseTotal() {
     const savedRows = [...expenseList.querySelectorAll(&#x27;.on-expense-row[data-saved=&quot;true&quot;]&#x27;)];
     const total = cents(q(&#x27;[data-rent]&#x27;)) + savedRows.reduce((sum,row) =&gt; sum + Math.round(Number(row.dataset.savedAmount) * 100), 0);
@@ -1882,6 +1892,14 @@ html&gt;body{padding:0}&lt;/style&gt;
     addExpense.textContent = expenseList.querySelector(&#x27;.on-expense-row[data-saved=&quot;true&quot;]&#x27;) ? &#x27;+ Add another expense&#x27; : &#x27;+ Add an expense&#x27;;
     updatePlanReadiness();
   }
+  savingsInput.addEventListener(&#x27;focus&#x27;, () =&gt; {
+    const draft = expenseList.querySelector(&#x27;.on-expense-row[data-editing=&quot;true&quot;]:not([data-saved=&quot;true&quot;])&#x27;);
+    if (draft &amp;&amp; !draft.querySelector(&#x27;.on-expense-name&#x27;).value.trim() &amp;&amp; !draft.querySelector(&#x27;.on-expense-amount&#x27;).value.trim()) {
+      draft.remove();
+      updateExpenseTotal();
+      updateAddExpense();
+    }
+  });
   updatePlanReadiness();
   function createExpenseRow() {
     const row = document.createElement(&#x27;div&#x27;); row.className = &#x27;on-expense-row&#x27;; row.dataset.editing = &#x27;true&#x27;;
@@ -1895,6 +1913,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     const remove = row.querySelector(&#x27;.on-expense-remove&#x27;);
     const saved = row.querySelector(&#x27;.on-expense-saved&#x27;);
     const error = row.querySelector(&#x27;.on-expense-error&#x27;);
+    let advanceOnSave = false;
     setSymbol(row.querySelector(&#x27;[data-currency-symbol]&#x27;));
     function updateConfirm() {
       const entered = !!name.value.trim();
@@ -1920,15 +1939,18 @@ html&gt;body{padding:0}&lt;/style&gt;
       event.preventDefault();
       if (!name.value.trim()) { name.focus(); return; }
       if (input === name) { amount.focus(); return; }
+      advanceOnSave = true;
       confirm.click();
     }));
     confirm.addEventListener(&#x27;click&#x27;, () =&gt; {
       if (!name.value.trim()) { cancelEditing(); return; }
-      if (amount.value.trim() === &#x27;&#x27; || !amount.checkValidity()) { error.textContent = &#x27;Add an amount using up to two decimal places.&#x27;; error.hidden = false; amount.focus(); return; }
+      if (amount.value.trim() === &#x27;&#x27; || !amount.checkValidity()) { advanceOnSave = false; error.textContent = &#x27;Add an amount using up to two decimal places.&#x27;; error.hidden = false; amount.focus(); return; }
       const savedName = name.value.trim().replace(/\p{L}/u, letter =&gt; letter.toLocaleUpperCase());
       name.value = savedName;
       row.dataset.saved = &#x27;true&#x27;; row.dataset.savedName = savedName; row.dataset.savedAmount = String(number(amount));
-      finishEditing(); row.querySelector(&#x27;.on-expense-edit&#x27;).focus();
+      finishEditing();
+      if (advanceOnSave) addExpense.focus(); else row.querySelector(&#x27;.on-expense-edit&#x27;).focus();
+      advanceOnSave = false;
     });
     cancel.addEventListener(&#x27;click&#x27;, cancelEditing);
     remove.addEventListener(&#x27;click&#x27;, () =&gt; { row.remove(); updateExpenseTotal(); updateAddExpense(); addExpense.focus(); });
@@ -2082,6 +2104,10 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-field,#piggy-onboarding .on-custom{display:block;padding:16px;border-radius:20px;background:#292929;margin:10px 0}.on-field&gt;span,.on-custom&gt;span{display:block;color:#bbb;font-size:10px;letter-spacing:.8px;font-weight:700}.on-field em{font-style:normal;color:#c6a5ff;float:right}.on-field div{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:24px}.on-field b{font-weight:400;color:#aaa}.on-field input,.on-custom input{width:100%;border:0;background:transparent;color:#fff;font:24px Arial;min-width:0}.on-custom input{font-size:16px;margin-top:9px}.on-field input::placeholder,.on-custom input::placeholder,.on-money input::placeholder{color:#777}.on-field input[type=month]{font-size:17px;color-scheme:dark}
   #piggy-onboarding .on-money{min-height:70px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:#292929;margin:10px 0;font-size:15px}.on-money&gt;span:nth-child(2){flex:1}.on-money small{display:block;color:#aaa;font-size:12px;margin-top:3px}.on-money div{display:flex;gap:3px;align-items:center;color:#aaa}.on-money input{width:72px;border:0;background:transparent;color:#fff;text-align:right;font:18px Arial}.on-note{font-size:12px;line-height:1.45;color:#aaa;margin:18px 0}.on-error{font-size:12px;line-height:1.4;color:#ff9db7}
   #piggy-onboarding .on-savings{position:relative}
+  #piggy-onboarding .on-savings-confirm{position:absolute;right:0;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:40px;height:44px;padding:0;border:0;background:transparent;cursor:pointer}
+  #piggy-onboarding .on-savings-confirm span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#a7ff27;color:#26310d;font:700 15px Arial}
+  #piggy-onboarding .on-savings-confirm:focus-visible{outline:2px solid #c6a5ff;outline-offset:-2px;border-radius:12px}
+  #piggy-onboarding .on-ready{margin:14px 0 -8px;color:#a7ff27;font:500 12px &#x27;DM Sans&#x27;,Arial,sans-serif;text-align:center}
   #piggy-onboarding .on-money.is-complete{box-shadow:inset 0 0 0 1px #a7ff2770}
   #piggy-onboarding .on-field-next{display:block;min-height:44px;margin:-4px 0 0 auto;padding:0 5px;border:0;background:transparent;color:#a7ff27;font:500 12px &#x27;DM Sans&#x27;,Arial,sans-serif;cursor:pointer}
   #piggy-onboarding .on-field-next:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px;border-radius:6px}
