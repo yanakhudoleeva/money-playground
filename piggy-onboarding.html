@@ -39,6 +39,7 @@
       <p class="on-note">A rough estimate is enough. You can change everything later.</p>
       <p class="on-error" role="alert" hidden></p>
       <button type="button" class="on-primary" data-next="2">Create my piggy bank <span>↗</span></button>
+      <button type="button" class="on-sound-toggle" aria-pressed="true">♫ Sound on</button>
       <button type="button" class="on-back">← Back</button>
     </section>
   </div>
@@ -99,6 +100,56 @@
   root.querySelector('.on-pig').src = original.querySelector('.pb-pig').src;
   const goalButtons = [...root.querySelectorAll('[data-goal]')];
   const q = selector => root.querySelector(selector);
+  const soundToggle = q('.on-sound-toggle');
+  let soundOn = true;
+  soundToggle.addEventListener('click', () => {
+    soundOn = !soundOn;
+    soundToggle.setAttribute('aria-pressed', String(soundOn));
+    soundToggle.textContent = soundOn ? '♫ Sound on' : '♫ Sound off';
+  });
+  const celebration = document.createElement('div');
+  celebration.className = 'on-celebration';
+  celebration.setAttribute('aria-hidden', 'true');
+  const celebrationStage = document.createElement('div');
+  celebrationStage.className = 'on-celebration-stage';
+  const celebrationPig = document.createElement('img');
+  celebrationPig.src = original.querySelector('.pb-pig').src;
+  celebrationPig.alt = '';
+  const celebrationCoin = document.createElement('span');
+  celebrationCoin.className = 'on-celebration-coin';
+  celebrationStage.append(celebrationPig, celebrationCoin);
+  celebration.append(celebrationStage);
+  q('.on-result-intro').append(celebration);
+  let celebrationTimer;
+  function celebrate() {
+    celebration.classList.remove('is-playing');
+    clearTimeout(celebrationTimer);
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Start on the next frame so editing the plan and creating it again replays the reward.
+      requestAnimationFrame(() => requestAnimationFrame(() => celebration.classList.add('is-playing')));
+      celebrationTimer = setTimeout(() => celebration.classList.remove('is-playing'), 2100);
+    }
+    if (!soundOn) return;
+    try {
+      const Audio = window.AudioContext || window.webkitAudioContext;
+      if (!Audio) return;
+      const audio = new Audio();
+      if (audio.state === 'suspended') audio.resume().catch(() => {});
+      const start = audio.currentTime + 0.42;
+      [1568, 2093, 2637].forEach((frequency, index) => {
+        const oscillator = audio.createOscillator();
+        const volume = audio.createGain();
+        const time = start + index * 0.055;
+        oscillator.type = 'sine'; oscillator.frequency.value = frequency;
+        volume.gain.setValueAtTime(0.0001, time);
+        volume.gain.exponentialRampToValueAtTime(0.025, time + 0.012);
+        volume.gain.exponentialRampToValueAtTime(0.0001, time + 0.32);
+        oscillator.connect(volume); volume.connect(audio.destination);
+        oscillator.start(time); oscillator.stop(time + 0.33);
+        if (index === 2) oscillator.onended = () => audio.close().catch(() => {});
+      });
+    } catch (_) { /* The plan works even when the device cannot play sound. */ }
+  }
   const money = value => new Intl.NumberFormat('en-IE', { style:'currency', currency:'EUR', maximumFractionDigits:2 }).format(value);
   const number = input => Math.max(0, Number(input.value) || 0);
   let goal = '';
@@ -191,6 +242,8 @@
     original.querySelectorAll('.pb-slider-value input').forEach(input => input.value = '0');
     original.querySelector('#pb-income').dispatchEvent(new Event('input', {bubbles:true}));
     refreshResult(); phone.hidden = true; result.hidden = false;
+    result.scrollIntoView({block:'start', behavior:'auto'});
+    celebrate();
   });
   q('.on-edit').addEventListener('click', () => show(2));
   original.addEventListener('input', refreshResult);
@@ -247,5 +300,20 @@
   #piggy-onboarding .on-money{min-height:70px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:#292929;margin:10px 0;font-size:15px}.on-money>span:nth-child(2){flex:1}.on-money small{display:block;color:#aaa;font-size:12px;margin-top:3px}.on-money div{display:flex;gap:3px;align-items:center;color:#aaa}.on-money input{width:72px;border:0;background:transparent;color:#fff;text-align:right;font:18px Arial}.on-note{font-size:12px;line-height:1.45;color:#aaa;margin:18px 0}.on-error{font-size:12px;line-height:1.4;color:#ff9db7}
   #piggy-onboarding .on-expenses{background:#292929;border-radius:20px;margin:10px 0;overflow:hidden}.on-expenses-toggle{display:flex;align-items:center;gap:10px;width:100%;min-height:70px;padding:12px 14px;border:0;background:transparent;color:#fff;text-align:left;font:15px Arial}.on-expenses-title{flex:1;min-width:0}.on-expenses-title small,.on-rent small{display:block;color:#aaa;font-size:12px;font-weight:400;margin-top:4px}.on-expenses-toggle strong{font:500 15px Arial;white-space:nowrap}.on-chevron{font-size:19px;color:#aaa}.on-expenses-toggle[aria-expanded="true"] .on-chevron{transform:rotate(180deg)}.on-expenses-details{padding:0 12px 14px}.on-rent{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 12px;border-radius:15px;background:#39333f;color:#fff;font-size:17px;font-weight:700}.on-euro{display:flex;align-items:center;gap:3px;color:#bcb4c2;font-size:14px}.on-rent input{width:76px;border:0;background:transparent;color:#fff;text-align:right;font:500 19px Arial}.on-expense-list{display:grid;gap:7px;margin-top:8px}.on-expense-row{display:flex;align-items:center;gap:5px;padding:7px 8px;border-radius:13px;background:#383838;color:#bbb}.on-expense-row input{min-width:0;border:0;background:transparent;color:#fff;font:16px Arial}.on-expense-name{flex:1;width:1px}.on-expense-amount{width:65px;text-align:right}.on-expense-row input::placeholder,.on-rent input::placeholder{color:#aaa}.on-expense-row button{width:36px;height:36px;flex:0 0 36px;border:0;border-radius:50%;background:#4b4b4b;color:#ddd;font:21px Arial}.on-add-expense{min-height:44px;padding:4px 2px;border:0;background:transparent;color:#a7ff27;font:13px Arial}.on-expenses-note{font-size:12px;line-height:1.4;color:#aaa;margin:0 2px 2px}
   #piggy-onboarding .on-primary{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:52px;margin-top:20px;padding:0 18px;border:0;border-radius:17px;background:#a7ff27;color:#26310d;font:700 15px Arial;box-shadow:0 4px 0 #608d15}.on-primary span{font-size:20px}.on-skip,.on-back,.on-edit{min-height:44px;background:none;border:0;color:#bbb;font:13px Arial}.on-skip{width:100%}.on-back{display:block;padding:0}.on-result-intro>span{font-size:10px;letter-spacing:1.2px;color:#a7ff27;font-weight:700}.on-result-intro h2{font-size:29px;font-weight:500;letter-spacing:-1px;margin:11px 0 7px}.on-result-intro p{color:#bbb;font-size:13px;line-height:1.4}.on-personal{margin:16px 0 5px;padding:14px;border-radius:16px;background:#292929;color:#fff;font-size:13px;line-height:1.6}.on-personal strong{color:#a7ff27}.on-edit{padding:0;color:#c6a5ff}
+  #piggy-onboarding .on-primary{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease;touch-action:manipulation}
+  #piggy-onboarding .on-primary:active{transform:translateY(3px) scale(.985);box-shadow:0 1px 0 #608d15}
+  #piggy-onboarding .on-sound-toggle{display:block;min-height:44px;margin:7px auto 0;padding:0 12px;border:0;background:transparent;color:#bbb;font:13px Arial;cursor:pointer}
+  #piggy-onboarding .on-result-intro{position:relative}
+  #piggy-onboarding .on-celebration{position:absolute;z-index:10;inset:0;display:grid;place-items:center;border-radius:inherit;background:#171717ed;opacity:0;visibility:hidden;pointer-events:none}
+  #piggy-onboarding .on-celebration.is-playing{visibility:visible;animation:celebration-overlay 2s ease both}
+  #piggy-onboarding .on-celebration-stage{position:relative;width:min(45vw,190px);aspect-ratio:1}
+  #piggy-onboarding .on-celebration-stage img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 16px #0008)}
+  #piggy-onboarding .is-playing .on-celebration-stage img{animation:celebration-pig 1.35s cubic-bezier(.2,.7,.3,1) .38s both}
+  #piggy-onboarding .on-celebration-coin{position:absolute;z-index:2;top:-21%;left:39%;width:20%;height:25%;border:4px solid #d4fa35;border-radius:50%;background:linear-gradient(115deg,#d2fa33,#8fbd00 60%,#c6eb12);box-shadow:3px 2px 0 #739900,0 4px 9px #0005;opacity:0}
+  #piggy-onboarding .is-playing .on-celebration-coin{animation:celebration-coin .75s ease-in .1s both}
+  @keyframes celebration-overlay{0%{opacity:0}10%,76%{opacity:1}100%{opacity:0}}
+  @keyframes celebration-coin{0%{opacity:0;transform:translateY(-50%) rotate(-20deg)}20%{opacity:1}72%{opacity:1;transform:translateY(105%) rotate(8deg) scale(.85)}100%{opacity:0;transform:translateY(130%) rotate(8deg) scale(.55)}}
+  @keyframes celebration-pig{0%,28%,100%{transform:translateY(0) scale(1)}44%{transform:translateY(5%) scale(1.05,.94)}64%{transform:translateY(-15%) scale(.97,1.03)}82%{transform:translateY(0) scale(1.04,.96)}}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-primary{transition:none}#piggy-onboarding .on-primary:active{transform:none;filter:brightness(.88)}#piggy-onboarding .on-celebration{display:none}}
   @media(max-width:390px){#piggy-onboarding .on-phone,#piggy-onboarding .on-result-intro{padding:24px 18px;border-radius:26px}.on-screen h1{font-size:34px}.on-goals button{font-size:13px}.on-money input{width:60px}}
 </style>
