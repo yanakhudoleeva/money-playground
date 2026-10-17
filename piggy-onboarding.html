@@ -376,9 +376,11 @@
   #piggy-onboarding .on-expenses-toggle{position:relative;gap:6px;padding-right:40px}
   #piggy-onboarding .on-expenses-toggle strong{flex:0 0 auto;width:auto;min-width:94px;color:#aaa;font:18px Arial}
   #piggy-onboarding .on-expenses-amount{text-align:right;color:#fff;white-space:nowrap}
-  #piggy-onboarding .on-expenses-toggle .on-chevron{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;border-radius:50%;background:#c6a5ff26;color:#c6a5ff;transition:transform .18s ease}
+  #piggy-onboarding .on-expenses-toggle .on-chevron{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;color:#bbb;transform:translateX(-4px);transition:transform .18s ease}
   #piggy-onboarding .on-expenses-toggle .on-chevron svg{width:14px;height:14px}
-  #piggy-onboarding .on-expenses-toggle[aria-expanded="true"] .on-chevron{transform:rotate(180deg)}
+  #piggy-onboarding .on-expenses-toggle .on-chevron path{stroke-width:1.5}
+  #piggy-onboarding .on-expenses-toggle[aria-expanded="true"] .on-chevron{transform:translateX(-4px) rotate(180deg)}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-expenses-toggle .on-chevron{transition:none}}
   #piggy-onboarding .on-currency-trigger:focus-visible,#piggy-onboarding .on-currency-option:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
   @media(hover:hover){#piggy-onboarding .on-currency-option:hover{background:#ffffff14}#piggy-onboarding .on-currency-option[aria-pressed="true"]:hover{background:#a7ff2730}}
   #piggy-onboarding input[inputmode="decimal"]:invalid{outline:1px solid #f3759a;outline-offset:2px;border-radius:4px}
