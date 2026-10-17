@@ -1866,6 +1866,12 @@ html&gt;body{padding:0}&lt;/style&gt;
     }
     name.addEventListener(&#x27;input&#x27;, updateConfirm);
     amount.addEventListener(&#x27;input&#x27;, () =&gt; { error.hidden = true; });
+    [name, amount].forEach(input =&gt; input.addEventListener(&#x27;keydown&#x27;, event =&gt; {
+      if (event.key !== &#x27;Enter&#x27; || event.isComposing || event.keyCode === 229) return;
+      event.preventDefault();
+      if (!name.value.trim()) { name.focus(); return; }
+      confirm.click();
+    }));
     confirm.addEventListener(&#x27;click&#x27;, () =&gt; {
       if (!name.value.trim()) { cancelEditing(); return; }
       if (amount.value.trim() === &#x27;&#x27; || !amount.checkValidity()) { error.textContent = &#x27;Add an amount using up to two decimal places.&#x27;; error.hidden = false; amount.focus(); return; }

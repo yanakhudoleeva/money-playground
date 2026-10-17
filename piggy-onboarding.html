@@ -327,6 +327,12 @@
     }
     name.addEventListener('input', updateConfirm);
     amount.addEventListener('input', () => { error.hidden = true; });
+    [name, amount].forEach(input => input.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' || event.isComposing || event.keyCode === 229) return;
+      event.preventDefault();
+      if (!name.value.trim()) { name.focus(); return; }
+      confirm.click();
+    }));
     confirm.addEventListener('click', () => {
       if (!name.value.trim()) { cancelEditing(); return; }
       if (amount.value.trim() === '' || !amount.checkValidity()) { error.textContent = 'Add an amount using up to two decimal places.'; error.hidden = false; amount.focus(); return; }
