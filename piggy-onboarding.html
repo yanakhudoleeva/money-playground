@@ -33,7 +33,7 @@
           <p class="on-expenses-note">Add only what matters to your monthly plan.</p>
         </div>
       </section>
-      <div class="on-money on-savings"><span class="on-icon pink"><i data-lucide="sparkles" aria-hidden="true"></i></span><span>I'd like to save<small>each month</small></span><div class="on-savings-amount"><span data-currency-symbol>€</span><input data-savings type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Desired monthly savings"><span class="on-savings-display" hidden></span></div><button class="on-savings-action" type="button" aria-label="Save monthly savings" hidden>✓</button></div>
+      <div class="on-money on-savings"><span class="on-icon pink"><i data-lucide="sparkles" aria-hidden="true"></i></span><span>I'd like to save<small>each month</small></span><div class="on-savings-amount"><span data-currency-symbol>€</span><input data-savings type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Desired monthly savings"></div></div>
       <p class="on-error" role="alert" hidden></p>
       <button type="button" class="on-primary" data-next="2">Create my piggy bank <span>↗</span></button>
       <button type="button" class="on-back">← Back</button>
@@ -171,33 +171,7 @@
   const number = input => Math.max(0, Number(input.value.trim().replace(',', '.')) || 0);
   const cents = input => Math.round(number(input) * 100);
   const savingsInput = q('[data-savings]');
-  const savingsDisplay = q('.on-savings-display');
-  const savingsAction = q('.on-savings-action');
-  let savingsConfirmed = false;
-  function renderSavingsControl() {
-    savingsInput.hidden = savingsConfirmed;
-    savingsDisplay.hidden = !savingsConfirmed;
-    savingsAction.hidden = !savingsConfirmed && savingsInput.value.trim() === '';
-    savingsAction.classList.toggle('is-confirm', !savingsConfirmed);
-    if (savingsConfirmed) {
-      savingsDisplay.textContent = new Intl.NumberFormat('en-IE', {minimumFractionDigits:2, maximumFractionDigits:2}).format(number(savingsInput));
-      savingsAction.setAttribute('aria-label', 'Edit monthly savings');
-      savingsAction.innerHTML = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    } else {
-      savingsAction.setAttribute('aria-label', 'Save monthly savings');
-      savingsAction.textContent = '✓';
-    }
-  }
-  savingsInput.addEventListener('input', () => { q('[data-step="2"] .on-error').hidden = true; renderSavingsControl(); });
-  savingsInput.addEventListener('keydown', event => { if (event.key === 'Enter' && !savingsAction.hidden) { event.preventDefault(); savingsAction.click(); } });
-  savingsAction.addEventListener('click', () => {
-    if (savingsConfirmed) { savingsConfirmed = false; renderSavingsControl(); savingsInput.focus(); return; }
-    if (savingsInput.value.trim() === '' || !savingsInput.checkValidity()) {
-      const error = q('[data-step="2"] .on-error');
-      error.textContent = 'Enter a savings amount using up to two decimal places.'; error.hidden = false; savingsInput.focus(); return;
-    }
-    savingsConfirmed = true; q('[data-step="2"] .on-error').hidden = true; renderSavingsControl(); savingsAction.focus();
-  });
+  savingsInput.addEventListener('input', () => { q('[data-step="2"] .on-error').hidden = true; });
   root.moneySettings = {money, number, cents, currencySymbol, setSymbol, setMoney};
   function updateCurrencySymbols() {
     root.querySelectorAll('[data-currency-symbol], #piggy-bank-plan .pb-amount > span, #piggy-bank-plan .pb-slider-value > span, #piggy-bank-plan .pb-expense > span').forEach(item => setSymbol(item));
@@ -391,9 +365,6 @@
     if (fields.some(input => input.value === '' || !input.checkValidity())) {
       error.textContent = 'Enter your income and desired savings using up to two decimal places. You can use 0.'; error.hidden = false; return;
     }
-    if (!savingsConfirmed) {
-      error.textContent = 'Tap the green checkmark to save your monthly savings amount.'; error.hidden = false; savingsInput.focus(); return;
-    }
     const rows = [...root.querySelectorAll('.on-expense-row')];
     if (!q('[data-rent]').checkValidity() || rows.some(row => row.dataset.editing === 'true' || row.dataset.saved !== 'true')) {
       expenseDetails.hidden = false; expenseToggle.setAttribute('aria-expanded', 'true');
@@ -497,7 +468,7 @@
   #piggy-onboarding .on-expenses-toggle{position:relative;gap:6px;padding-right:40px}
   #piggy-onboarding .on-expenses-toggle strong{flex:0 0 auto;width:auto;min-width:94px;color:#aaa;font:18px Arial}
   #piggy-onboarding .on-expenses-amount{text-align:right;color:#fff;white-space:nowrap}
-  #piggy-onboarding .on-screen[data-step="2"] [data-currency-symbol],#piggy-onboarding .on-screen[data-step="2"] [data-expenses-total]>span:first-child{color:#a7ff27}
+  #piggy-onboarding .on-screen[data-step="2"] [data-currency-symbol],#piggy-onboarding .on-screen[data-step="2"] [data-expenses-total]>span:first-child{color:#a7ff27;font-size:15px}
   #piggy-onboarding .on-expenses-toggle .on-chevron{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;color:#bbb;transform:translateX(-4px);transition:transform .18s ease}
   #piggy-onboarding .on-expenses-toggle .on-chevron svg{width:14px;height:14px}
   #piggy-onboarding .on-expenses-toggle .on-chevron path{stroke-width:1.5}
@@ -514,11 +485,6 @@
   #piggy-onboarding .on-field,#piggy-onboarding .on-custom{display:block;padding:16px;border-radius:20px;background:#292929;margin:10px 0}.on-field>span,.on-custom>span{display:block;color:#bbb;font-size:10px;letter-spacing:.8px;font-weight:700}.on-field em{font-style:normal;color:#c6a5ff;float:right}.on-field div{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:24px}.on-field b{font-weight:400;color:#aaa}.on-field input,.on-custom input{width:100%;border:0;background:transparent;color:#fff;font:24px Arial;min-width:0}.on-custom input{font-size:16px;margin-top:9px}.on-field input::placeholder,.on-custom input::placeholder,.on-money input::placeholder{color:#777}.on-field input[type=month]{font-size:17px;color-scheme:dark}
   #piggy-onboarding .on-money{min-height:70px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:#292929;margin:10px 0;font-size:15px}.on-money>span:nth-child(2){flex:1}.on-money small{display:block;color:#aaa;font-size:12px;margin-top:3px}.on-money div{display:flex;gap:3px;align-items:center;color:#aaa}.on-money input{width:72px;border:0;background:transparent;color:#fff;text-align:right;font:18px Arial}.on-note{font-size:12px;line-height:1.45;color:#aaa;margin:18px 0}.on-error{font-size:12px;line-height:1.4;color:#ff9db7}
   #piggy-onboarding .on-savings{position:relative}
-  #piggy-onboarding .on-savings-display{flex:1;min-width:0;color:#fff;text-align:right;white-space:nowrap;font:18px Arial}
-  #piggy-onboarding .on-savings-action{position:absolute;right:7px;top:50%;display:grid;place-items:center;width:32px;height:32px;transform:translateY(-50%);border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
-  #piggy-onboarding .on-savings-action.is-confirm{background:#a7ff27;color:#26310d;font:700 19px Arial}
-  #piggy-onboarding .on-savings-action svg{width:17px;height:17px}
-  #piggy-onboarding .on-savings-action:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
   #piggy-onboarding .on-expenses{background:#292929;border-radius:20px;margin:10px 0;overflow:hidden}.on-expenses-toggle{display:flex;align-items:center;gap:10px;width:100%;min-height:70px;padding:12px 14px;border:0;background:transparent;color:#fff;text-align:left;font:15px Arial}.on-expenses-title{flex:1;min-width:0}.on-expenses-title small,.on-rent small{display:block;color:#aaa;font-size:12px;font-weight:400;margin-top:4px}.on-expenses-toggle strong{font:500 15px Arial;white-space:nowrap}.on-chevron{font-size:19px;color:#aaa}.on-expenses-toggle[aria-expanded="true"] .on-chevron{transform:rotate(180deg)}.on-expenses-details{padding:0 12px 14px}.on-rent{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 12px;border-radius:15px;background:#39333f;color:#fff;font-size:17px;font-weight:700}.on-euro{display:flex;align-items:center;gap:3px;color:#bcb4c2;font-size:14px}.on-rent input{width:76px;border:0;background:transparent;color:#fff;text-align:right;font:500 19px Arial}.on-expense-list{display:grid;gap:7px;margin-top:8px}.on-expense-row{display:flex;align-items:center;gap:5px;padding:7px 8px;border-radius:13px;background:#383838;color:#bbb}.on-expense-row input{min-width:0;border:0;background:transparent;color:#fff;font:16px Arial}.on-expense-name{flex:1;width:1px}.on-expense-amount{width:65px;text-align:right}.on-expense-row input::placeholder,.on-rent input::placeholder{color:#aaa}.on-expense-row button{width:36px;height:36px;flex:0 0 36px;border:0;border-radius:50%;background:#4b4b4b;color:#ddd;font:21px Arial}.on-add-expense{min-height:44px;padding:4px 2px;border:0;background:transparent;color:#a7ff27;font:13px Arial}.on-expenses-note{font-size:12px;line-height:1.4;color:#aaa;margin:0 2px 2px}
   #piggy-onboarding .on-primary{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:52px;margin-top:20px;padding:0 18px;border:0;border-radius:17px;background:#a7ff27;color:#26310d;font:700 15px Arial;box-shadow:0 4px 0 #608d15}.on-primary span{font-size:20px}.on-skip,.on-back,.on-edit{min-height:44px;background:none;border:0;color:#bbb;font:13px Arial}.on-skip{width:100%}.on-back{display:block;padding:0}.on-result-intro>span{font-size:10px;letter-spacing:1.2px;color:#a7ff27;font-weight:700}.on-result-intro h2{font-size:29px;font-weight:500;letter-spacing:-1px;margin:11px 0 7px}.on-result-intro p{color:#bbb;font-size:13px;line-height:1.4}.on-personal{margin:16px 0 5px;padding:14px;border-radius:16px;background:#292929;color:#fff;font-size:13px;line-height:1.6}.on-personal strong{color:#a7ff27}.on-edit{padding:0;color:#c6a5ff}
   #piggy-onboarding .on-expense-row{display:block;padding:8px;border-radius:17px;background:#343434}
@@ -535,8 +501,8 @@
   #piggy-onboarding .on-expense-actions .on-expense-remove{color:#f3759a}
   #piggy-onboarding .on-expense-error{margin:3px 8px 5px;color:#ff9db7;font:12px/1.4 Arial}
   #piggy-onboarding .on-expense-saved{display:flex;align-items:center;gap:8px;min-height:54px;padding:3px 4px 3px 6px}
-  #piggy-onboarding .on-expense-saved-name{flex:1;min-width:0;overflow-wrap:anywhere;color:#fff;font:700 15px Arial}
-  #piggy-onboarding .on-expense-saved-amount{color:#fff;font:15px Arial;white-space:nowrap}
+  #piggy-onboarding .on-expense-saved-name{flex:1;min-width:0;overflow-wrap:anywhere;color:#fff;font:700 17px Arial}
+  #piggy-onboarding .on-expense-saved-amount{color:#fff;font:500 19px Arial;white-space:nowrap}
   #piggy-onboarding .on-expense-saved .on-expense-edit{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
   #piggy-onboarding .on-expense-edit svg{width:18px;height:18px}
   #piggy-onboarding .on-expense-row button:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
