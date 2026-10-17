@@ -1571,7 +1571,7 @@ html&gt;body{padding:0}&lt;/style&gt;
           &lt;div class=&quot;on-expense-list&quot;&gt;&lt;/div&gt;
           &lt;button class=&quot;on-add-expense&quot; type=&quot;button&quot;&gt;+ Add an expense&lt;/button&gt;
           &lt;p class=&quot;on-expenses-note&quot;&gt;Add only what matters to your monthly plan.&lt;/p&gt;
-          &lt;button class=&quot;on-field-next&quot; type=&quot;button&quot; data-expenses-next&gt;Next: savings →&lt;/button&gt;
+          &lt;button class=&quot;on-field-next&quot; type=&quot;button&quot; data-expenses-next&gt;&lt;span&gt;Next: savings →&lt;/span&gt;&lt;/button&gt;
         &lt;/div&gt;
       &lt;/section&gt;
       &lt;div class=&quot;on-money on-savings&quot;&gt;&lt;span class=&quot;on-icon pink&quot;&gt;&lt;i data-lucide=&quot;sparkles&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;I&#x27;d like to save&lt;/span&gt;&lt;div class=&quot;on-savings-amount&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt;&lt;input data-savings type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;done&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Desired monthly savings&quot;&gt;&lt;/div&gt;&lt;button class=&quot;on-savings-confirm&quot; type=&quot;button&quot; data-savings-done aria-label=&quot;Confirm monthly savings&quot; hidden&gt;&lt;span aria-hidden=&quot;true&quot;&gt;✓&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;
@@ -2160,6 +2160,11 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-skip:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
   @keyframes skip-shimmer{from{background-position:100% 0}to{background-position:0 0}}
   @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-skip{transition:none}#piggy-onboarding .on-skip span{animation:none;background:none;color:#fff;-webkit-text-fill-color:#fff}}
+  #piggy-onboarding [data-expenses-next]{font:600 13px &#x27;DM Sans&#x27;,Arial,sans-serif;touch-action:manipulation;transition:transform .15s ease}
+  #piggy-onboarding [data-expenses-next] span{display:inline-block;color:#a7ff27}
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){#piggy-onboarding [data-expenses-next] span{background-image:linear-gradient(100deg,#a7ff27 0%,#a7ff27 35%,#6da81a 46%,#a7ff27 53%,#a7ff27 100%);background-size:250% 100%;background-repeat:no-repeat;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:skip-shimmer 2.3s linear infinite}}
+  #piggy-onboarding [data-expenses-next]:active{transform:translateY(1px)}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding [data-expenses-next]{transition:none}#piggy-onboarding [data-expenses-next] span{animation:none;background:none;color:#a7ff27;-webkit-text-fill-color:#a7ff27}}
   #piggy-onboarding .on-goals button[aria-pressed=&quot;true&quot;] .on-icon{animation:goal-icon-pop .3s ease both}
   #piggy-onboarding .on-goals button:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
   @keyframes goal-icon-pop{0%{transform:scale(1)}45%{transform:scale(1.12) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}

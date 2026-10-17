@@ -32,7 +32,7 @@
           <div class="on-expense-list"></div>
           <button class="on-add-expense" type="button">+ Add an expense</button>
           <p class="on-expenses-note">Add only what matters to your monthly plan.</p>
-          <button class="on-field-next" type="button" data-expenses-next>Next: savings →</button>
+          <button class="on-field-next" type="button" data-expenses-next><span>Next: savings →</span></button>
         </div>
       </section>
       <div class="on-money on-savings"><span class="on-icon pink"><i data-lucide="sparkles" aria-hidden="true"></i></span><span>I'd like to save</span><div class="on-savings-amount"><span data-currency-symbol>€</span><input data-savings type="text" inputmode="decimal" enterkeyhint="done" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Desired monthly savings"></div><button class="on-savings-confirm" type="button" data-savings-done aria-label="Confirm monthly savings" hidden><span aria-hidden="true">✓</span></button></div>
@@ -621,6 +621,11 @@
   #piggy-onboarding .on-skip:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
   @keyframes skip-shimmer{from{background-position:100% 0}to{background-position:0 0}}
   @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-skip{transition:none}#piggy-onboarding .on-skip span{animation:none;background:none;color:#fff;-webkit-text-fill-color:#fff}}
+  #piggy-onboarding [data-expenses-next]{font:600 13px 'DM Sans',Arial,sans-serif;touch-action:manipulation;transition:transform .15s ease}
+  #piggy-onboarding [data-expenses-next] span{display:inline-block;color:#a7ff27}
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){#piggy-onboarding [data-expenses-next] span{background-image:linear-gradient(100deg,#a7ff27 0%,#a7ff27 35%,#6da81a 46%,#a7ff27 53%,#a7ff27 100%);background-size:250% 100%;background-repeat:no-repeat;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:skip-shimmer 2.3s linear infinite}}
+  #piggy-onboarding [data-expenses-next]:active{transform:translateY(1px)}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding [data-expenses-next]{transition:none}#piggy-onboarding [data-expenses-next] span{animation:none;background:none;color:#a7ff27;-webkit-text-fill-color:#a7ff27}}
   #piggy-onboarding .on-goals button[aria-pressed="true"] .on-icon{animation:goal-icon-pop .3s ease both}
   #piggy-onboarding .on-goals button:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
   @keyframes goal-icon-pop{0%{transform:scale(1)}45%{transform:scale(1.12) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
