@@ -338,6 +338,11 @@
   onEnter(incomeInput, goToExpenses);
   onEnter(rentInput, goToExpenseEntry);
   onEnter(savingsInput, finishSavings);
+  rentInput.addEventListener('blur', () => {
+    if (!rentInput.value || !rentInput.checkValidity()) return;
+    const [whole, fraction = ''] = rentInput.value.split(/[.,]/);
+    rentInput.value = `${whole}.${fraction.padEnd(2, '0')}`;
+  });
   q('[data-income-next]').addEventListener('click', goToExpenses);
   q('[data-expenses-next]').addEventListener('click', goToSavings);
   q('[data-savings-done]').addEventListener('click', finishSavings);

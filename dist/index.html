@@ -1877,6 +1877,11 @@ html&gt;body{padding:0}&lt;/style&gt;
   onEnter(incomeInput, goToExpenses);
   onEnter(rentInput, goToExpenseEntry);
   onEnter(savingsInput, finishSavings);
+  rentInput.addEventListener(&#x27;blur&#x27;, () =&gt; {
+    if (!rentInput.value || !rentInput.checkValidity()) return;
+    const [whole, fraction = &#x27;&#x27;] = rentInput.value.split(/[.,]/);
+    rentInput.value = `${whole}.${fraction.padEnd(2, &#x27;0&#x27;)}`;
+  });
   q(&#x27;[data-income-next]&#x27;).addEventListener(&#x27;click&#x27;, goToExpenses);
   q(&#x27;[data-expenses-next]&#x27;).addEventListener(&#x27;click&#x27;, goToSavings);
   q(&#x27;[data-savings-done]&#x27;).addEventListener(&#x27;click&#x27;, finishSavings);
