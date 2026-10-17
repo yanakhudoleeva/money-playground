@@ -1567,7 +1567,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;section class=&quot;on-expenses&quot;&gt;
         &lt;button class=&quot;on-expenses-toggle&quot; type=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;on-expenses-details&quot;&gt;&lt;span class=&quot;on-icon purple&quot;&gt;&lt;i data-lucide=&quot;house&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;on-expenses-title&quot;&gt;Monthly expenses&lt;/span&gt;&lt;span class=&quot;on-chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;svg viewBox=&quot;0 0 16 16&quot; fill=&quot;none&quot;&gt;&lt;path d=&quot;m4 6 4 4 4-4&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.8&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;strong data-expenses-total&gt;€&lt;/strong&gt;&lt;/button&gt;
         &lt;div class=&quot;on-expenses-details&quot; id=&quot;on-expenses-details&quot; hidden&gt;
-          &lt;label class=&quot;on-rent&quot;&gt;&lt;span&gt;Monthly rent&lt;/span&gt;&lt;span class=&quot;on-euro&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt; &lt;input data-rent type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;next&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly rent&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+          &lt;div class=&quot;on-rent&quot;&gt;&lt;label for=&quot;on-rent-amount&quot;&gt;Monthly rent&lt;/label&gt;&lt;span class=&quot;on-euro&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt; &lt;input id=&quot;on-rent-amount&quot; data-rent type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;next&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly rent&quot;&gt;&lt;/span&gt;&lt;button class=&quot;on-expense-edit on-rent-edit&quot; data-edit-rent type=&quot;button&quot; aria-label=&quot;Edit monthly rent&quot;&gt;&lt;svg viewBox=&quot;0 0 20 20&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;
           &lt;div class=&quot;on-expense-list&quot;&gt;&lt;/div&gt;
           &lt;button class=&quot;on-add-expense&quot; type=&quot;button&quot;&gt;&lt;span class=&quot;on-add-expense-plus&quot; aria-hidden=&quot;true&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;on-add-expense-label&quot;&gt;Add an expense&lt;/span&gt;&lt;/button&gt;
           &lt;button class=&quot;on-field-next&quot; type=&quot;button&quot; data-expenses-next&gt;&lt;span&gt;Next: savings →&lt;/span&gt;&lt;/button&gt;
@@ -1877,11 +1877,24 @@ html&gt;body{padding:0}&lt;/style&gt;
   onEnter(incomeInput, goToExpenses);
   onEnter(rentInput, goToExpenseEntry);
   onEnter(savingsInput, finishSavings);
+  function sizeRentInput() {
+    const style = getComputedStyle(rentInput);
+    const value = rentInput.value || rentInput.placeholder || &#x27;0&#x27;;
+    if (amountMeasure) amountMeasure.font = style.font;
+    const width = amountMeasure ? amountMeasure.measureText(value).width : value.length * parseFloat(style.fontSize) * 0.6;
+    const spacing = parseFloat(style.letterSpacing) || 0;
+    rentInput.style.setProperty(&#x27;--rent-amount-width&#x27;, `${Math.ceil(width + Math.max(0, value.length - 1) * spacing + 4)}px`);
+  }
+  rentInput.addEventListener(&#x27;input&#x27;, sizeRentInput);
+  q(&#x27;[data-edit-rent]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; { rentInput.focus(); rentInput.select(); });
   rentInput.addEventListener(&#x27;blur&#x27;, () =&gt; {
     if (!rentInput.value || !rentInput.checkValidity()) return;
     const [whole, fraction = &#x27;&#x27;] = rentInput.value.split(/[.,]/);
     rentInput.value = `${whole}.${fraction.padEnd(2, &#x27;0&#x27;)}`;
+    sizeRentInput();
   });
+  sizeRentInput();
+  if (document.fonts) document.fonts.ready.then(sizeRentInput);
   q(&#x27;[data-income-next]&#x27;).addEventListener(&#x27;click&#x27;, goToExpenses);
   q(&#x27;[data-expenses-next]&#x27;).addEventListener(&#x27;click&#x27;, goToSavings);
   q(&#x27;[data-savings-done]&#x27;).addEventListener(&#x27;click&#x27;, finishSavings);
@@ -2170,12 +2183,16 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-expense-error{margin:3px 8px 5px;color:#ff9db7;font:12px/1.4 Arial}
   #piggy-onboarding .on-expense-saved{display:flex;align-items:center;gap:8px;min-height:54px;padding:3px 4px 3px 6px}
   #piggy-onboarding .on-expense-saved-name{flex:1;min-width:0;overflow-wrap:anywhere;color:#fff;font:700 17px Arial}
-  #piggy-onboarding .on-rent&gt;span:first-child,#piggy-onboarding .on-expense-saved-name,#piggy-onboarding .on-expense-form .on-expense-name{font:600 15px &#x27;DM Sans&#x27;,Arial,sans-serif}
+  #piggy-onboarding .on-rent&gt;label,#piggy-onboarding .on-expense-saved-name,#piggy-onboarding .on-expense-form .on-expense-name{font:600 15px &#x27;DM Sans&#x27;,Arial,sans-serif}
   #piggy-onboarding .on-rent small{font-family:Arial,Helvetica,sans-serif}
   #piggy-onboarding .on-expense-saved-amount{display:inline-flex;align-items:center;gap:3px;color:#fff;font:500 19px Arial;white-space:nowrap}
-  #piggy-onboarding .on-expense-saved .on-expense-edit{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
+  #piggy-onboarding .on-expense-saved .on-expense-edit,#piggy-onboarding .on-rent .on-rent-edit{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
   #piggy-onboarding .on-expense-edit svg{width:18px;height:18px}
-  #piggy-onboarding .on-expense-row button:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
+  #piggy-onboarding .on-expense-row button:focus-visible,#piggy-onboarding .on-rent-edit:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
+  #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent{min-height:70px;padding:11px 12px 11px 14px;gap:8px}
+  #piggy-onboarding .on-rent&gt;label{flex:1;min-width:0}
+  #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent .on-euro{flex:0 1 auto;width:auto;gap:3px}
+  #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent .on-euro input{width:var(--rent-amount-width, 1.5ch);max-width:100px;min-width:1ch}
   #piggy-onboarding .on-goals button{position:relative;padding-right:26px;color:#fff;font-family:&#x27;DM Sans&#x27;,Arial,sans-serif;font-weight:600;cursor:pointer;touch-action:manipulation;border-color:#3b3b3b;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease,background .14s ease}
   #piggy-onboarding .on-goals button:active{transform:translateY(2px) scale(.985);box-shadow:inset 0 1px 0 #ffffff0d,0 1px 0 #101010}
   #piggy-onboarding .on-goals button[aria-pressed=&quot;true&quot;]{border-color:#a7ff27;background:linear-gradient(180deg,#3a4230,#2e3626);box-shadow:inset 0 1px 0 #ffffff1a,0 3px 0 #18240d}

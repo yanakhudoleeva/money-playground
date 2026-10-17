@@ -28,7 +28,7 @@
       <section class="on-expenses">
         <button class="on-expenses-toggle" type="button" aria-expanded="false" aria-controls="on-expenses-details"><span class="on-icon purple"><i data-lucide="house" aria-hidden="true"></i></span><span class="on-expenses-title">Monthly expenses</span><span class="on-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong data-expenses-total>€</strong></button>
         <div class="on-expenses-details" id="on-expenses-details" hidden>
-          <label class="on-rent"><span>Monthly rent</span><span class="on-euro"><span data-currency-symbol>€</span> <input data-rent type="text" inputmode="decimal" enterkeyhint="next" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Monthly rent"></span></label>
+          <div class="on-rent"><label for="on-rent-amount">Monthly rent</label><span class="on-euro"><span data-currency-symbol>€</span> <input id="on-rent-amount" data-rent type="text" inputmode="decimal" enterkeyhint="next" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Monthly rent"></span><button class="on-expense-edit on-rent-edit" data-edit-rent type="button" aria-label="Edit monthly rent"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
           <div class="on-expense-list"></div>
           <button class="on-add-expense" type="button"><span class="on-add-expense-plus" aria-hidden="true">+</span><span class="on-add-expense-label">Add an expense</span></button>
           <button class="on-field-next" type="button" data-expenses-next><span>Next: savings →</span></button>
@@ -338,11 +338,24 @@
   onEnter(incomeInput, goToExpenses);
   onEnter(rentInput, goToExpenseEntry);
   onEnter(savingsInput, finishSavings);
+  function sizeRentInput() {
+    const style = getComputedStyle(rentInput);
+    const value = rentInput.value || rentInput.placeholder || '0';
+    if (amountMeasure) amountMeasure.font = style.font;
+    const width = amountMeasure ? amountMeasure.measureText(value).width : value.length * parseFloat(style.fontSize) * 0.6;
+    const spacing = parseFloat(style.letterSpacing) || 0;
+    rentInput.style.setProperty('--rent-amount-width', `${Math.ceil(width + Math.max(0, value.length - 1) * spacing + 4)}px`);
+  }
+  rentInput.addEventListener('input', sizeRentInput);
+  q('[data-edit-rent]').addEventListener('click', () => { rentInput.focus(); rentInput.select(); });
   rentInput.addEventListener('blur', () => {
     if (!rentInput.value || !rentInput.checkValidity()) return;
     const [whole, fraction = ''] = rentInput.value.split(/[.,]/);
     rentInput.value = `${whole}.${fraction.padEnd(2, '0')}`;
+    sizeRentInput();
   });
+  sizeRentInput();
+  if (document.fonts) document.fonts.ready.then(sizeRentInput);
   q('[data-income-next]').addEventListener('click', goToExpenses);
   q('[data-expenses-next]').addEventListener('click', goToSavings);
   q('[data-savings-done]').addEventListener('click', finishSavings);
@@ -631,12 +644,16 @@
   #piggy-onboarding .on-expense-error{margin:3px 8px 5px;color:#ff9db7;font:12px/1.4 Arial}
   #piggy-onboarding .on-expense-saved{display:flex;align-items:center;gap:8px;min-height:54px;padding:3px 4px 3px 6px}
   #piggy-onboarding .on-expense-saved-name{flex:1;min-width:0;overflow-wrap:anywhere;color:#fff;font:700 17px Arial}
-  #piggy-onboarding .on-rent>span:first-child,#piggy-onboarding .on-expense-saved-name,#piggy-onboarding .on-expense-form .on-expense-name{font:600 15px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .on-rent>label,#piggy-onboarding .on-expense-saved-name,#piggy-onboarding .on-expense-form .on-expense-name{font:600 15px 'DM Sans',Arial,sans-serif}
   #piggy-onboarding .on-rent small{font-family:Arial,Helvetica,sans-serif}
   #piggy-onboarding .on-expense-saved-amount{display:inline-flex;align-items:center;gap:3px;color:#fff;font:500 19px Arial;white-space:nowrap}
-  #piggy-onboarding .on-expense-saved .on-expense-edit{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
+  #piggy-onboarding .on-expense-saved .on-expense-edit,#piggy-onboarding .on-rent .on-rent-edit{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
   #piggy-onboarding .on-expense-edit svg{width:18px;height:18px}
-  #piggy-onboarding .on-expense-row button:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
+  #piggy-onboarding .on-expense-row button:focus-visible,#piggy-onboarding .on-rent-edit:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
+  #piggy-onboarding .on-screen[data-step="2"] .on-rent{min-height:70px;padding:11px 12px 11px 14px;gap:8px}
+  #piggy-onboarding .on-rent>label{flex:1;min-width:0}
+  #piggy-onboarding .on-screen[data-step="2"] .on-rent .on-euro{flex:0 1 auto;width:auto;gap:3px}
+  #piggy-onboarding .on-screen[data-step="2"] .on-rent .on-euro input{width:var(--rent-amount-width, 1.5ch);max-width:100px;min-width:1ch}
   #piggy-onboarding .on-goals button{position:relative;padding-right:26px;color:#fff;font-family:'DM Sans',Arial,sans-serif;font-weight:600;cursor:pointer;touch-action:manipulation;border-color:#3b3b3b;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease,background .14s ease}
   #piggy-onboarding .on-goals button:active{transform:translateY(2px) scale(.985);box-shadow:inset 0 1px 0 #ffffff0d,0 1px 0 #101010}
   #piggy-onboarding .on-goals button[aria-pressed="true"]{border-color:#a7ff27;background:linear-gradient(180deg,#3a4230,#2e3626);box-shadow:inset 0 1px 0 #ffffff1a,0 3px 0 #18240d}
