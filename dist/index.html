@@ -2195,6 +2195,11 @@ html&gt;body{padding:0}&lt;/style&gt;
   @media(hover:hover){#piggy-onboarding .on-goals button:hover{border-color:#828282;box-shadow:inset 0 1px 0 #ffffff20,0 4px 0 #101010}#piggy-onboarding .on-goals button[aria-pressed=&quot;true&quot;]:hover{border-color:#a7ff27}}
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-money,#piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-expenses{transition:background .14s ease,box-shadow .14s ease}
   @media(hover:hover){#piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-money:hover,#piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-expenses:hover{background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 0 0 1px #828282,inset 0 1px 0 #ffffff20,0 4px 0 #101010}#piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-money.is-complete:hover{box-shadow:inset 0 0 0 1px #a7ff2770,inset 0 1px 0 #ffffff20,0 4px 0 #101010}}
+  /* Draw keyboard focus around the rounded card, not the rectangular toggle. */
+  #piggy-onboarding .on-expenses-toggle:focus{outline:none}
+  @supports selector(:has(*)){#piggy-onboarding .on-expenses:has(.on-expenses-toggle:focus-visible){outline:2px solid #c6a5ff;outline-offset:2px}}
+  @supports not selector(:has(*)){#piggy-onboarding .on-expenses-toggle:focus-visible{outline:2px solid #c6a5ff;outline-offset:-2px;border-radius:20px}}
+  @media(forced-colors:active){#piggy-onboarding .on-expenses:has(.on-expenses-toggle:focus-visible){outline-color:Highlight}#piggy-onboarding .on-expenses-toggle:focus-visible{outline-color:Highlight}}
   @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-money,#piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-expenses{transition:none}}
   #piggy-onboarding .on-primary{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease;touch-action:manipulation}
   #piggy-onboarding .on-primary:active{transform:translateY(3px) scale(.985);box-shadow:0 1px 0 #608d15}
