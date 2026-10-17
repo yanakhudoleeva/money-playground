@@ -1772,8 +1772,12 @@ html&gt;body{padding:0}&lt;/style&gt;
   q(&#x27;[data-step=&quot;2&quot;] .on-back&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; show(1));
   const expenseDetails = q(&#x27;.on-expenses-details&#x27;);
   const expenseToggle = q(&#x27;.on-expenses-toggle&#x27;);
+  const expenseList = q(&#x27;.on-expense-list&#x27;);
+  const addExpense = q(&#x27;.on-add-expense&#x27;);
   function updateExpenseTotal() {
-    const total = cents(q(&#x27;[data-rent]&#x27;)) + [...root.querySelectorAll(&#x27;.on-expense-amount&#x27;)].reduce((sum,input) =&gt; sum + cents(input), 0);
+    const savedRows = [...expenseList.querySelectorAll(&#x27;.on-expense-row[data-saved=&quot;true&quot;]&#x27;)];
+    const total = cents(q(&#x27;[data-rent]&#x27;)) + savedRows.reduce((sum,row) =&gt; sum + Math.round(Number(row.dataset.savedAmount) * 100), 0);
+    savedRows.forEach(row =&gt; setMoney(row.querySelector(&#x27;.on-expense-saved-amount&#x27;), Number(row.dataset.savedAmount)));
     const display = q(&#x27;[data-expenses-total]&#x27;);
     const symbol = document.createElement(&#x27;span&#x27;);
     const amount = document.createElement(&#x27;span&#x27;);
@@ -1787,14 +1791,60 @@ html&gt;body{padding:0}&lt;/style&gt;
     expenseToggle.setAttribute(&#x27;aria-expanded&#x27;, String(open));
   });
   q(&#x27;[data-rent]&#x27;).addEventListener(&#x27;input&#x27;, updateExpenseTotal);
-  q(&#x27;.on-add-expense&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
-    const row = document.createElement(&#x27;div&#x27;); row.className = &#x27;on-expense-row&#x27;;
-    row.innerHTML = &#x27;&lt;input class=&quot;on-expense-name&quot; type=&quot;text&quot; maxlength=&quot;28&quot; placeholder=&quot;Expense name&quot; aria-label=&quot;Expense name&quot;&gt;&lt;span data-currency-symbol&gt;&lt;/span&gt;&lt;input class=&quot;on-expense-amount&quot; type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0&quot; aria-label=&quot;Expense amount&quot;&gt;&lt;button type=&quot;button&quot; aria-label=&quot;Remove expense&quot;&gt;×&lt;/button&gt;&#x27;;
+  function updateAddExpense() {
+    const editing = !!expenseList.querySelector(&#x27;.on-expense-row[data-editing=&quot;true&quot;]&#x27;);
+    addExpense.hidden = editing;
+    expenseList.querySelectorAll(&#x27;.on-expense-edit&#x27;).forEach(button =&gt; { button.disabled = editing; });
+    addExpense.textContent = expenseList.querySelector(&#x27;.on-expense-row[data-saved=&quot;true&quot;]&#x27;) ? &#x27;+ Add another expense&#x27; : &#x27;+ Add an expense&#x27;;
+  }
+  function createExpenseRow() {
+    const row = document.createElement(&#x27;div&#x27;); row.className = &#x27;on-expense-row&#x27;; row.dataset.editing = &#x27;true&#x27;;
+    row.innerHTML = &#x27;&lt;div class=&quot;on-expense-form&quot;&gt;&lt;input class=&quot;on-expense-name&quot; type=&quot;text&quot; maxlength=&quot;28&quot; placeholder=&quot;Expense name&quot; aria-label=&quot;Expense name&quot;&gt;&lt;div class=&quot;on-expense-input-amount&quot;&gt;&lt;span data-currency-symbol&gt;&lt;/span&gt;&lt;input class=&quot;on-expense-amount&quot; type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0&quot; aria-label=&quot;Expense amount&quot;&gt;&lt;/div&gt;&lt;button class=&quot;on-expense-confirm&quot; type=&quot;button&quot; aria-label=&quot;Cancel expense&quot;&gt;×&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;on-expense-actions&quot;&gt;&lt;button class=&quot;on-expense-cancel&quot; type=&quot;button&quot;&gt;Cancel&lt;/button&gt;&lt;button class=&quot;on-expense-remove&quot; type=&quot;button&quot; hidden&gt;Remove expense&lt;/button&gt;&lt;/div&gt;&lt;p class=&quot;on-expense-error&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;&lt;div class=&quot;on-expense-saved&quot; hidden&gt;&lt;span class=&quot;on-expense-saved-name&quot;&gt;&lt;/span&gt;&lt;strong class=&quot;on-expense-saved-amount&quot;&gt;&lt;/strong&gt;&lt;button class=&quot;on-expense-edit&quot; type=&quot;button&quot; aria-label=&quot;Edit expense&quot;&gt;&lt;svg viewBox=&quot;0 0 20 20&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;&#x27;;
+    const form = row.querySelector(&#x27;.on-expense-form&#x27;);
+    const actions = row.querySelector(&#x27;.on-expense-actions&#x27;);
+    const name = row.querySelector(&#x27;.on-expense-name&#x27;);
+    const amount = row.querySelector(&#x27;.on-expense-amount&#x27;);
+    const confirm = row.querySelector(&#x27;.on-expense-confirm&#x27;);
+    const cancel = row.querySelector(&#x27;.on-expense-cancel&#x27;);
+    const remove = row.querySelector(&#x27;.on-expense-remove&#x27;);
+    const saved = row.querySelector(&#x27;.on-expense-saved&#x27;);
+    const error = row.querySelector(&#x27;.on-expense-error&#x27;);
     setSymbol(row.querySelector(&#x27;[data-currency-symbol]&#x27;));
-    row.querySelector(&#x27;.on-expense-amount&#x27;).addEventListener(&#x27;input&#x27;, updateExpenseTotal);
-    row.querySelector(&#x27;button&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; { row.remove(); updateExpenseTotal(); });
-    q(&#x27;.on-expense-list&#x27;).append(row); row.querySelector(&#x27;.on-expense-name&#x27;).focus();
-  });
+    function updateConfirm() {
+      const entered = !!name.value.trim();
+      confirm.textContent = entered ? &#x27;✓&#x27; : &#x27;×&#x27;;
+      confirm.classList.toggle(&#x27;is-ready&#x27;, entered);
+      confirm.setAttribute(&#x27;aria-label&#x27;, entered ? &#x27;Save expense&#x27; : &#x27;Cancel expense&#x27;);
+      error.hidden = true;
+    }
+    function finishEditing() {
+      row.dataset.editing = &#x27;false&#x27;; form.hidden = true; actions.hidden = true; error.hidden = true; saved.hidden = false;
+      row.querySelector(&#x27;.on-expense-saved-name&#x27;).textContent = row.dataset.savedName;
+      row.querySelector(&#x27;.on-expense-edit&#x27;).setAttribute(&#x27;aria-label&#x27;, &#x27;Edit &#x27; + row.dataset.savedName);
+      updateExpenseTotal(); updateAddExpense();
+    }
+    function cancelEditing() {
+      if (row.dataset.saved === &#x27;true&#x27;) { name.value = row.dataset.savedName; amount.value = row.dataset.savedAmount; finishEditing(); }
+      else { row.remove(); updateExpenseTotal(); updateAddExpense(); addExpense.focus(); }
+    }
+    name.addEventListener(&#x27;input&#x27;, updateConfirm);
+    amount.addEventListener(&#x27;input&#x27;, () =&gt; { error.hidden = true; });
+    confirm.addEventListener(&#x27;click&#x27;, () =&gt; {
+      if (!name.value.trim()) { cancelEditing(); return; }
+      if (amount.value.trim() === &#x27;&#x27; || !amount.checkValidity()) { error.textContent = &#x27;Add an amount using up to two decimal places.&#x27;; error.hidden = false; amount.focus(); return; }
+      row.dataset.saved = &#x27;true&#x27;; row.dataset.savedName = name.value.trim(); row.dataset.savedAmount = String(number(amount));
+      finishEditing(); row.querySelector(&#x27;.on-expense-edit&#x27;).focus();
+    });
+    cancel.addEventListener(&#x27;click&#x27;, cancelEditing);
+    remove.addEventListener(&#x27;click&#x27;, () =&gt; { row.remove(); updateExpenseTotal(); updateAddExpense(); addExpense.focus(); });
+    row.querySelector(&#x27;.on-expense-edit&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+      if (expenseList.querySelector(&#x27;.on-expense-row[data-editing=&quot;true&quot;]&#x27;)) return;
+      row.dataset.editing = &#x27;true&#x27;; form.hidden = false; actions.hidden = false; remove.hidden = false; saved.hidden = true;
+      name.value = row.dataset.savedName; amount.value = row.dataset.savedAmount; updateConfirm(); updateAddExpense(); name.focus();
+    });
+    updateConfirm(); expenseList.append(row); updateAddExpense(); name.focus();
+  }
+  addExpense.addEventListener(&#x27;click&#x27;, createExpenseRow);
   function selectedGoal() { return goal === &#x27;Custom&#x27; ? q(&#x27;.on-custom input&#x27;).value.trim() : goal; }
   function refreshResult() {
     const income = cents(original.querySelector(&#x27;#pb-income&#x27;));
@@ -1818,9 +1868,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       error.textContent = &#x27;Enter your income and desired savings using up to two decimal places. You can use 0.&#x27;; error.hidden = false; return;
     }
     const rows = [...root.querySelectorAll(&#x27;.on-expense-row&#x27;)];
-    if (!q(&#x27;[data-rent]&#x27;).checkValidity() || rows.some(row =&gt; !row.querySelector(&#x27;.on-expense-name&#x27;).value.trim() || row.querySelector(&#x27;.on-expense-amount&#x27;).value === &#x27;&#x27; || !row.querySelector(&#x27;.on-expense-amount&#x27;).checkValidity())) {
+    if (!q(&#x27;[data-rent]&#x27;).checkValidity() || rows.some(row =&gt; row.dataset.editing === &#x27;true&#x27; || row.dataset.saved !== &#x27;true&#x27;)) {
       expenseDetails.hidden = false; expenseToggle.setAttribute(&#x27;aria-expanded&#x27;, &#x27;true&#x27;);
-      error.textContent = &#x27;Enter valid amounts with up to two decimal places and a name for each expense, or remove the empty row.&#x27;; error.hidden = false; return;
+      error.textContent = &#x27;Save or cancel the expense you are editing, and enter a valid rent amount.&#x27;; error.hidden = false; return;
     }
     error.hidden = true;
     original.querySelector(&#x27;.pb-hero h1&#x27;).textContent = selectedGoal() &amp;&amp; goal !== &#x27;Just saving&#x27; ? selectedGoal() + &#x27;.&#x27; : &#x27;Моя копилка.&#x27;;
@@ -1829,8 +1879,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     original.querySelector(&#x27;#pb-housing&#x27;).value = String(number(q(&#x27;[data-rent]&#x27;)));
     original.querySelector(&#x27;.pb-expenses&#x27;).replaceChildren();
     rows.forEach(row =&gt; {
-      original.querySelector(&#x27;[data-expense-name]&#x27;).value = row.querySelector(&#x27;.on-expense-name&#x27;).value.trim();
-      original.querySelector(&#x27;[data-expense-amount]&#x27;).value = String(number(row.querySelector(&#x27;.on-expense-amount&#x27;)));
+      original.querySelector(&#x27;[data-expense-name]&#x27;).value = row.dataset.savedName;
+      original.querySelector(&#x27;[data-expense-amount]&#x27;).value = row.dataset.savedAmount;
       original.querySelector(&#x27;[data-add-expense]&#x27;).click();
     });
     original.querySelectorAll(&#x27;.pb-slider-value input&#x27;).forEach(input =&gt; input.value = &#x27;0&#x27;);
@@ -1932,6 +1982,25 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-money{min-height:70px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:#292929;margin:10px 0;font-size:15px}.on-money&gt;span:nth-child(2){flex:1}.on-money small{display:block;color:#aaa;font-size:12px;margin-top:3px}.on-money div{display:flex;gap:3px;align-items:center;color:#aaa}.on-money input{width:72px;border:0;background:transparent;color:#fff;text-align:right;font:18px Arial}.on-note{font-size:12px;line-height:1.45;color:#aaa;margin:18px 0}.on-error{font-size:12px;line-height:1.4;color:#ff9db7}
   #piggy-onboarding .on-expenses{background:#292929;border-radius:20px;margin:10px 0;overflow:hidden}.on-expenses-toggle{display:flex;align-items:center;gap:10px;width:100%;min-height:70px;padding:12px 14px;border:0;background:transparent;color:#fff;text-align:left;font:15px Arial}.on-expenses-title{flex:1;min-width:0}.on-expenses-title small,.on-rent small{display:block;color:#aaa;font-size:12px;font-weight:400;margin-top:4px}.on-expenses-toggle strong{font:500 15px Arial;white-space:nowrap}.on-chevron{font-size:19px;color:#aaa}.on-expenses-toggle[aria-expanded=&quot;true&quot;] .on-chevron{transform:rotate(180deg)}.on-expenses-details{padding:0 12px 14px}.on-rent{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 12px;border-radius:15px;background:#39333f;color:#fff;font-size:17px;font-weight:700}.on-euro{display:flex;align-items:center;gap:3px;color:#bcb4c2;font-size:14px}.on-rent input{width:76px;border:0;background:transparent;color:#fff;text-align:right;font:500 19px Arial}.on-expense-list{display:grid;gap:7px;margin-top:8px}.on-expense-row{display:flex;align-items:center;gap:5px;padding:7px 8px;border-radius:13px;background:#383838;color:#bbb}.on-expense-row input{min-width:0;border:0;background:transparent;color:#fff;font:16px Arial}.on-expense-name{flex:1;width:1px}.on-expense-amount{width:65px;text-align:right}.on-expense-row input::placeholder,.on-rent input::placeholder{color:#aaa}.on-expense-row button{width:36px;height:36px;flex:0 0 36px;border:0;border-radius:50%;background:#4b4b4b;color:#ddd;font:21px Arial}.on-add-expense{min-height:44px;padding:4px 2px;border:0;background:transparent;color:#a7ff27;font:13px Arial}.on-expenses-note{font-size:12px;line-height:1.4;color:#aaa;margin:0 2px 2px}
   #piggy-onboarding .on-primary{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:52px;margin-top:20px;padding:0 18px;border:0;border-radius:17px;background:#a7ff27;color:#26310d;font:700 15px Arial;box-shadow:0 4px 0 #608d15}.on-primary span{font-size:20px}.on-skip,.on-back,.on-edit{min-height:44px;background:none;border:0;color:#bbb;font:13px Arial}.on-skip{width:100%}.on-back{display:block;padding:0}.on-result-intro&gt;span{font-size:10px;letter-spacing:1.2px;color:#a7ff27;font-weight:700}.on-result-intro h2{font-size:29px;font-weight:500;letter-spacing:-1px;margin:11px 0 7px}.on-result-intro p{color:#bbb;font-size:13px;line-height:1.4}.on-personal{margin:16px 0 5px;padding:14px;border-radius:16px;background:#292929;color:#fff;font-size:13px;line-height:1.6}.on-personal strong{color:#a7ff27}.on-edit{padding:0;color:#c6a5ff}
+  #piggy-onboarding .on-expense-row{display:block;padding:8px;border-radius:17px;background:#343434}
+  #piggy-onboarding .on-expense-row[data-saved=&quot;true&quot;][data-editing=&quot;false&quot;]{background:#39333f}
+  #piggy-onboarding .on-expense-form{display:flex;align-items:center;gap:6px}
+  #piggy-onboarding .on-expense-form .on-expense-name{flex:1;min-width:0;width:1px;min-height:44px;padding:0 12px;border:1px solid #ffffff16;border-radius:999px;background:#242424;font:14px Arial}
+  #piggy-onboarding .on-expense-input-amount{display:flex;align-items:center;gap:3px;flex:0 0 94px;min-height:44px;padding:0 9px;border:1px solid #ffffff16;border-radius:999px;background:#242424;color:#aaa;font-size:14px}
+  #piggy-onboarding .on-expense-input-amount .on-expense-amount{width:100%;min-width:0;text-align:right;font:16px Arial}
+  #piggy-onboarding .on-expense-row input:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px;border-radius:999px}
+  #piggy-onboarding .on-expense-form .on-expense-confirm{flex:0 0 42px;width:42px;height:42px;border:0;border-radius:50%;background:#494949;color:#ddd;font:22px Arial;cursor:pointer}
+  #piggy-onboarding .on-expense-form .on-expense-confirm.is-ready{background:#a7ff27;color:#26310d;font-weight:700}
+  #piggy-onboarding .on-expense-actions{display:flex;justify-content:space-between;gap:8px;padding:2px 5px 0}
+  #piggy-onboarding .on-expense-actions button{width:auto;height:auto;min-height:34px;padding:0 4px;border:0;background:transparent;color:#bbb;font:12px Arial;cursor:pointer}
+  #piggy-onboarding .on-expense-actions .on-expense-remove{color:#f3759a}
+  #piggy-onboarding .on-expense-error{margin:3px 8px 5px;color:#ff9db7;font:12px/1.4 Arial}
+  #piggy-onboarding .on-expense-saved{display:flex;align-items:center;gap:8px;min-height:54px;padding:3px 4px 3px 6px}
+  #piggy-onboarding .on-expense-saved-name{flex:1;min-width:0;overflow-wrap:anywhere;color:#fff;font:700 15px Arial}
+  #piggy-onboarding .on-expense-saved-amount{color:#fff;font:15px Arial;white-space:nowrap}
+  #piggy-onboarding .on-expense-saved .on-expense-edit{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
+  #piggy-onboarding .on-expense-edit svg{width:18px;height:18px}
+  #piggy-onboarding .on-expense-row button:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
   #piggy-onboarding .on-goals button{position:relative;cursor:pointer;touch-action:manipulation;border-color:#3b3b3b;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease,background .14s ease}
   #piggy-onboarding .on-goals button:active{transform:translateY(2px) scale(.985);box-shadow:inset 0 1px 0 #ffffff0d,0 1px 0 #101010}
   #piggy-onboarding .on-goals button[aria-pressed=&quot;true&quot;]{border-color:#a7ff27;background:linear-gradient(180deg,#3a4230,#2e3626);box-shadow:inset 0 1px 0 #ffffff1a,0 3px 0 #18240d}
