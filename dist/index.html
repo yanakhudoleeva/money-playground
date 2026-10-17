@@ -1577,7 +1577,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;button class=&quot;on-expenses-toggle&quot; type=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;on-expenses-details&quot;&gt;&lt;span class=&quot;on-icon purple&quot;&gt;&lt;i data-lucide=&quot;house&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;on-expenses-title&quot;&gt;Monthly expenses&lt;/span&gt;&lt;span class=&quot;on-chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;svg viewBox=&quot;0 0 16 16&quot; fill=&quot;none&quot;&gt;&lt;path d=&quot;m4 6 4 4 4-4&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.8&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;strong data-expenses-total&gt;€&lt;/strong&gt;&lt;/button&gt;
         &lt;div class=&quot;on-expenses-details&quot; id=&quot;on-expenses-details&quot; hidden&gt;
           &lt;div class=&quot;on-expense-scroll&quot;&gt;
-            &lt;div class=&quot;on-rent&quot;&gt;&lt;label for=&quot;on-rent-amount&quot;&gt;Monthly rent&lt;/label&gt;&lt;span class=&quot;on-euro&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt; &lt;input id=&quot;on-rent-amount&quot; data-rent type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;next&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly rent&quot;&gt;&lt;/span&gt;&lt;button class=&quot;on-expense-edit on-rent-edit&quot; data-edit-rent type=&quot;button&quot; aria-label=&quot;Edit monthly rent&quot;&gt;&lt;svg viewBox=&quot;0 0 20 20&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;
+            &lt;div class=&quot;on-rent&quot; data-rent-row&gt;&lt;label for=&quot;on-rent-amount&quot; data-rent-label&gt;Monthly rent&lt;/label&gt;&lt;input class=&quot;on-rent-name&quot; data-rent-name type=&quot;text&quot; maxlength=&quot;28&quot; aria-label=&quot;Expense name&quot; autocapitalize=&quot;sentences&quot; enterkeyhint=&quot;next&quot; hidden&gt;&lt;span class=&quot;on-euro&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt; &lt;input id=&quot;on-rent-amount&quot; data-rent type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;next&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly rent&quot;&gt;&lt;/span&gt;&lt;button class=&quot;on-expense-edit on-rent-edit&quot; data-edit-rent type=&quot;button&quot; aria-label=&quot;Edit monthly rent&quot;&gt;&lt;svg viewBox=&quot;0 0 20 20&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;span class=&quot;on-rent-check&quot; aria-hidden=&quot;true&quot; hidden&gt;✓&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;
             &lt;div class=&quot;on-expense-list&quot;&gt;&lt;/div&gt;
           &lt;/div&gt;
           &lt;button class=&quot;on-add-expense&quot; type=&quot;button&quot;&gt;&lt;span class=&quot;on-add-expense-plus&quot; aria-hidden=&quot;true&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;on-add-expense-label&quot;&gt;Add an expense&lt;/span&gt;&lt;/button&gt;
@@ -1847,6 +1847,11 @@ html&gt;body{padding:0}&lt;/style&gt;
   const addExpense = expenseDetails.querySelector(&#x27;.on-add-expense&#x27;);
   const incomeInput = q(&#x27;[data-income]&#x27;);
   const rentInput = q(&#x27;[data-rent]&#x27;);
+  const rentName = q(&#x27;[data-rent-name]&#x27;);
+  const rentLabel = q(&#x27;[data-rent-label]&#x27;);
+  const rentEdit = q(&#x27;[data-edit-rent]&#x27;);
+  let editingRentName = false;
+  let savedRentName = &#x27;Monthly rent&#x27;;
   const planButton = q(&#x27;[data-next=&quot;2&quot;]&#x27;);
   const hasValidAmount = input =&gt; input.value.trim() !== &#x27;&#x27; &amp;&amp; input.checkValidity();
   const savedIncomeRows = () =&gt; [...incomeList.querySelectorAll(&#x27;.on-expense-row[data-saved=&quot;true&quot;]&#x27;)];
@@ -1870,10 +1875,12 @@ html&gt;body{padding:0}&lt;/style&gt;
     rentInput.focus();
   }
   function goToSavings() {
+    if (!finishRentName()) return;
     if (!rentInput.checkValidity()) { rentInput.reportValidity(); rentInput.focus(); return; }
     savingsInput.focus();
   }
   function goToExpenseEntry() {
+    if (!finishRentName()) return;
     if (!rentInput.checkValidity()) { rentInput.reportValidity(); rentInput.focus(); return; }
     const editingName = expenseList.querySelector(&#x27;.on-expense-row[data-editing=&quot;true&quot;] .on-expense-name&#x27;);
     if (editingName) editingName.focus();
@@ -1895,6 +1902,21 @@ html&gt;body{padding:0}&lt;/style&gt;
   onEnter(incomeInput, goToExpenses);
   onEnter(rentInput, goToExpenseEntry);
   onEnter(savingsInput, finishSavings);
+  function finishRentName() {
+    if (!editingRentName) return true;
+    const value = rentName.value.trim();
+    if (!value) { expenseDetails.hidden = false; expenseToggle.setAttribute(&#x27;aria-expanded&#x27;, &#x27;true&#x27;); rentName.setCustomValidity(&#x27;Please enter an expense name.&#x27;); rentName.focus(); rentName.reportValidity(); return false; }
+    rentName.setCustomValidity(&#x27;&#x27;);
+    savedRentName = value.replace(/\p{L}/u, letter =&gt; letter.toLocaleUpperCase());
+    rentLabel.textContent = savedRentName;
+    rentInput.setAttribute(&#x27;aria-label&#x27;, savedRentName);
+    rentName.hidden = true; rentLabel.hidden = false; editingRentName = false;
+    rentEdit.querySelector(&#x27;svg&#x27;).removeAttribute(&#x27;hidden&#x27;); rentEdit.querySelector(&#x27;.on-rent-check&#x27;).hidden = true;
+    rentEdit.classList.remove(&#x27;is-saving&#x27;); rentEdit.setAttribute(&#x27;aria-label&#x27;, &#x27;Edit &#x27; + savedRentName);
+    return true;
+  }
+  rentName.addEventListener(&#x27;input&#x27;, () =&gt; rentName.setCustomValidity(&#x27;&#x27;));
+  onEnter(rentName, () =&gt; { if (finishRentName()) rentInput.focus(); });
   function sizeRowAmount(input) {
     const style = getComputedStyle(input);
     const value = input.value || input.placeholder || &#x27;0&#x27;;
@@ -1914,7 +1936,14 @@ html&gt;body{padding:0}&lt;/style&gt;
     sizeRowAmount(input);
   });
   q(&#x27;[data-edit-income]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; { incomeInput.focus(); incomeInput.select(); });
-  q(&#x27;[data-edit-rent]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; { rentInput.focus(); rentInput.select(); });
+  rentEdit.addEventListener(&#x27;click&#x27;, () =&gt; {
+    if (editingRentName) { if (finishRentName()) rentInput.focus(); return; }
+    editingRentName = true; rentName.value = savedRentName;
+    rentLabel.hidden = true; rentName.hidden = false;
+    rentEdit.querySelector(&#x27;svg&#x27;).setAttribute(&#x27;hidden&#x27;, &#x27;&#x27;); rentEdit.querySelector(&#x27;.on-rent-check&#x27;).hidden = false;
+    rentEdit.classList.add(&#x27;is-saving&#x27;); rentEdit.setAttribute(&#x27;aria-label&#x27;, &#x27;Save expense name&#x27;);
+    rentName.focus(); rentName.select();
+  });
   if (document.fonts) document.fonts.ready.then(() =&gt; [incomeInput, rentInput].forEach(sizeRowAmount));
   q(&#x27;[data-income-next]&#x27;).addEventListener(&#x27;click&#x27;, goToExpenses);
   q(&#x27;[data-expenses-next]&#x27;).addEventListener(&#x27;click&#x27;, goToSavings);
@@ -2080,6 +2109,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     original.querySelector(&#x27;[data-result-note]&#x27;).textContent = income-housing-expenses-flexible &lt; 0 ? &#x27;Расходы выше дохода. Попробуй изменить план.&#x27; : &#x27;До запланированных накоплений, без незапланированных расходов.&#x27;;
   }
   q(&#x27;[data-next=&quot;2&quot;]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+    if (!finishRentName()) return;
     const fields = [q(&#x27;[data-income]&#x27;), q(&#x27;[data-savings]&#x27;)];
     const error = q(&#x27;[data-step=&quot;2&quot;] .on-error&#x27;);
     if (!incomeReady() || unfinishedRows(incomeList) || !fields[1].checkValidity()) {
@@ -2095,6 +2125,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     original.querySelector(&#x27;.pb-hero p&#x27;).textContent = &#x27;Каждый маленький шаг имеет значение.&#x27;;
     original.querySelector(&#x27;#pb-income&#x27;).value = String(incomeTotal() / 100);
     original.querySelector(&#x27;#pb-housing&#x27;).value = String(number(q(&#x27;[data-rent]&#x27;)));
+    original.querySelector(&#x27;.pb-housing label &gt; span:nth-child(2)&#x27;).firstChild.textContent = savedRentName;
+    original.querySelector(&#x27;#pb-housing&#x27;).setAttribute(&#x27;aria-label&#x27;, savedRentName);
     original.querySelector(&#x27;.pb-expenses&#x27;).replaceChildren();
     rows.forEach(row =&gt; {
       original.querySelector(&#x27;[data-expense-name]&#x27;).value = row.dataset.savedName;
@@ -2257,6 +2289,10 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-expense-row button:focus-visible,#piggy-onboarding .on-rent-edit:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent{min-height:70px;padding:11px 12px 11px 14px;gap:8px}
   #piggy-onboarding .on-rent&gt;label{flex:1;min-width:0}
+  #piggy-onboarding .on-rent [data-rent-label]{overflow-wrap:anywhere}
+  #piggy-onboarding .on-rent .on-rent-name{flex:1;min-width:0;width:1px;min-height:44px;padding:0 10px;border:1px solid #ffffff16;border-radius:999px;background:#242424;color:#fff;text-align:left;font:600 15px &#x27;DM Sans&#x27;,Arial,sans-serif}
+  #piggy-onboarding .on-rent .on-rent-name:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
+  #piggy-onboarding .on-rent .on-rent-edit.is-saving{background:rgba(167,255,39,.12);color:#b8dc84;font:600 16px Arial,sans-serif}
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent .on-euro{flex:0 1 auto;width:auto;gap:3px}
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent .on-euro input{width:var(--rent-amount-width, 1.5ch);max-width:100px;min-width:1ch}
   #piggy-onboarding .on-goals button{position:relative;padding-right:26px;color:#fff;font-family:&#x27;DM Sans&#x27;,Arial,sans-serif;font-weight:600;cursor:pointer;touch-action:manipulation;border-color:#3b3b3b;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease,background .14s ease}
