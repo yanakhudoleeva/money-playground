@@ -1540,7 +1540,7 @@ html&gt;body{padding:0}&lt;/style&gt;
 &lt;div id=&quot;piggy-onboarding&quot; class=&quot;viz-dotted-background&quot; aria-label=&quot;Знакомство с My Money Playground&quot;&gt;
   &lt;div class=&quot;on-phone&quot;&gt;
     &lt;header class=&quot;on-head&quot;&gt;&lt;span class=&quot;on-brand&quot;&gt;my money&lt;span&gt;PLAYGROUND&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;on-head-note&quot;&gt;LET&#x27;S BEGIN ✦&lt;/span&gt;&lt;/header&gt;
-    &lt;div class=&quot;on-progress&quot;&gt;&lt;span class=&quot;on-step-label&quot;&gt;STEP 1 OF 4&lt;/span&gt;&lt;span class=&quot;on-step-count&quot;&gt;01 / 04&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;on-progress&quot;&gt;&lt;span class=&quot;on-step-label&quot;&gt;STEP 1 OF 2&lt;/span&gt;&lt;span class=&quot;on-step-count&quot;&gt;01 / 02&lt;/span&gt;&lt;/div&gt;
     &lt;div class=&quot;on-track&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
     &lt;section class=&quot;on-screen&quot; data-step=&quot;1&quot;&gt;
       &lt;div class=&quot;on-kicker&quot;&gt;SMALL STEPS. BIG DREAMS.&lt;/div&gt;
@@ -1561,31 +1561,28 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-skip&quot; data-skip-goal&gt;Skip for now&lt;/button&gt;
     &lt;/section&gt;
     &lt;section class=&quot;on-screen&quot; data-step=&quot;2&quot; hidden&gt;
-      &lt;div class=&quot;on-kicker&quot;&gt;GIVE YOUR DREAM A NUMBER&lt;/div&gt;
-      &lt;h1&gt;How much do&lt;br&gt;you want to save?&lt;/h1&gt;
-      &lt;p class=&quot;on-description&quot;&gt;An estimate is perfect. You can change it whenever you like.&lt;/p&gt;
-      &lt;label class=&quot;on-field&quot;&gt;&lt;span&gt;YOUR TARGET&lt;/span&gt;&lt;div&gt;&lt;b&gt;€&lt;/b&gt;&lt;input data-target type=&quot;number&quot; min=&quot;0&quot; step=&quot;any&quot; inputmode=&quot;decimal&quot; placeholder=&quot;10,000&quot;&gt;&lt;/div&gt;&lt;/label&gt;
-      &lt;label class=&quot;on-field&quot;&gt;&lt;span&gt;WHEN WOULD YOU LIKE TO REACH IT? &lt;em&gt;OPTIONAL&lt;/em&gt;&lt;/span&gt;&lt;div&gt;&lt;input data-date type=&quot;month&quot; aria-label=&quot;Desired target month&quot;&gt;&lt;/div&gt;&lt;/label&gt;
-      &lt;p class=&quot;on-note&quot;&gt;No pressure — the amount and date can be added later.&lt;/p&gt;
-      &lt;button type=&quot;button&quot; class=&quot;on-primary&quot; data-next=&quot;2&quot;&gt;Continue &lt;span&gt;↗&lt;/span&gt;&lt;/button&gt;
-      &lt;button type=&quot;button&quot; class=&quot;on-skip&quot; data-skip-target&gt;I&#x27;ll decide later&lt;/button&gt;
-      &lt;button type=&quot;button&quot; class=&quot;on-back&quot;&gt;← Back&lt;/button&gt;
-    &lt;/section&gt;
-    &lt;section class=&quot;on-screen&quot; data-step=&quot;3&quot; hidden&gt;
       &lt;div class=&quot;on-kicker&quot;&gt;JUST THE BIG PICTURE&lt;/div&gt;
       &lt;h1&gt;Let&#x27;s plan&lt;br&gt;your month.&lt;/h1&gt;
-      &lt;p class=&quot;on-description&quot;&gt;Start with three simple numbers. You can fine-tune them later.&lt;/p&gt;
+      &lt;p class=&quot;on-description&quot;&gt;A simple plan for your money. You can adjust it later.&lt;/p&gt;
       &lt;label class=&quot;on-money&quot;&gt;&lt;span class=&quot;on-icon green&quot;&gt;&lt;i data-lucide=&quot;arrow-up-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;Monthly income&lt;small&gt;after tax&lt;/small&gt;&lt;/span&gt;&lt;div&gt;€ &lt;input data-income type=&quot;number&quot; min=&quot;0&quot; step=&quot;any&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly income&quot;&gt;&lt;/div&gt;&lt;/label&gt;
-      &lt;label class=&quot;on-money&quot;&gt;&lt;span class=&quot;on-icon purple&quot;&gt;&lt;i data-lucide=&quot;house&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;Essential expenses&lt;small&gt;your monthly total&lt;/small&gt;&lt;/span&gt;&lt;div&gt;€ &lt;input data-expenses type=&quot;number&quot; min=&quot;0&quot; step=&quot;any&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0&quot; aria-label=&quot;Essential monthly expenses&quot;&gt;&lt;/div&gt;&lt;/label&gt;
+      &lt;section class=&quot;on-expenses&quot;&gt;
+        &lt;button class=&quot;on-expenses-toggle&quot; type=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;on-expenses-details&quot;&gt;&lt;span class=&quot;on-icon purple&quot;&gt;&lt;i data-lucide=&quot;house&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;on-expenses-title&quot;&gt;Monthly expenses&lt;small&gt;rent and everything else&lt;/small&gt;&lt;/span&gt;&lt;strong data-expenses-total&gt;€0&lt;/strong&gt;&lt;span class=&quot;on-chevron&quot; aria-hidden=&quot;true&quot;&gt;⌄&lt;/span&gt;&lt;/button&gt;
+        &lt;div class=&quot;on-expenses-details&quot; id=&quot;on-expenses-details&quot; hidden&gt;
+          &lt;label class=&quot;on-rent&quot;&gt;&lt;span&gt;Monthly rent&lt;small&gt;or housing costs&lt;/small&gt;&lt;/span&gt;&lt;span class=&quot;on-euro&quot;&gt;€ &lt;input data-rent type=&quot;number&quot; min=&quot;0&quot; step=&quot;any&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly rent or housing costs&quot;&gt;&lt;/span&gt;&lt;/label&gt;
+          &lt;div class=&quot;on-expense-list&quot;&gt;&lt;/div&gt;
+          &lt;button class=&quot;on-add-expense&quot; type=&quot;button&quot;&gt;+ Add an expense&lt;/button&gt;
+          &lt;p class=&quot;on-expenses-note&quot;&gt;Add only what matters to your monthly plan.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
       &lt;label class=&quot;on-money&quot;&gt;&lt;span class=&quot;on-icon pink&quot;&gt;&lt;i data-lucide=&quot;sparkles&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;I&#x27;d like to save&lt;small&gt;each month&lt;/small&gt;&lt;/span&gt;&lt;div&gt;€ &lt;input data-savings type=&quot;number&quot; min=&quot;0&quot; step=&quot;any&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0&quot; aria-label=&quot;Desired monthly savings&quot;&gt;&lt;/div&gt;&lt;/label&gt;
-      &lt;p class=&quot;on-note&quot;&gt;A rough estimate is enough — no need to list every purchase.&lt;/p&gt;
+      &lt;p class=&quot;on-note&quot;&gt;A rough estimate is enough. You can change everything later.&lt;/p&gt;
       &lt;p class=&quot;on-error&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;
-      &lt;button type=&quot;button&quot; class=&quot;on-primary&quot; data-next=&quot;3&quot;&gt;Make my plan &lt;span&gt;↗&lt;/span&gt;&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;on-primary&quot; data-next=&quot;2&quot;&gt;Make my plan &lt;span&gt;↗&lt;/span&gt;&lt;/button&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-back&quot;&gt;← Back&lt;/button&gt;
     &lt;/section&gt;
   &lt;/div&gt;
   &lt;div class=&quot;on-result&quot; hidden&gt;
-    &lt;div class=&quot;on-result-intro&quot;&gt;&lt;span&gt;STEP 04 / 04&lt;/span&gt;&lt;h2&gt;Your plan is ready ✦&lt;/h2&gt;&lt;p&gt;A first look at your month — you can adjust it anytime.&lt;/p&gt;&lt;div class=&quot;on-personal&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;&lt;button type=&quot;button&quot; class=&quot;on-edit&quot;&gt;← Edit my answers&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;on-result-intro&quot;&gt;&lt;span&gt;YOUR PIGGY BANK ✦&lt;/span&gt;&lt;h2&gt;Your plan is ready ✦&lt;/h2&gt;&lt;p&gt;A first look at your month — you can adjust it anytime.&lt;/p&gt;&lt;div class=&quot;on-personal&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;&lt;button type=&quot;button&quot; class=&quot;on-edit&quot;&gt;← Edit my answers&lt;/button&gt;&lt;/div&gt;
 &lt;div id=&quot;piggy-bank-plan&quot; class=&quot;viz-dotted-background&quot; aria-label=&quot;Моя копилка и план на месяц&quot;&gt;
   &lt;div class=&quot;pb-phone&quot;&gt;
     &lt;header class=&quot;pb-head&quot;&gt;&lt;span class=&quot;pb-brand&quot;&gt;my money&lt;span&gt;PLAYGROUND&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;pb-top-note&quot;&gt;МОЯ КОПИЛКА ✦&lt;/span&gt;&lt;/header&gt;
@@ -1644,18 +1641,17 @@ html&gt;body{padding:0}&lt;/style&gt;
   const money = value =&gt; new Intl.NumberFormat(&#x27;en-IE&#x27;, { style:&#x27;currency&#x27;, currency:&#x27;EUR&#x27;, maximumFractionDigits:2 }).format(value);
   const number = input =&gt; Math.max(0, Number(input.value) || 0);
   let goal = &#x27;&#x27;;
-  let bypassedGoal = false;
   function show(step) {
     phone.hidden = false; result.hidden = true;
     screens.forEach(screen =&gt; { screen.hidden = Number(screen.dataset.step) !== step; });
-    q(&#x27;.on-step-label&#x27;).textContent = `STEP ${step} OF 4`;
-    q(&#x27;.on-step-count&#x27;).textContent = `0${step} / 04`;
-    q(&#x27;.on-track span&#x27;).style.width = `${step * 25}%`;
+    q(&#x27;.on-step-label&#x27;).textContent = `STEP ${step} OF 2`;
+    q(&#x27;.on-step-count&#x27;).textContent = `0${step} / 02`;
+    q(&#x27;.on-track span&#x27;).style.width = `${step * 50}%`;
   }
   goalButtons.forEach(button =&gt; {
     button.setAttribute(&#x27;aria-pressed&#x27;, &#x27;false&#x27;);
     button.addEventListener(&#x27;click&#x27;, () =&gt; {
-      goal = button.dataset.goal; bypassedGoal = false;
+      goal = button.dataset.goal;
       goalButtons.forEach(item =&gt; item.setAttribute(&#x27;aria-pressed&#x27;, String(item === button)));
       q(&#x27;.on-custom&#x27;).hidden = goal !== &#x27;Custom&#x27;;
       q(&#x27;[data-step=&quot;1&quot;] .on-error&#x27;).hidden = true;
@@ -1668,17 +1664,31 @@ html&gt;body{padding:0}&lt;/style&gt;
       error.textContent = goal === &#x27;Custom&#x27; ? &#x27;Give your goal a name, or skip for now.&#x27; : &#x27;Choose one, or skip for now.&#x27;;
       error.hidden = false; return;
     }
-    bypassedGoal = goal === &#x27;Just saving&#x27;;
-    show(bypassedGoal ? 3 : 2);
+    show(2);
   });
   q(&#x27;[data-skip-goal]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
-    goal = &#x27;&#x27;; bypassedGoal = true; goalButtons.forEach(item =&gt; item.setAttribute(&#x27;aria-pressed&#x27;,&#x27;false&#x27;));
-    q(&#x27;.on-custom&#x27;).hidden = true; show(3);
+    goal = &#x27;&#x27;; goalButtons.forEach(item =&gt; item.setAttribute(&#x27;aria-pressed&#x27;,&#x27;false&#x27;));
+    q(&#x27;.on-custom&#x27;).hidden = true; show(2);
   });
-  q(&#x27;[data-next=&quot;2&quot;]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; show(3));
-  q(&#x27;[data-skip-target]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; { q(&#x27;[data-target]&#x27;).value=&#x27;&#x27;; q(&#x27;[data-date]&#x27;).value=&#x27;&#x27;; show(3); });
   q(&#x27;[data-step=&quot;2&quot;] .on-back&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; show(1));
-  q(&#x27;[data-step=&quot;3&quot;] .on-back&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; show(bypassedGoal ? 1 : 2));
+  const expenseDetails = q(&#x27;.on-expenses-details&#x27;);
+  const expenseToggle = q(&#x27;.on-expenses-toggle&#x27;);
+  function updateExpenseTotal() {
+    const total = number(q(&#x27;[data-rent]&#x27;)) + [...root.querySelectorAll(&#x27;.on-expense-amount&#x27;)].reduce((sum,input) =&gt; sum + number(input), 0);
+    q(&#x27;[data-expenses-total]&#x27;).textContent = money(total);
+  }
+  expenseToggle.addEventListener(&#x27;click&#x27;, () =&gt; {
+    const open = expenseDetails.hidden; expenseDetails.hidden = !open;
+    expenseToggle.setAttribute(&#x27;aria-expanded&#x27;, String(open));
+  });
+  q(&#x27;[data-rent]&#x27;).addEventListener(&#x27;input&#x27;, updateExpenseTotal);
+  q(&#x27;.on-add-expense&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+    const row = document.createElement(&#x27;div&#x27;); row.className = &#x27;on-expense-row&#x27;;
+    row.innerHTML = &#x27;&lt;input class=&quot;on-expense-name&quot; type=&quot;text&quot; maxlength=&quot;28&quot; placeholder=&quot;Expense name&quot; aria-label=&quot;Expense name&quot;&gt;&lt;span&gt;€&lt;/span&gt;&lt;input class=&quot;on-expense-amount&quot; type=&quot;number&quot; min=&quot;0&quot; step=&quot;any&quot; inputmode=&quot;decimal&quot; placeholder=&quot;0&quot; aria-label=&quot;Expense amount&quot;&gt;&lt;button type=&quot;button&quot; aria-label=&quot;Remove expense&quot;&gt;×&lt;/button&gt;&#x27;;
+    row.querySelector(&#x27;.on-expense-amount&#x27;).addEventListener(&#x27;input&#x27;, updateExpenseTotal);
+    row.querySelector(&#x27;button&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; { row.remove(); updateExpenseTotal(); });
+    q(&#x27;.on-expense-list&#x27;).append(row); row.querySelector(&#x27;.on-expense-name&#x27;).focus();
+  });
   function selectedGoal() { return goal === &#x27;Custom&#x27; ? q(&#x27;.on-custom input&#x27;).value.trim() : goal; }
   function refreshResult() {
     const income = number(original.querySelector(&#x27;#pb-income&#x27;));
@@ -1690,33 +1700,38 @@ html&gt;body{padding:0}&lt;/style&gt;
     const holder = q(&#x27;.on-personal&#x27;);
     holder.replaceChildren();
     const title = document.createElement(&#x27;div&#x27;); title.textContent = selectedGoal() &amp;&amp; goal !== &#x27;Just saving&#x27; ? `Your goal: ${selectedGoal()}` : &#x27;Saving at your own pace&#x27;; holder.append(title);
-    const target = number(q(&#x27;[data-target]&#x27;));
-    if (goal &amp;&amp; goal !== &#x27;Just saving&#x27; &amp;&amp; target &gt; 0) { const row=document.createElement(&#x27;div&#x27;); row.textContent=`Target: ${money(target)} · add what you have saved later to see what is left`; holder.append(row); }
-    if (goal &amp;&amp; goal !== &#x27;Just saving&#x27; &amp;&amp; q(&#x27;[data-date]&#x27;).value) { const row=document.createElement(&#x27;div&#x27;); row.textContent=`Target month: ${q(&#x27;[data-date]&#x27;).value}`; holder.append(row); }
     const savingsRow = document.createElement(&#x27;div&#x27;); savingsRow.append(&#x27;Planned savings: &#x27;); const savingsValue=document.createElement(&#x27;strong&#x27;); savingsValue.textContent=`${money(planned)} / month`; savingsRow.append(savingsValue); holder.append(savingsRow);
     const restRow = document.createElement(&#x27;div&#x27;); restRow.textContent = remainder &gt;= 0 ? `Left after expenses and savings: ${money(remainder)}` : `Plan exceeds income by ${money(-remainder)} — adjust your numbers.`; holder.append(restRow);
     original.querySelector(&#x27;[data-result-label]&#x27;).textContent = income-housing-expenses-flexible &lt; 0 ? &#x27;НЕ ХВАТАЕТ В МЕСЯЦ&#x27; : &#x27;ОСТАЁТСЯ ПОСЛЕ РАСХОДОВ&#x27;;
     original.querySelector(&#x27;[data-result-note]&#x27;).textContent = income-housing-expenses-flexible &lt; 0 ? &#x27;Расходы выше дохода. Попробуй изменить план.&#x27; : &#x27;До запланированных накоплений, без незапланированных расходов.&#x27;;
   }
-  q(&#x27;[data-next=&quot;3&quot;]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
-    const fields = [q(&#x27;[data-income]&#x27;), q(&#x27;[data-expenses]&#x27;), q(&#x27;[data-savings]&#x27;)];
-    const error = q(&#x27;[data-step=&quot;3&quot;] .on-error&#x27;);
+  q(&#x27;[data-next=&quot;2&quot;]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+    const fields = [q(&#x27;[data-income]&#x27;), q(&#x27;[data-savings]&#x27;)];
+    const error = q(&#x27;[data-step=&quot;2&quot;] .on-error&#x27;);
     if (fields.some(input =&gt; input.value === &#x27;&#x27; || !input.checkValidity())) {
-      error.textContent = &#x27;Enter the three amounts. You can use 0 and change them later.&#x27;; error.hidden = false; return;
+      error.textContent = &#x27;Enter your income and desired savings. You can use 0 and change them later.&#x27;; error.hidden = false; return;
+    }
+    const rows = [...root.querySelectorAll(&#x27;.on-expense-row&#x27;)];
+    if (!q(&#x27;[data-rent]&#x27;).checkValidity() || rows.some(row =&gt; !row.querySelector(&#x27;.on-expense-name&#x27;).value.trim() || row.querySelector(&#x27;.on-expense-amount&#x27;).value === &#x27;&#x27; || !row.querySelector(&#x27;.on-expense-amount&#x27;).checkValidity())) {
+      expenseDetails.hidden = false; expenseToggle.setAttribute(&#x27;aria-expanded&#x27;, &#x27;true&#x27;);
+      error.textContent = &#x27;Add a name and a non-negative amount for each expense, or remove the empty row.&#x27;; error.hidden = false; return;
     }
     error.hidden = true;
     original.querySelector(&#x27;.pb-hero h1&#x27;).textContent = selectedGoal() &amp;&amp; goal !== &#x27;Just saving&#x27; ? selectedGoal() + &#x27;.&#x27; : &#x27;Моя копилка.&#x27;;
     original.querySelector(&#x27;.pb-hero p&#x27;).textContent = &#x27;Каждый маленький шаг имеет значение.&#x27;;
     original.querySelector(&#x27;#pb-income&#x27;).value = fields[0].value;
-    original.querySelector(&#x27;#pb-housing&#x27;).value = &#x27;0&#x27;;
-    const expenses = original.querySelectorAll(&#x27;.pb-expense input&#x27;);
-    expenses[0].value = fields[1].value; expenses[1].value = &#x27;0&#x27;;
+    original.querySelector(&#x27;#pb-housing&#x27;).value = String(number(q(&#x27;[data-rent]&#x27;)));
+    original.querySelector(&#x27;.pb-expenses&#x27;).replaceChildren();
+    rows.forEach(row =&gt; {
+      original.querySelector(&#x27;[data-expense-name]&#x27;).value = row.querySelector(&#x27;.on-expense-name&#x27;).value.trim();
+      original.querySelector(&#x27;[data-expense-amount]&#x27;).value = row.querySelector(&#x27;.on-expense-amount&#x27;).value;
+      original.querySelector(&#x27;[data-add-expense]&#x27;).click();
+    });
     original.querySelectorAll(&#x27;.pb-slider-value input&#x27;).forEach(input =&gt; input.value = &#x27;0&#x27;);
-    original.querySelector(&#x27;.pb-expense label&#x27;).textContent = &#x27;Основные расходы&#x27;;
     original.querySelector(&#x27;#pb-income&#x27;).dispatchEvent(new Event(&#x27;input&#x27;, {bubbles:true}));
     refreshResult(); phone.hidden = true; result.hidden = false;
   });
-  q(&#x27;.on-edit&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; show(3));
+  q(&#x27;.on-edit&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; show(2));
   original.addEventListener(&#x27;input&#x27;, refreshResult);
   original.addEventListener(&#x27;click&#x27;, () =&gt; queueMicrotask(refreshResult));
   original.querySelector(&#x27;.pb-predictions&#x27;).hidden = true;
@@ -1769,6 +1784,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-welcome{display:flex;align-items:center;justify-content:space-between;gap:2px}.on-welcome h1{flex:1;min-width:0}.on-pig{width:93px;height:93px;object-fit:contain;filter:drop-shadow(0 10px 8px #0007)}
   #piggy-onboarding .on-field,#piggy-onboarding .on-custom{display:block;padding:16px;border-radius:20px;background:#292929;margin:10px 0}.on-field&gt;span,.on-custom&gt;span{display:block;color:#bbb;font-size:10px;letter-spacing:.8px;font-weight:700}.on-field em{font-style:normal;color:#c6a5ff;float:right}.on-field div{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:24px}.on-field b{font-weight:400;color:#aaa}.on-field input,.on-custom input{width:100%;border:0;background:transparent;color:#fff;font:24px Arial;min-width:0}.on-custom input{font-size:16px;margin-top:9px}.on-field input::placeholder,.on-custom input::placeholder,.on-money input::placeholder{color:#777}.on-field input[type=month]{font-size:17px;color-scheme:dark}
   #piggy-onboarding .on-money{min-height:70px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:#292929;margin:10px 0;font-size:15px}.on-money&gt;span:nth-child(2){flex:1}.on-money small{display:block;color:#aaa;font-size:12px;margin-top:3px}.on-money div{display:flex;gap:3px;align-items:center;color:#aaa}.on-money input{width:72px;border:0;background:transparent;color:#fff;text-align:right;font:18px Arial}.on-note{font-size:12px;line-height:1.45;color:#aaa;margin:18px 0}.on-error{font-size:12px;line-height:1.4;color:#ff9db7}
+  #piggy-onboarding .on-expenses{background:#292929;border-radius:20px;margin:10px 0;overflow:hidden}.on-expenses-toggle{display:flex;align-items:center;gap:10px;width:100%;min-height:70px;padding:12px 14px;border:0;background:transparent;color:#fff;text-align:left;font:15px Arial}.on-expenses-title{flex:1;min-width:0}.on-expenses-title small,.on-rent small{display:block;color:#aaa;font-size:12px;font-weight:400;margin-top:4px}.on-expenses-toggle strong{font:500 15px Arial;white-space:nowrap}.on-chevron{font-size:19px;color:#aaa}.on-expenses-toggle[aria-expanded=&quot;true&quot;] .on-chevron{transform:rotate(180deg)}.on-expenses-details{padding:0 12px 14px}.on-rent{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 12px;border-radius:15px;background:#39333f;color:#fff;font-size:17px;font-weight:700}.on-euro{display:flex;align-items:center;gap:3px;color:#bcb4c2;font-size:14px}.on-rent input{width:76px;border:0;background:transparent;color:#fff;text-align:right;font:500 19px Arial}.on-expense-list{display:grid;gap:7px;margin-top:8px}.on-expense-row{display:flex;align-items:center;gap:5px;padding:7px 8px;border-radius:13px;background:#383838;color:#bbb}.on-expense-row input{min-width:0;border:0;background:transparent;color:#fff;font:16px Arial}.on-expense-name{flex:1;width:1px}.on-expense-amount{width:65px;text-align:right}.on-expense-row input::placeholder,.on-rent input::placeholder{color:#aaa}.on-expense-row button{width:36px;height:36px;flex:0 0 36px;border:0;border-radius:50%;background:#4b4b4b;color:#ddd;font:21px Arial}.on-add-expense{min-height:44px;padding:4px 2px;border:0;background:transparent;color:#a7ff27;font:13px Arial}.on-expenses-note{font-size:12px;line-height:1.4;color:#aaa;margin:0 2px 2px}
   #piggy-onboarding .on-primary{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:52px;margin-top:20px;padding:0 18px;border:0;border-radius:17px;background:#a7ff27;color:#26310d;font:700 15px Arial;box-shadow:0 4px 0 #608d15}.on-primary span{font-size:20px}.on-skip,.on-back,.on-edit{min-height:44px;background:none;border:0;color:#bbb;font:13px Arial}.on-skip{width:100%}.on-back{display:block;padding:0}.on-result-intro&gt;span{font-size:10px;letter-spacing:1.2px;color:#a7ff27;font-weight:700}.on-result-intro h2{font-size:29px;font-weight:500;letter-spacing:-1px;margin:11px 0 7px}.on-result-intro p{color:#bbb;font-size:13px;line-height:1.4}.on-personal{margin:16px 0 5px;padding:14px;border-radius:16px;background:#292929;color:#fff;font-size:13px;line-height:1.6}.on-personal strong{color:#a7ff27}.on-edit{padding:0;color:#c6a5ff}
   @media(max-width:390px){#piggy-onboarding .on-phone,#piggy-onboarding .on-result-intro{padding:24px 18px;border-radius:26px}.on-screen h1{font-size:34px}.on-goals button{font-size:13px}.on-money input{width:60px}}
 &lt;/style&gt;
