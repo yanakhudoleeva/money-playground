@@ -36,7 +36,7 @@
           <button class="on-field-next" type="button" data-expenses-next><span>Next: savings →</span></button>
         </div>
       </section>
-      <div class="on-money on-savings"><span class="on-icon pink"><i data-lucide="sparkles" aria-hidden="true"></i></span><span>I'd like to save</span><div class="on-savings-amount"><span data-currency-symbol>€</span><input data-savings type="text" inputmode="decimal" enterkeyhint="done" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Desired monthly savings"></div><button class="on-savings-confirm" type="button" data-savings-done aria-label="Confirm monthly savings" hidden><span aria-hidden="true">✓</span></button></div>
+      <div class="on-money on-savings"><span class="on-icon pink"><i data-lucide="sparkles" aria-hidden="true"></i></span><span>I'd like to save <small class="on-optional">optional</small></span><div class="on-savings-amount"><span data-currency-symbol>€</span><input data-savings type="text" inputmode="decimal" enterkeyhint="done" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Desired monthly savings (optional)"></div><button class="on-savings-confirm" type="button" data-savings-done aria-label="Confirm monthly savings" hidden><span aria-hidden="true">✓</span></button></div>
       <p class="on-error" role="alert" hidden></p>
       <p class="on-ready" role="status" hidden>Ready to create your piggy bank ✨</p>
       <button type="button" class="on-primary" data-next="2" disabled>Create my piggy bank <span>↗</span></button>
@@ -304,7 +304,7 @@
     savingsInput.closest('.on-money').classList.toggle('is-complete', savingsReady && savingsConfirmed);
     q('[data-income-next]').hidden = !incomeReady || !expenseDetails.hidden;
     q('[data-savings-done]').hidden = !savingsReady || savingsConfirmed;
-    planButton.disabled = !incomeReady || !savingsReady || !savingsConfirmed || !rentInput.checkValidity() || !!expenseList.querySelector('.on-expense-row[data-editing="true"], .on-expense-row[data-saved="false"]');
+    planButton.disabled = !incomeReady || !savingsInput.checkValidity() || !rentInput.checkValidity() || !!expenseList.querySelector('.on-expense-row[data-editing="true"], .on-expense-row[data-saved="false"]');
     q('.on-ready').hidden = planButton.disabled;
   }
   function goToExpenses() {
@@ -325,8 +325,8 @@
     else createExpenseRow();
   }
   function finishSavings() {
-    if (!hasValidAmount(savingsInput)) { savingsInput.focus(); return; }
-    savingsConfirmed = true;
+    if (!savingsInput.checkValidity()) { savingsInput.reportValidity(); savingsInput.focus(); return; }
+    savingsConfirmed = hasValidAmount(savingsInput);
     updatePlanReadiness();
     if (!planButton.disabled) planButton.focus();
     else savingsInput.blur();
@@ -475,16 +475,20 @@
     const holder = q('.on-personal');
     holder.replaceChildren();
     const title = document.createElement('div'); title.textContent = selectedGoal() && goal !== 'Just saving' ? `Your goal: ${selectedGoal()}` : 'Saving at your own pace'; holder.append(title);
-    const savingsRow = document.createElement('div'); savingsRow.append('Planned savings: '); const savingsValue=document.createElement('strong'); savingsValue.className = 'on-personal-amount'; setMoney(savingsValue, planned / 100, '', ' / month'); savingsRow.append(savingsValue); holder.append(savingsRow);
-    const restRow = document.createElement('div'); restRow.append(remainder >= 0 ? 'Left after expenses and savings: ' : 'Plan exceeds income by '); const restAmount = document.createElement('span'); restAmount.className = 'on-personal-amount'; setMoney(restAmount, Math.abs(remainder) / 100); restRow.append(restAmount); if (remainder < 0) restRow.append(' — adjust your numbers.'); holder.append(restRow);
+    const hasSavingsTarget = savingsInput.value.trim() !== '';
+    const savingsRow = document.createElement('div');
+    if (hasSavingsTarget) { savingsRow.append('Planned savings: '); const savingsValue=document.createElement('strong'); savingsValue.className = 'on-personal-amount'; setMoney(savingsValue, planned / 100, '', ' / month'); savingsRow.append(savingsValue); }
+    else savingsRow.textContent = 'Monthly savings target: not set yet';
+    holder.append(savingsRow);
+    const restRow = document.createElement('div'); restRow.append(remainder >= 0 ? (hasSavingsTarget ? 'Left after expenses and savings: ' : 'Left after expenses: ') : 'Plan exceeds income by '); const restAmount = document.createElement('span'); restAmount.className = 'on-personal-amount'; setMoney(restAmount, Math.abs(remainder) / 100); restRow.append(restAmount); if (remainder < 0) restRow.append(' — adjust your numbers.'); holder.append(restRow);
     original.querySelector('[data-result-label]').textContent = income-housing-expenses-flexible < 0 ? 'НЕ ХВАТАЕТ В МЕСЯЦ' : 'ОСТАЁТСЯ ПОСЛЕ РАСХОДОВ';
     original.querySelector('[data-result-note]').textContent = income-housing-expenses-flexible < 0 ? 'Расходы выше дохода. Попробуй изменить план.' : 'До запланированных накоплений, без незапланированных расходов.';
   }
   q('[data-next="2"]').addEventListener('click', () => {
     const fields = [q('[data-income]'), q('[data-savings]')];
     const error = q('[data-step="2"] .on-error');
-    if (fields.some(input => input.value === '' || !input.checkValidity())) {
-      error.textContent = 'Enter your income and desired savings using up to two decimal places. You can use 0.'; error.hidden = false; return;
+    if (!hasValidAmount(fields[0]) || !fields[1].checkValidity()) {
+      error.textContent = 'Enter your income and use up to two decimal places for amounts. Savings are optional.'; error.hidden = false; return;
     }
     const rows = [...root.querySelectorAll('.on-expense-row')];
     if (!q('[data-rent]').checkValidity() || rows.some(row => row.dataset.editing === 'true' || row.dataset.saved !== 'true')) {
@@ -616,6 +620,7 @@
   #piggy-onboarding .on-field,#piggy-onboarding .on-custom{display:block;padding:16px;border-radius:20px;background:#292929;margin:10px 0}.on-field>span,.on-custom>span{display:block;color:#bbb;font-size:10px;letter-spacing:.8px;font-weight:700}.on-field em{font-style:normal;color:#c6a5ff;float:right}.on-field div{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:24px}.on-field b{font-weight:400;color:#aaa}.on-field input,.on-custom input{width:100%;border:0;background:transparent;color:#fff;font:24px Arial;min-width:0}.on-custom input{font-size:16px;margin-top:9px}.on-field input::placeholder,.on-custom input::placeholder,.on-money input::placeholder{color:#777}.on-field input[type=month]{font-size:17px;color-scheme:dark}
   #piggy-onboarding .on-money{min-height:70px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:#292929;margin:10px 0;font-size:15px}.on-money>span:nth-child(2){flex:1}.on-money small{display:block;color:#aaa;font-size:12px;margin-top:3px}.on-money div{display:flex;gap:3px;align-items:center;color:#aaa}.on-money input{width:72px;border:0;background:transparent;color:#fff;text-align:right;font:18px Arial}.on-note{font-size:12px;line-height:1.45;color:#aaa;margin:18px 0}.on-error{font-size:12px;line-height:1.4;color:#ff9db7}
   #piggy-onboarding .on-savings{position:relative}
+  #piggy-onboarding .on-screen[data-step="2"] .on-savings>span:nth-child(2) .on-optional{display:inline;margin:0 0 0 3px;color:#aaa;font:400 10px 'DM Sans',Arial,sans-serif;white-space:nowrap}
   #piggy-onboarding .on-savings-confirm{position:absolute;right:0;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:40px;height:44px;padding:0;border:0;background:transparent;cursor:pointer}
   #piggy-onboarding .on-savings-confirm span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#a7ff27;color:#26310d;font:700 15px Arial}
   #piggy-onboarding .on-savings-confirm:focus-visible{outline:2px solid #c6a5ff;outline-offset:-2px;border-radius:12px}
