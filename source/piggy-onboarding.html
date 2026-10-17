@@ -1,7 +1,7 @@
 <div id="piggy-onboarding" class="viz-dotted-background" aria-label="Знакомство с My Money Playground">
   <div class="on-phone">
     <header class="on-head"><span class="on-brand">my money<span>PLAYGROUND</span></span><span class="on-head-note">LET'S BEGIN ✦</span></header>
-    <div class="on-progress"><span class="on-step-label">STEP 1 OF 4</span><span class="on-step-count">01 / 04</span></div>
+    <div class="on-progress"><span class="on-step-label">STEP 1 OF 2</span><span class="on-step-count">01 / 02</span></div>
     <div class="on-track"><span></span></div>
     <section class="on-screen" data-step="1">
       <div class="on-kicker">SMALL STEPS. BIG DREAMS.</div>
@@ -22,31 +22,29 @@
       <button type="button" class="on-skip" data-skip-goal>Skip for now</button>
     </section>
     <section class="on-screen" data-step="2" hidden>
-      <div class="on-kicker">GIVE YOUR DREAM A NUMBER</div>
-      <h1>How much do<br>you want to save?</h1>
-      <p class="on-description">An estimate is perfect. You can change it whenever you like.</p>
-      <label class="on-field"><span>YOUR TARGET</span><div><b>€</b><input data-target type="number" min="0" step="any" inputmode="decimal" placeholder="10,000"></div></label>
-      <label class="on-field"><span>WHEN WOULD YOU LIKE TO REACH IT? <em>OPTIONAL</em></span><div><input data-date type="month" aria-label="Desired target month"></div></label>
-      <p class="on-note">No pressure — the amount and date can be added later.</p>
-      <button type="button" class="on-primary" data-next="2">Continue <span>↗</span></button>
-      <button type="button" class="on-skip" data-skip-target>I'll decide later</button>
-      <button type="button" class="on-back">← Back</button>
-    </section>
-    <section class="on-screen" data-step="3" hidden>
       <div class="on-kicker">JUST THE BIG PICTURE</div>
       <h1>Let's plan<br>your month.</h1>
-      <p class="on-description">Start with three simple numbers. You can fine-tune them later.</p>
+      <p class="on-description">A simple plan for your money. You can adjust it later.</p>
       <label class="on-money"><span class="on-icon green"><i data-lucide="arrow-up-right" aria-hidden="true"></i></span><span>Monthly income<small>after tax</small></span><div>€ <input data-income type="number" min="0" step="any" inputmode="decimal" placeholder="0" aria-label="Monthly income"></div></label>
-      <label class="on-money"><span class="on-icon purple"><i data-lucide="house" aria-hidden="true"></i></span><span>Essential expenses<small>your monthly total</small></span><div>€ <input data-expenses type="number" min="0" step="any" inputmode="decimal" placeholder="0" aria-label="Essential monthly expenses"></div></label>
+      <section class="on-expenses">
+        <button class="on-expenses-toggle" type="button" aria-expanded="false" aria-controls="on-expenses-details"><span class="on-icon purple"><i data-lucide="house" aria-hidden="true"></i></span><span class="on-expenses-title">Monthly expenses<small>rent and everything else</small></span><strong data-expenses-total>€0</strong><span class="on-chevron" aria-hidden="true">⌄</span></button>
+        <div class="on-expenses-details" id="on-expenses-details" hidden>
+          <label class="on-rent"><span>Monthly rent<small>or housing costs</small></span><span class="on-euro">€ <input data-rent type="number" min="0" step="any" inputmode="decimal" placeholder="0" aria-label="Monthly rent or housing costs"></span></label>
+          <div class="on-expense-list"></div>
+          <button class="on-add-expense" type="button">+ Add an expense</button>
+          <p class="on-expenses-note">Add only what matters to your monthly plan.</p>
+        </div>
+      </section>
       <label class="on-money"><span class="on-icon pink"><i data-lucide="sparkles" aria-hidden="true"></i></span><span>I'd like to save<small>each month</small></span><div>€ <input data-savings type="number" min="0" step="any" inputmode="decimal" placeholder="0" aria-label="Desired monthly savings"></div></label>
-      <p class="on-note">A rough estimate is enough — no need to list every purchase.</p>
+      <p class="on-note">A rough estimate is enough. You can change everything later.</p>
       <p class="on-error" role="alert" hidden></p>
-      <button type="button" class="on-primary" data-next="3">Make my plan <span>↗</span></button>
+      <button type="button" class="on-primary" data-next="2">Create my piggy bank <span>↗</span></button>
+      <button type="button" class="on-sound-toggle" aria-pressed="true">♫ Sound on</button>
       <button type="button" class="on-back">← Back</button>
     </section>
   </div>
   <div class="on-result" hidden>
-    <div class="on-result-intro"><span>STEP 04 / 04</span><h2>Your plan is ready ✦</h2><p>A first look at your month — you can adjust it anytime.</p><div class="on-personal" aria-live="polite"></div><button type="button" class="on-edit">← Edit my answers</button></div>
+    <div class="on-result-intro"><span>YOUR PIGGY BANK ✦</span><h2>Your plan is ready ✦</h2><p>A first look at your month — you can adjust it anytime.</p><div class="on-personal" aria-live="polite"></div><button type="button" class="on-edit">← Edit my answers</button></div>
 <div id="piggy-bank-plan" class="viz-dotted-background" aria-label="Моя копилка и план на месяц">
   <div class="pb-phone">
     <header class="pb-head"><span class="pb-brand">my money<span>PLAYGROUND</span></span><span class="pb-top-note">МОЯ КОПИЛКА ✦</span></header>
@@ -102,21 +100,70 @@
   root.querySelector('.on-pig').src = original.querySelector('.pb-pig').src;
   const goalButtons = [...root.querySelectorAll('[data-goal]')];
   const q = selector => root.querySelector(selector);
+  const soundToggle = q('.on-sound-toggle');
+  let soundOn = true;
+  soundToggle.addEventListener('click', () => {
+    soundOn = !soundOn;
+    soundToggle.setAttribute('aria-pressed', String(soundOn));
+    soundToggle.textContent = soundOn ? '♫ Sound on' : '♫ Sound off';
+  });
+  const celebration = document.createElement('div');
+  celebration.className = 'on-celebration';
+  celebration.setAttribute('aria-hidden', 'true');
+  const celebrationStage = document.createElement('div');
+  celebrationStage.className = 'on-celebration-stage';
+  const celebrationPig = document.createElement('img');
+  celebrationPig.src = original.querySelector('.pb-pig').src;
+  celebrationPig.alt = '';
+  const celebrationCoin = document.createElement('span');
+  celebrationCoin.className = 'on-celebration-coin';
+  celebrationStage.append(celebrationPig, celebrationCoin);
+  celebration.append(celebrationStage);
+  q('.on-result-intro').append(celebration);
+  let celebrationTimer;
+  function celebrate() {
+    celebration.classList.remove('is-playing');
+    clearTimeout(celebrationTimer);
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Start on the next frame so editing the plan and creating it again replays the reward.
+      requestAnimationFrame(() => requestAnimationFrame(() => celebration.classList.add('is-playing')));
+      celebrationTimer = setTimeout(() => celebration.classList.remove('is-playing'), 2100);
+    }
+    if (!soundOn) return;
+    try {
+      const Audio = window.AudioContext || window.webkitAudioContext;
+      if (!Audio) return;
+      const audio = new Audio();
+      if (audio.state === 'suspended') audio.resume().catch(() => {});
+      const start = audio.currentTime + 0.42;
+      [1568, 2093, 2637].forEach((frequency, index) => {
+        const oscillator = audio.createOscillator();
+        const volume = audio.createGain();
+        const time = start + index * 0.055;
+        oscillator.type = 'sine'; oscillator.frequency.value = frequency;
+        volume.gain.setValueAtTime(0.0001, time);
+        volume.gain.exponentialRampToValueAtTime(0.025, time + 0.012);
+        volume.gain.exponentialRampToValueAtTime(0.0001, time + 0.32);
+        oscillator.connect(volume); volume.connect(audio.destination);
+        oscillator.start(time); oscillator.stop(time + 0.33);
+        if (index === 2) oscillator.onended = () => audio.close().catch(() => {});
+      });
+    } catch (_) { /* The plan works even when the device cannot play sound. */ }
+  }
   const money = value => new Intl.NumberFormat('en-IE', { style:'currency', currency:'EUR', maximumFractionDigits:2 }).format(value);
   const number = input => Math.max(0, Number(input.value) || 0);
   let goal = '';
-  let bypassedGoal = false;
   function show(step) {
     phone.hidden = false; result.hidden = true;
     screens.forEach(screen => { screen.hidden = Number(screen.dataset.step) !== step; });
-    q('.on-step-label').textContent = `STEP ${step} OF 4`;
-    q('.on-step-count').textContent = `0${step} / 04`;
-    q('.on-track span').style.width = `${step * 25}%`;
+    q('.on-step-label').textContent = `STEP ${step} OF 2`;
+    q('.on-step-count').textContent = `0${step} / 02`;
+    q('.on-track span').style.width = `${step * 50}%`;
   }
   goalButtons.forEach(button => {
     button.setAttribute('aria-pressed', 'false');
     button.addEventListener('click', () => {
-      goal = button.dataset.goal; bypassedGoal = false;
+      goal = button.dataset.goal;
       goalButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
       q('.on-custom').hidden = goal !== 'Custom';
       q('[data-step="1"] .on-error').hidden = true;
@@ -129,17 +176,31 @@
       error.textContent = goal === 'Custom' ? 'Give your goal a name, or skip for now.' : 'Choose one, or skip for now.';
       error.hidden = false; return;
     }
-    bypassedGoal = goal === 'Just saving';
-    show(bypassedGoal ? 3 : 2);
+    show(2);
   });
   q('[data-skip-goal]').addEventListener('click', () => {
-    goal = ''; bypassedGoal = true; goalButtons.forEach(item => item.setAttribute('aria-pressed','false'));
-    q('.on-custom').hidden = true; show(3);
+    goal = ''; goalButtons.forEach(item => item.setAttribute('aria-pressed','false'));
+    q('.on-custom').hidden = true; show(2);
   });
-  q('[data-next="2"]').addEventListener('click', () => show(3));
-  q('[data-skip-target]').addEventListener('click', () => { q('[data-target]').value=''; q('[data-date]').value=''; show(3); });
   q('[data-step="2"] .on-back').addEventListener('click', () => show(1));
-  q('[data-step="3"] .on-back').addEventListener('click', () => show(bypassedGoal ? 1 : 2));
+  const expenseDetails = q('.on-expenses-details');
+  const expenseToggle = q('.on-expenses-toggle');
+  function updateExpenseTotal() {
+    const total = number(q('[data-rent]')) + [...root.querySelectorAll('.on-expense-amount')].reduce((sum,input) => sum + number(input), 0);
+    q('[data-expenses-total]').textContent = money(total);
+  }
+  expenseToggle.addEventListener('click', () => {
+    const open = expenseDetails.hidden; expenseDetails.hidden = !open;
+    expenseToggle.setAttribute('aria-expanded', String(open));
+  });
+  q('[data-rent]').addEventListener('input', updateExpenseTotal);
+  q('.on-add-expense').addEventListener('click', () => {
+    const row = document.createElement('div'); row.className = 'on-expense-row';
+    row.innerHTML = '<input class="on-expense-name" type="text" maxlength="28" placeholder="Expense name" aria-label="Expense name"><span>€</span><input class="on-expense-amount" type="number" min="0" step="any" inputmode="decimal" placeholder="0" aria-label="Expense amount"><button type="button" aria-label="Remove expense">×</button>';
+    row.querySelector('.on-expense-amount').addEventListener('input', updateExpenseTotal);
+    row.querySelector('button').addEventListener('click', () => { row.remove(); updateExpenseTotal(); });
+    q('.on-expense-list').append(row); row.querySelector('.on-expense-name').focus();
+  });
   function selectedGoal() { return goal === 'Custom' ? q('.on-custom input').value.trim() : goal; }
   function refreshResult() {
     const income = number(original.querySelector('#pb-income'));
@@ -151,33 +212,40 @@
     const holder = q('.on-personal');
     holder.replaceChildren();
     const title = document.createElement('div'); title.textContent = selectedGoal() && goal !== 'Just saving' ? `Your goal: ${selectedGoal()}` : 'Saving at your own pace'; holder.append(title);
-    const target = number(q('[data-target]'));
-    if (goal && goal !== 'Just saving' && target > 0) { const row=document.createElement('div'); row.textContent=`Target: ${money(target)} · add what you have saved later to see what is left`; holder.append(row); }
-    if (goal && goal !== 'Just saving' && q('[data-date]').value) { const row=document.createElement('div'); row.textContent=`Target month: ${q('[data-date]').value}`; holder.append(row); }
     const savingsRow = document.createElement('div'); savingsRow.append('Planned savings: '); const savingsValue=document.createElement('strong'); savingsValue.textContent=`${money(planned)} / month`; savingsRow.append(savingsValue); holder.append(savingsRow);
     const restRow = document.createElement('div'); restRow.textContent = remainder >= 0 ? `Left after expenses and savings: ${money(remainder)}` : `Plan exceeds income by ${money(-remainder)} — adjust your numbers.`; holder.append(restRow);
     original.querySelector('[data-result-label]').textContent = income-housing-expenses-flexible < 0 ? 'НЕ ХВАТАЕТ В МЕСЯЦ' : 'ОСТАЁТСЯ ПОСЛЕ РАСХОДОВ';
     original.querySelector('[data-result-note]').textContent = income-housing-expenses-flexible < 0 ? 'Расходы выше дохода. Попробуй изменить план.' : 'До запланированных накоплений, без незапланированных расходов.';
   }
-  q('[data-next="3"]').addEventListener('click', () => {
-    const fields = [q('[data-income]'), q('[data-expenses]'), q('[data-savings]')];
-    const error = q('[data-step="3"] .on-error');
+  q('[data-next="2"]').addEventListener('click', () => {
+    const fields = [q('[data-income]'), q('[data-savings]')];
+    const error = q('[data-step="2"] .on-error');
     if (fields.some(input => input.value === '' || !input.checkValidity())) {
-      error.textContent = 'Enter the three amounts. You can use 0 and change them later.'; error.hidden = false; return;
+      error.textContent = 'Enter your income and desired savings. You can use 0 and change them later.'; error.hidden = false; return;
+    }
+    const rows = [...root.querySelectorAll('.on-expense-row')];
+    if (!q('[data-rent]').checkValidity() || rows.some(row => !row.querySelector('.on-expense-name').value.trim() || row.querySelector('.on-expense-amount').value === '' || !row.querySelector('.on-expense-amount').checkValidity())) {
+      expenseDetails.hidden = false; expenseToggle.setAttribute('aria-expanded', 'true');
+      error.textContent = 'Add a name and a non-negative amount for each expense, or remove the empty row.'; error.hidden = false; return;
     }
     error.hidden = true;
     original.querySelector('.pb-hero h1').textContent = selectedGoal() && goal !== 'Just saving' ? selectedGoal() + '.' : 'Моя копилка.';
     original.querySelector('.pb-hero p').textContent = 'Каждый маленький шаг имеет значение.';
     original.querySelector('#pb-income').value = fields[0].value;
-    original.querySelector('#pb-housing').value = '0';
-    const expenses = original.querySelectorAll('.pb-expense input');
-    expenses[0].value = fields[1].value; expenses[1].value = '0';
+    original.querySelector('#pb-housing').value = String(number(q('[data-rent]')));
+    original.querySelector('.pb-expenses').replaceChildren();
+    rows.forEach(row => {
+      original.querySelector('[data-expense-name]').value = row.querySelector('.on-expense-name').value.trim();
+      original.querySelector('[data-expense-amount]').value = row.querySelector('.on-expense-amount').value;
+      original.querySelector('[data-add-expense]').click();
+    });
     original.querySelectorAll('.pb-slider-value input').forEach(input => input.value = '0');
-    original.querySelector('.pb-expense label').textContent = 'Основные расходы';
     original.querySelector('#pb-income').dispatchEvent(new Event('input', {bubbles:true}));
     refreshResult(); phone.hidden = true; result.hidden = false;
+    result.scrollIntoView({block:'start', behavior:'auto'});
+    celebrate();
   });
-  q('.on-edit').addEventListener('click', () => show(3));
+  q('.on-edit').addEventListener('click', () => show(2));
   original.addEventListener('input', refreshResult);
   original.addEventListener('click', () => queueMicrotask(refreshResult));
   original.querySelector('.pb-predictions').hidden = true;
@@ -230,6 +298,30 @@
   #piggy-onboarding .on-welcome{display:flex;align-items:center;justify-content:space-between;gap:2px}.on-welcome h1{flex:1;min-width:0}.on-pig{width:93px;height:93px;object-fit:contain;filter:drop-shadow(0 10px 8px #0007)}
   #piggy-onboarding .on-field,#piggy-onboarding .on-custom{display:block;padding:16px;border-radius:20px;background:#292929;margin:10px 0}.on-field>span,.on-custom>span{display:block;color:#bbb;font-size:10px;letter-spacing:.8px;font-weight:700}.on-field em{font-style:normal;color:#c6a5ff;float:right}.on-field div{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:24px}.on-field b{font-weight:400;color:#aaa}.on-field input,.on-custom input{width:100%;border:0;background:transparent;color:#fff;font:24px Arial;min-width:0}.on-custom input{font-size:16px;margin-top:9px}.on-field input::placeholder,.on-custom input::placeholder,.on-money input::placeholder{color:#777}.on-field input[type=month]{font-size:17px;color-scheme:dark}
   #piggy-onboarding .on-money{min-height:70px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:20px;background:#292929;margin:10px 0;font-size:15px}.on-money>span:nth-child(2){flex:1}.on-money small{display:block;color:#aaa;font-size:12px;margin-top:3px}.on-money div{display:flex;gap:3px;align-items:center;color:#aaa}.on-money input{width:72px;border:0;background:transparent;color:#fff;text-align:right;font:18px Arial}.on-note{font-size:12px;line-height:1.45;color:#aaa;margin:18px 0}.on-error{font-size:12px;line-height:1.4;color:#ff9db7}
+  #piggy-onboarding .on-expenses{background:#292929;border-radius:20px;margin:10px 0;overflow:hidden}.on-expenses-toggle{display:flex;align-items:center;gap:10px;width:100%;min-height:70px;padding:12px 14px;border:0;background:transparent;color:#fff;text-align:left;font:15px Arial}.on-expenses-title{flex:1;min-width:0}.on-expenses-title small,.on-rent small{display:block;color:#aaa;font-size:12px;font-weight:400;margin-top:4px}.on-expenses-toggle strong{font:500 15px Arial;white-space:nowrap}.on-chevron{font-size:19px;color:#aaa}.on-expenses-toggle[aria-expanded="true"] .on-chevron{transform:rotate(180deg)}.on-expenses-details{padding:0 12px 14px}.on-rent{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 12px;border-radius:15px;background:#39333f;color:#fff;font-size:17px;font-weight:700}.on-euro{display:flex;align-items:center;gap:3px;color:#bcb4c2;font-size:14px}.on-rent input{width:76px;border:0;background:transparent;color:#fff;text-align:right;font:500 19px Arial}.on-expense-list{display:grid;gap:7px;margin-top:8px}.on-expense-row{display:flex;align-items:center;gap:5px;padding:7px 8px;border-radius:13px;background:#383838;color:#bbb}.on-expense-row input{min-width:0;border:0;background:transparent;color:#fff;font:16px Arial}.on-expense-name{flex:1;width:1px}.on-expense-amount{width:65px;text-align:right}.on-expense-row input::placeholder,.on-rent input::placeholder{color:#aaa}.on-expense-row button{width:36px;height:36px;flex:0 0 36px;border:0;border-radius:50%;background:#4b4b4b;color:#ddd;font:21px Arial}.on-add-expense{min-height:44px;padding:4px 2px;border:0;background:transparent;color:#a7ff27;font:13px Arial}.on-expenses-note{font-size:12px;line-height:1.4;color:#aaa;margin:0 2px 2px}
   #piggy-onboarding .on-primary{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:52px;margin-top:20px;padding:0 18px;border:0;border-radius:17px;background:#a7ff27;color:#26310d;font:700 15px Arial;box-shadow:0 4px 0 #608d15}.on-primary span{font-size:20px}.on-skip,.on-back,.on-edit{min-height:44px;background:none;border:0;color:#bbb;font:13px Arial}.on-skip{width:100%}.on-back{display:block;padding:0}.on-result-intro>span{font-size:10px;letter-spacing:1.2px;color:#a7ff27;font-weight:700}.on-result-intro h2{font-size:29px;font-weight:500;letter-spacing:-1px;margin:11px 0 7px}.on-result-intro p{color:#bbb;font-size:13px;line-height:1.4}.on-personal{margin:16px 0 5px;padding:14px;border-radius:16px;background:#292929;color:#fff;font-size:13px;line-height:1.6}.on-personal strong{color:#a7ff27}.on-edit{padding:0;color:#c6a5ff}
+  #piggy-onboarding .on-goals button{position:relative;cursor:pointer;touch-action:manipulation;border-color:#3b3b3b;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease,background .14s ease}
+  #piggy-onboarding .on-goals button:active{transform:translateY(2px) scale(.985);box-shadow:inset 0 1px 0 #ffffff0d,0 1px 0 #101010}
+  #piggy-onboarding .on-goals button[aria-pressed="true"]{border-color:#a7ff27;background:linear-gradient(180deg,#3a4230,#2e3626);box-shadow:inset 0 1px 0 #ffffff1a,0 3px 0 #18240d}
+  #piggy-onboarding .on-goals button[aria-pressed="true"]::after{content:'✓';position:absolute;top:4px;right:7px;color:#a7ff27;font:bold 11px Arial}
+  #piggy-onboarding .on-goals button[aria-pressed="true"] .on-icon{animation:goal-icon-pop .3s ease both}
+  #piggy-onboarding .on-goals button:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
+  @keyframes goal-icon-pop{0%{transform:scale(1)}45%{transform:scale(1.12) rotate(-5deg)}100%{transform:scale(1) rotate(0)}}
+  @media(hover:hover){#piggy-onboarding .on-goals button:hover{border-color:#828282;box-shadow:inset 0 1px 0 #ffffff20,0 4px 0 #101010}#piggy-onboarding .on-goals button[aria-pressed="true"]:hover{border-color:#a7ff27}}
+  #piggy-onboarding .on-primary{cursor:pointer;transition:transform .12s ease,box-shadow .12s ease;touch-action:manipulation}
+  #piggy-onboarding .on-primary:active{transform:translateY(3px) scale(.985);box-shadow:0 1px 0 #608d15}
+  #piggy-onboarding .on-sound-toggle{display:block;min-height:44px;margin:7px auto 0;padding:0 12px;border:0;background:transparent;color:#bbb;font:13px Arial;cursor:pointer}
+  #piggy-onboarding .on-result-intro{position:relative}
+  #piggy-onboarding .on-celebration{position:absolute;z-index:10;inset:0;display:grid;place-items:center;border-radius:inherit;background:#171717ed;opacity:0;visibility:hidden;pointer-events:none}
+  #piggy-onboarding .on-celebration.is-playing{visibility:visible;animation:celebration-overlay 2s ease both}
+  #piggy-onboarding .on-celebration-stage{position:relative;width:min(45vw,190px);aspect-ratio:1}
+  #piggy-onboarding .on-celebration-stage img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 16px #0008)}
+  #piggy-onboarding .is-playing .on-celebration-stage img{animation:celebration-pig 1.35s cubic-bezier(.2,.7,.3,1) .38s both}
+  #piggy-onboarding .on-celebration-coin{position:absolute;z-index:2;top:-21%;left:39%;width:20%;height:25%;border:4px solid #d4fa35;border-radius:50%;background:linear-gradient(115deg,#d2fa33,#8fbd00 60%,#c6eb12);box-shadow:3px 2px 0 #739900,0 4px 9px #0005;opacity:0}
+  #piggy-onboarding .is-playing .on-celebration-coin{animation:celebration-coin .75s ease-in .1s both}
+  @keyframes celebration-overlay{0%{opacity:0}10%,76%{opacity:1}100%{opacity:0}}
+  @keyframes celebration-coin{0%{opacity:0;transform:translateY(-50%) rotate(-20deg)}20%{opacity:1}72%{opacity:1;transform:translateY(105%) rotate(8deg) scale(.85)}100%{opacity:0;transform:translateY(130%) rotate(8deg) scale(.55)}}
+  @keyframes celebration-pig{0%,28%,100%{transform:translateY(0) scale(1)}44%{transform:translateY(5%) scale(1.05,.94)}64%{transform:translateY(-15%) scale(.97,1.03)}82%{transform:translateY(0) scale(1.04,.96)}}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-primary,#piggy-onboarding .on-goals button{transition:none}#piggy-onboarding .on-primary:active,#piggy-onboarding .on-goals button:active{transform:none;filter:brightness(.88)}#piggy-onboarding .on-goals button[aria-pressed="true"] .on-icon{animation:none}#piggy-onboarding .on-celebration{display:none}}
   @media(max-width:390px){#piggy-onboarding .on-phone,#piggy-onboarding .on-result-intro{padding:24px 18px;border-radius:26px}.on-screen h1{font-size:34px}.on-goals button{font-size:13px}.on-money input{width:60px}}
 </style>
