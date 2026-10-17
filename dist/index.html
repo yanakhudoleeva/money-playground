@@ -1910,13 +1910,13 @@ html&gt;body{padding:0}&lt;/style&gt;
   updatePlanReadiness();
   function createExpenseRow() {
     const row = document.createElement(&#x27;div&#x27;); row.className = &#x27;on-expense-row&#x27;; row.dataset.editing = &#x27;true&#x27;;
-    row.innerHTML = &#x27;&lt;div class=&quot;on-expense-form&quot;&gt;&lt;input class=&quot;on-expense-name&quot; type=&quot;text&quot; maxlength=&quot;28&quot; placeholder=&quot;Expense name&quot; aria-label=&quot;Expense name&quot; autocapitalize=&quot;sentences&quot; enterkeyhint=&quot;next&quot;&gt;&lt;div class=&quot;on-expense-input-amount&quot;&gt;&lt;span data-currency-symbol&gt;&lt;/span&gt;&lt;input class=&quot;on-expense-amount&quot; type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;done&quot; placeholder=&quot;0&quot; aria-label=&quot;Expense amount&quot;&gt;&lt;/div&gt;&lt;button class=&quot;on-expense-confirm&quot; type=&quot;button&quot; aria-label=&quot;Cancel expense&quot;&gt;×&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;on-expense-actions&quot;&gt;&lt;button class=&quot;on-expense-cancel&quot; type=&quot;button&quot;&gt;Cancel&lt;/button&gt;&lt;button class=&quot;on-expense-remove&quot; type=&quot;button&quot; hidden&gt;Remove expense&lt;/button&gt;&lt;/div&gt;&lt;p class=&quot;on-expense-error&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;&lt;div class=&quot;on-expense-saved&quot; hidden&gt;&lt;span class=&quot;on-expense-saved-name&quot;&gt;&lt;/span&gt;&lt;strong class=&quot;on-expense-saved-amount&quot;&gt;&lt;/strong&gt;&lt;button class=&quot;on-expense-edit&quot; type=&quot;button&quot; aria-label=&quot;Edit expense&quot;&gt;&lt;svg viewBox=&quot;0 0 20 20&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;&#x27;;
+    row.innerHTML = &#x27;&lt;div class=&quot;on-expense-form&quot;&gt;&lt;input class=&quot;on-expense-name&quot; type=&quot;text&quot; maxlength=&quot;28&quot; placeholder=&quot;Expense name&quot; aria-label=&quot;Expense name&quot; autocapitalize=&quot;sentences&quot; enterkeyhint=&quot;next&quot;&gt;&lt;div class=&quot;on-expense-input-amount&quot;&gt;&lt;span data-currency-symbol&gt;&lt;/span&gt;&lt;input class=&quot;on-expense-amount&quot; type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;done&quot; placeholder=&quot;0&quot; aria-label=&quot;Expense amount&quot;&gt;&lt;/div&gt;&lt;button class=&quot;on-expense-confirm is-ready&quot; type=&quot;button&quot; aria-label=&quot;Save expense&quot; hidden&gt;✓&lt;/button&gt;&lt;button class=&quot;on-expense-dismiss&quot; type=&quot;button&quot; aria-label=&quot;Cancel expense&quot;&gt;×&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;on-expense-actions&quot; hidden&gt;&lt;button class=&quot;on-expense-remove&quot; type=&quot;button&quot; hidden&gt;Remove expense&lt;/button&gt;&lt;/div&gt;&lt;p class=&quot;on-expense-error&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;&lt;div class=&quot;on-expense-saved&quot; hidden&gt;&lt;span class=&quot;on-expense-saved-name&quot;&gt;&lt;/span&gt;&lt;strong class=&quot;on-expense-saved-amount&quot;&gt;&lt;/strong&gt;&lt;button class=&quot;on-expense-edit&quot; type=&quot;button&quot; aria-label=&quot;Edit expense&quot;&gt;&lt;svg viewBox=&quot;0 0 20 20&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;&#x27;;
     const form = row.querySelector(&#x27;.on-expense-form&#x27;);
     const actions = row.querySelector(&#x27;.on-expense-actions&#x27;);
     const name = row.querySelector(&#x27;.on-expense-name&#x27;);
     const amount = row.querySelector(&#x27;.on-expense-amount&#x27;);
     const confirm = row.querySelector(&#x27;.on-expense-confirm&#x27;);
-    const cancel = row.querySelector(&#x27;.on-expense-cancel&#x27;);
+    const cancel = row.querySelector(&#x27;.on-expense-dismiss&#x27;);
     const remove = row.querySelector(&#x27;.on-expense-remove&#x27;);
     const saved = row.querySelector(&#x27;.on-expense-saved&#x27;);
     const error = row.querySelector(&#x27;.on-expense-error&#x27;);
@@ -1924,9 +1924,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     setSymbol(row.querySelector(&#x27;[data-currency-symbol]&#x27;));
     function updateConfirm() {
       const entered = !!name.value.trim();
-      confirm.textContent = entered ? &#x27;✓&#x27; : &#x27;×&#x27;;
-      confirm.classList.toggle(&#x27;is-ready&#x27;, entered);
-      confirm.setAttribute(&#x27;aria-label&#x27;, entered ? &#x27;Save expense&#x27; : &#x27;Cancel expense&#x27;);
+      confirm.hidden = !entered;
       error.hidden = true;
     }
     function finishEditing() {
@@ -2128,10 +2126,10 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-expense-input-amount{display:flex;align-items:center;gap:3px;flex:0 0 94px;min-height:44px;padding:0 9px;border:1px solid #ffffff16;border-radius:999px;background:#242424;color:#aaa;font-size:14px}
   #piggy-onboarding .on-expense-input-amount .on-expense-amount{width:100%;min-width:0;text-align:right;font:16px Arial}
   #piggy-onboarding .on-expense-row input:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px;border-radius:999px}
-  #piggy-onboarding .on-expense-form .on-expense-confirm{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#494949;color:#ddd;font:22px Arial;cursor:pointer}
+  #piggy-onboarding .on-expense-form .on-expense-confirm,#piggy-onboarding .on-expense-form .on-expense-dismiss{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#494949;color:#ddd;font:22px Arial;cursor:pointer}
   #piggy-onboarding .on-expense-form .on-expense-confirm.is-ready{background:#a7ff27;color:#26310d;font-weight:700}
   #piggy-onboarding .on-expense-actions{display:flex;justify-content:space-between;gap:8px;padding:2px 5px 0}
-  #piggy-onboarding .on-expense-actions button{width:auto;height:auto;min-height:34px;padding:0 4px;border:0;background:transparent;color:#bbb;font:12px Arial;cursor:pointer}
+  #piggy-onboarding .on-expense-actions button{flex:0 0 auto;width:auto;height:auto;min-height:34px;padding:0 4px;border:0;background:transparent;color:#bbb;font:12px Arial;white-space:nowrap;cursor:pointer}
   #piggy-onboarding .on-expense-actions .on-expense-remove{color:#f3759a}
   #piggy-onboarding .on-expense-error{margin:3px 8px 5px;color:#ff9db7;font:12px/1.4 Arial}
   #piggy-onboarding .on-expense-saved{display:flex;align-items:center;gap:8px;min-height:54px;padding:3px 4px 3px 6px}
