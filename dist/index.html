@@ -1540,8 +1540,6 @@ html&gt;body{padding:0}&lt;/style&gt;
 &lt;div id=&quot;piggy-onboarding&quot; class=&quot;viz-dotted-background&quot; aria-label=&quot;Знакомство с My Money Playground&quot;&gt;
   &lt;div class=&quot;on-phone&quot;&gt;
     &lt;header class=&quot;on-head&quot;&gt;&lt;span class=&quot;on-brand&quot;&gt;my money&lt;span&gt;PLAYGROUND&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;on-head-note&quot;&gt;LET&#x27;S BEGIN ✦&lt;/span&gt;&lt;/header&gt;
-    &lt;div class=&quot;on-progress&quot;&gt;&lt;span class=&quot;on-step-label&quot;&gt;STEP 1 OF 2&lt;/span&gt;&lt;span class=&quot;on-step-count&quot;&gt;01 / 02&lt;/span&gt;&lt;/div&gt;
-    &lt;div class=&quot;on-track&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
     &lt;section class=&quot;on-screen&quot; data-step=&quot;1&quot;&gt;
       &lt;div class=&quot;on-kicker&quot;&gt;SMALL STEPS. BIG DREAMS.&lt;/div&gt;
       &lt;div class=&quot;on-welcome&quot;&gt;&lt;h1&gt;What&#x27;s your&lt;br&gt;piggy saving for?&lt;/h1&gt;&lt;img class=&quot;on-pig&quot; alt=&quot;Pink piggy bank with a green coin&quot;&gt;&lt;/div&gt;
@@ -1695,9 +1693,6 @@ html&gt;body{padding:0}&lt;/style&gt;
   function show(step) {
     phone.hidden = false; result.hidden = true;
     screens.forEach(screen =&gt; { screen.hidden = Number(screen.dataset.step) !== step; });
-    q(&#x27;.on-step-label&#x27;).textContent = `STEP ${step} OF 2`;
-    q(&#x27;.on-step-count&#x27;).textContent = `0${step} / 02`;
-    q(&#x27;.on-track span&#x27;).style.width = `${step * 50}%`;
   }
   goalButtons.forEach(button =&gt; {
     button.setAttribute(&#x27;aria-pressed&#x27;, &#x27;false&#x27;);
@@ -1832,7 +1827,6 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding{padding:12px 0 20px;font-family:Arial,Helvetica,sans-serif} #piggy-onboarding *{box-sizing:border-box} #piggy-onboarding [hidden]{display:none!important}
   #piggy-onboarding .on-phone,#piggy-onboarding .on-result-intro{width:min(100%,430px);margin:0 auto;padding:27px 23px 24px;border-radius:32px;background:#171717;color:#fff;box-shadow:0 18px 45px #0006}
   #piggy-onboarding .on-head{display:flex;justify-content:space-between;align-items:start;gap:12px}.on-brand{font-size:18px;font-weight:700;letter-spacing:-.8px;line-height:.95}.on-brand span{display:block;font-size:9px;letter-spacing:2.2px;margin-top:6px}.on-head-note,.on-kicker{font-size:10px;letter-spacing:1.2px;font-weight:700;color:#a7ff27}.on-head-note{color:#c6a5ff;text-align:right}
-  #piggy-onboarding .on-progress{display:flex;justify-content:space-between;color:#aaa;font-size:10px;letter-spacing:1px;margin:36px 0 9px}.on-track{height:5px;border-radius:9px;background:#383838;overflow:hidden}.on-track span{display:block;background:#a7ff27;width:25%;height:100%;border-radius:9px}
   #piggy-onboarding .on-screen{padding-top:30px}.on-screen h1{font-size:38px;line-height:1.04;letter-spacing:-1.8px;font-weight:500;margin:11px 0 12px;color:#fff}.on-description{font-size:13px;line-height:1.45;color:#bbb;margin:0 0 21px}.on-goals{display:grid;grid-template-columns:1fr 1fr;gap:8px}.on-goals button{min-height:54px;display:flex;align-items:center;gap:9px;padding:8px;border:1px solid transparent;border-radius:17px;background:#292929;color:#fff;text-align:left;font:14px Arial}.on-goals button[aria-pressed=&quot;true&quot;]{border-color:#a7ff27;background:#33392b}.on-icon{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:12px}.on-icon svg{width:19px;height:19px}.on-icon.green{background:#a7ff27;color:#26310d}.on-icon.purple{background:#c6a5ff;color:#341d4a}.on-icon.pink{background:#f3759a;color:#461127}.on-icon.neutral{background:#484848;color:#fff}
   #piggy-onboarding .on-welcome{display:flex;align-items:center;justify-content:space-between;gap:2px}.on-welcome h1{flex:1;min-width:0}.on-pig{width:93px;height:93px;object-fit:contain;filter:drop-shadow(0 10px 8px #0007)}
   #piggy-onboarding .on-field,#piggy-onboarding .on-custom{display:block;padding:16px;border-radius:20px;background:#292929;margin:10px 0}.on-field&gt;span,.on-custom&gt;span{display:block;color:#bbb;font-size:10px;letter-spacing:.8px;font-weight:700}.on-field em{font-style:normal;color:#c6a5ff;float:right}.on-field div{display:flex;align-items:center;gap:8px;margin-top:11px;font-size:24px}.on-field b{font-weight:400;color:#aaa}.on-field input,.on-custom input{width:100%;border:0;background:transparent;color:#fff;font:24px Arial;min-width:0}.on-custom input{font-size:16px;margin-top:9px}.on-field input::placeholder,.on-custom input::placeholder,.on-money input::placeholder{color:#777}.on-field input[type=month]{font-size:17px;color-scheme:dark}
