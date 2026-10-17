@@ -26,7 +26,7 @@
       <label class="on-money"><span class="on-icon green"><i data-lucide="arrow-up-right" aria-hidden="true"></i></span><span>Monthly income</span><div><span data-currency-symbol>€</span> <input data-income type="text" inputmode="decimal" enterkeyhint="next" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Monthly income"></div></label>
       <button class="on-field-next" type="button" data-income-next hidden>Next: expenses →</button>
       <section class="on-expenses">
-        <button class="on-expenses-toggle" type="button" aria-expanded="false" aria-controls="on-expenses-details"><span class="on-icon purple"><i data-lucide="house" aria-hidden="true"></i></span><span class="on-expenses-title">Monthly expenses</span><span class="on-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong data-expenses-total>€0</strong></button>
+        <button class="on-expenses-toggle" type="button" aria-expanded="false" aria-controls="on-expenses-details"><span class="on-icon purple"><i data-lucide="house" aria-hidden="true"></i></span><span class="on-expenses-title">Monthly expenses</span><span class="on-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong data-expenses-total>€</strong></button>
         <div class="on-expenses-details" id="on-expenses-details" hidden>
           <label class="on-rent"><span>Monthly rent</span><span class="on-euro"><span data-currency-symbol>€</span> <input data-rent type="text" inputmode="decimal" enterkeyhint="next" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Monthly rent"></span></label>
           <div class="on-expense-list"></div>
@@ -360,8 +360,7 @@
     setSymbol(symbol);
     const hasExpenses = q('[data-rent]').value.trim() !== '' || savedRows.length > 0;
     amount.className = 'on-expenses-amount';
-    amount.classList.toggle('is-placeholder', !hasExpenses);
-    amount.textContent = hasExpenses ? new Intl.NumberFormat('en-IE', {minimumFractionDigits:2, maximumFractionDigits:2}).format(total / 100) : '0';
+    amount.textContent = hasExpenses ? new Intl.NumberFormat('en-IE', {minimumFractionDigits:2, maximumFractionDigits:2}).format(total / 100) : '';
     display.replaceChildren(symbol, amount);
   }
   expenseToggle.addEventListener('click', () => {
@@ -580,7 +579,6 @@
   #piggy-onboarding .on-screen[data-step="2"] .on-rent{padding-right:28px}
   #piggy-onboarding .on-screen[data-step="2"] .on-rent .on-euro{flex:0 0 94px;width:94px;min-width:0;justify-content:space-between}
   #piggy-onboarding .on-screen[data-step="2"] .on-rent .on-euro input{width:72px;min-width:0}
-  #piggy-onboarding .on-screen[data-step="2"] .on-expenses-amount.is-placeholder{color:#777}
   #piggy-onboarding .on-screen[data-step="2"] [data-currency-symbol],#piggy-onboarding .on-screen[data-step="2"] [data-expenses-total]>span:first-child,#piggy-onboarding .on-screen[data-step="2"] .on-expense-saved-symbol{color:#a7ff27;font:400 15px Arial,Helvetica,sans-serif}
   #piggy-onboarding .on-expenses-toggle .on-chevron{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;color:#bbb;transform:translateX(-4px);transition:transform .18s ease}
   #piggy-onboarding .on-expenses-toggle .on-chevron svg{width:14px;height:14px}

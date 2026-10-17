@@ -1565,7 +1565,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;label class=&quot;on-money&quot;&gt;&lt;span class=&quot;on-icon green&quot;&gt;&lt;i data-lucide=&quot;arrow-up-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;Monthly income&lt;/span&gt;&lt;div&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt; &lt;input data-income type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;next&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly income&quot;&gt;&lt;/div&gt;&lt;/label&gt;
       &lt;button class=&quot;on-field-next&quot; type=&quot;button&quot; data-income-next hidden&gt;Next: expenses →&lt;/button&gt;
       &lt;section class=&quot;on-expenses&quot;&gt;
-        &lt;button class=&quot;on-expenses-toggle&quot; type=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;on-expenses-details&quot;&gt;&lt;span class=&quot;on-icon purple&quot;&gt;&lt;i data-lucide=&quot;house&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;on-expenses-title&quot;&gt;Monthly expenses&lt;/span&gt;&lt;span class=&quot;on-chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;svg viewBox=&quot;0 0 16 16&quot; fill=&quot;none&quot;&gt;&lt;path d=&quot;m4 6 4 4 4-4&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.8&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;strong data-expenses-total&gt;€0&lt;/strong&gt;&lt;/button&gt;
+        &lt;button class=&quot;on-expenses-toggle&quot; type=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;on-expenses-details&quot;&gt;&lt;span class=&quot;on-icon purple&quot;&gt;&lt;i data-lucide=&quot;house&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class=&quot;on-expenses-title&quot;&gt;Monthly expenses&lt;/span&gt;&lt;span class=&quot;on-chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;svg viewBox=&quot;0 0 16 16&quot; fill=&quot;none&quot;&gt;&lt;path d=&quot;m4 6 4 4 4-4&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.8&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;strong data-expenses-total&gt;€&lt;/strong&gt;&lt;/button&gt;
         &lt;div class=&quot;on-expenses-details&quot; id=&quot;on-expenses-details&quot; hidden&gt;
           &lt;label class=&quot;on-rent&quot;&gt;&lt;span&gt;Monthly rent&lt;/span&gt;&lt;span class=&quot;on-euro&quot;&gt;&lt;span data-currency-symbol&gt;€&lt;/span&gt; &lt;input data-rent type=&quot;text&quot; inputmode=&quot;decimal&quot; enterkeyhint=&quot;next&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot; aria-label=&quot;Monthly rent&quot;&gt;&lt;/span&gt;&lt;/label&gt;
           &lt;div class=&quot;on-expense-list&quot;&gt;&lt;/div&gt;
@@ -1899,8 +1899,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     setSymbol(symbol);
     const hasExpenses = q(&#x27;[data-rent]&#x27;).value.trim() !== &#x27;&#x27; || savedRows.length &gt; 0;
     amount.className = &#x27;on-expenses-amount&#x27;;
-    amount.classList.toggle(&#x27;is-placeholder&#x27;, !hasExpenses);
-    amount.textContent = hasExpenses ? new Intl.NumberFormat(&#x27;en-IE&#x27;, {minimumFractionDigits:2, maximumFractionDigits:2}).format(total / 100) : &#x27;0&#x27;;
+    amount.textContent = hasExpenses ? new Intl.NumberFormat(&#x27;en-IE&#x27;, {minimumFractionDigits:2, maximumFractionDigits:2}).format(total / 100) : &#x27;&#x27;;
     display.replaceChildren(symbol, amount);
   }
   expenseToggle.addEventListener(&#x27;click&#x27;, () =&gt; {
@@ -2119,7 +2118,6 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent{padding-right:28px}
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent .on-euro{flex:0 0 94px;width:94px;min-width:0;justify-content:space-between}
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-rent .on-euro input{width:72px;min-width:0}
-  #piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-expenses-amount.is-placeholder{color:#777}
   #piggy-onboarding .on-screen[data-step=&quot;2&quot;] [data-currency-symbol],#piggy-onboarding .on-screen[data-step=&quot;2&quot;] [data-expenses-total]&gt;span:first-child,#piggy-onboarding .on-screen[data-step=&quot;2&quot;] .on-expense-saved-symbol{color:#a7ff27;font:400 15px Arial,Helvetica,sans-serif}
   #piggy-onboarding .on-expenses-toggle .on-chevron{display:grid;place-items:center;flex:0 0 20px;width:20px;height:20px;color:#bbb;transform:translateX(-4px);transition:transform .18s ease}
   #piggy-onboarding .on-expenses-toggle .on-chevron svg{width:14px;height:14px}
