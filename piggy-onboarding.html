@@ -12,9 +12,10 @@
         <button type="button" data-goal="Safety cushion"><span class="on-icon pink"><i data-lucide="shield" aria-hidden="true"></i></span>Safety cushion</button>
         <button type="button" data-goal="Education"><span class="on-icon purple"><i data-lucide="graduation-cap" aria-hidden="true"></i></span>Education</button>
         <button type="button" data-goal="Just saving"><span class="on-icon purple"><i data-lucide="sparkles" aria-hidden="true"></i></span>Just saving</button>
-        <button type="button" data-goal="Custom"><span class="on-icon purple"><i data-lucide="plus" aria-hidden="true"></i></span>My own goal</button>
+        <button type="button" data-goal="Custom"><span class="on-icon purple"><i data-lucide="plus" aria-hidden="true"></i></span><span class="on-custom-name">My own goal</span></button>
       </div>
-      <label class="on-custom" hidden><span>NAME YOUR GOAL</span><input type="text" maxlength="32" placeholder="Your goal"></label>
+      <div class="on-custom" hidden><label for="on-custom-goal">Name your goal</label><div class="on-custom-entry"><input id="on-custom-goal" type="text" maxlength="32" placeholder="Your goal" autocomplete="off"><button type="button" class="on-custom-confirm" aria-label="Add your goal" hidden>✓</button></div></div>
+      <button type="button" class="on-custom-edit" hidden>✎ Edit goal</button>
       <p class="on-error" role="alert" hidden></p>
       <button type="button" class="on-primary" data-next="1">Continue <span>↗</span></button>
       <button type="button" class="on-skip" data-skip-goal><span>Skip for now</span></button>
@@ -223,6 +224,41 @@
     if (!result.hidden) refreshResult();
   }));
   let goal = '';
+  let customGoalName = '';
+  let customEditing = false;
+  const customForm = q('.on-custom');
+  const customInput = q('#on-custom-goal');
+  const customConfirm = q('.on-custom-confirm');
+  const customEdit = q('.on-custom-edit');
+  const customLabel = q('.on-custom-name');
+  function formattedGoalName(value) {
+    let name = value.trim().replace(/\s+/g, ' ');
+    if (name === name.toLocaleUpperCase() && name !== name.toLocaleLowerCase()) name = name.toLocaleLowerCase();
+    return name.charAt(0).toLocaleUpperCase() + name.slice(1);
+  }
+  function renderCustomGoal() {
+    const isCustom = goal === 'Custom';
+    customForm.hidden = !isCustom || !customEditing;
+    customEdit.hidden = !isCustom || !customGoalName || customEditing;
+    customConfirm.hidden = !customInput.value.trim();
+    customLabel.textContent = customGoalName || 'My own goal';
+    goalButtons.forEach(item => item.setAttribute('aria-pressed', String(item.dataset.goal === goal && (goal !== 'Custom' || (!!customGoalName && !customEditing)))));
+  }
+  function editCustomGoal() {
+    goal = 'Custom'; customEditing = true;
+    q('[data-step="1"] .on-error').hidden = true;
+    renderCustomGoal(); customInput.focus();
+  }
+  customInput.addEventListener('input', () => { customConfirm.hidden = !customInput.value.trim(); q('[data-step="1"] .on-error').hidden = true; });
+  customInput.addEventListener('keydown', event => { if (event.key === 'Enter' && customInput.value.trim()) { event.preventDefault(); customConfirm.click(); } });
+  customConfirm.addEventListener('click', () => {
+    if (!customInput.value.trim()) return;
+    customGoalName = formattedGoalName(customInput.value);
+    customEditing = false;
+    q('[data-step="1"] .on-error').hidden = true;
+    renderCustomGoal(); customEdit.focus();
+  });
+  customEdit.addEventListener('click', editCustomGoal);
   let nextStepTimer;
   const firstContinue = q('[data-next="1"]');
   const pigStage = q('.on-pig-stage');
@@ -237,16 +273,16 @@
     button.setAttribute('aria-pressed', 'false');
     button.addEventListener('click', () => {
       goal = button.dataset.goal;
-      goalButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-      q('.on-custom').hidden = goal !== 'Custom';
       q('[data-step="1"] .on-error').hidden = true;
-      if (goal === 'Custom') q('.on-custom input').focus();
+      if (goal === 'Custom') { editCustomGoal(); return; }
+      customEditing = false;
+      renderCustomGoal();
     });
   });
   firstContinue.addEventListener('click', () => {
     const error = q('[data-step="1"] .on-error');
-    if (!goal || (goal === 'Custom' && !q('.on-custom input').value.trim())) {
-      error.textContent = goal === 'Custom' ? 'Give your goal a name, or skip for now.' : 'Choose one, or skip for now.';
+    if (!goal || (goal === 'Custom' && (!customGoalName || customEditing))) {
+      error.textContent = goal === 'Custom' ? (customInput.value.trim() ? 'Tap the green checkmark to add your goal.' : 'Give your goal a name, or skip for now.') : 'Choose one, or skip for now.';
       error.hidden = false; return;
     }
     playChime();
@@ -256,8 +292,7 @@
     nextStepTimer = setTimeout(() => show(2), 380);
   });
   q('[data-skip-goal]').addEventListener('click', () => {
-    goal = ''; goalButtons.forEach(item => item.setAttribute('aria-pressed','false'));
-    q('.on-custom').hidden = true; show(2);
+    goal = ''; customEditing = false; renderCustomGoal(); show(2);
   });
   q('[data-step="2"] .on-back').addEventListener('click', () => show(1));
   const expenseDetails = q('.on-expenses-details');
@@ -335,7 +370,7 @@
     updateConfirm(); expenseList.append(row); updateAddExpense(); name.focus();
   }
   addExpense.addEventListener('click', createExpenseRow);
-  function selectedGoal() { return goal === 'Custom' ? q('.on-custom input').value.trim() : goal; }
+  function selectedGoal() { return goal === 'Custom' ? customGoalName : goal; }
   function refreshResult() {
     const income = cents(original.querySelector('#pb-income'));
     const housing = cents(original.querySelector('#pb-housing'));
@@ -505,6 +540,15 @@
   #piggy-onboarding .on-goals button:active{transform:translateY(2px) scale(.985);box-shadow:inset 0 1px 0 #ffffff0d,0 1px 0 #101010}
   #piggy-onboarding .on-goals button[aria-pressed="true"]{border-color:#a7ff27;background:linear-gradient(180deg,#3a4230,#2e3626);box-shadow:inset 0 1px 0 #ffffff1a,0 3px 0 #18240d}
   #piggy-onboarding .on-goals button[aria-pressed="true"]::after{content:'✓';position:absolute;top:50%;right:10px;transform:translateY(-50%);color:#a7ff27;font:bold 11px Arial}
+  #piggy-onboarding .on-custom-name{min-width:0;overflow-wrap:anywhere}
+  #piggy-onboarding .on-custom{padding:14px;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010}
+  #piggy-onboarding .on-custom label{display:block;color:#bbb;font:600 12px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .on-custom-entry{display:flex;align-items:center;gap:8px;margin-top:5px}
+  #piggy-onboarding .on-custom input{flex:1;width:1px;min-width:0;margin:0;padding:10px 2px;border:0;background:transparent;color:#fff;font:600 16px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .on-custom input:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px;border-radius:5px}
+  #piggy-onboarding .on-custom-confirm{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:0;border-radius:50%;background:#a7ff27;color:#26310d;font:700 21px Arial;cursor:pointer}
+  #piggy-onboarding .on-custom-edit{display:block;min-height:44px;margin:2px 0 0;padding:0 4px;border:0;background:transparent;color:#c6a5ff;font:600 13px 'DM Sans',Arial,sans-serif;cursor:pointer}
+  #piggy-onboarding .on-custom-confirm:focus-visible,#piggy-onboarding .on-custom-edit:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
   #piggy-onboarding .on-skip{display:block;width:auto;min-width:150px;margin:9px auto 0;padding:0 22px;border:0;background:transparent;color:#fff;font:600 13px 'DM Sans',Arial,sans-serif;box-shadow:none;cursor:pointer;touch-action:manipulation;transition:transform .15s ease}
   #piggy-onboarding .on-skip span{display:inline-block;color:#fff}
   @supports ((-webkit-background-clip:text) or (background-clip:text)){#piggy-onboarding .on-skip span{background-image:linear-gradient(100deg,#fff 0%,#fff 35%,#a6a6a6 46%,#fff 53%,#fff 100%);background-size:250% 100%;background-repeat:no-repeat;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:skip-shimmer 2.3s linear infinite}}
