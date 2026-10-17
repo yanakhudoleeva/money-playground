@@ -1958,7 +1958,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     const amount = document.createElement(&#x27;span&#x27;);
     setSymbol(symbol);
     amount.className = &#x27;on-expenses-amount&#x27;;
-    amount.textContent = incomeInput.value.trim() !== &#x27;&#x27; || rows.length ? new Intl.NumberFormat(&#x27;en-IE&#x27;, {minimumFractionDigits:2, maximumFractionDigits:2}).format(incomeTotal() / 100) : &#x27;&#x27;;
+    amount.textContent = incomeInput.value.trim() !== &#x27;&#x27; || rows.length ? new Intl.NumberFormat(&#x27;en-IE&#x27;, {useGrouping:false, minimumFractionDigits:2, maximumFractionDigits:2}).format(incomeTotal() / 100) : &#x27;&#x27;;
     display.replaceChildren(symbol, amount);
   }
   function renderSavedAmount(row) {

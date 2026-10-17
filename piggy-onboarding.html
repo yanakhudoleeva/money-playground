@@ -419,7 +419,7 @@
     const amount = document.createElement('span');
     setSymbol(symbol);
     amount.className = 'on-expenses-amount';
-    amount.textContent = incomeInput.value.trim() !== '' || rows.length ? new Intl.NumberFormat('en-IE', {minimumFractionDigits:2, maximumFractionDigits:2}).format(incomeTotal() / 100) : '';
+    amount.textContent = incomeInput.value.trim() !== '' || rows.length ? new Intl.NumberFormat('en-IE', {useGrouping:false, minimumFractionDigits:2, maximumFractionDigits:2}).format(incomeTotal() / 100) : '';
     display.replaceChildren(symbol, amount);
   }
   function renderSavedAmount(row) {
