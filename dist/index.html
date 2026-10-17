@@ -1577,7 +1577,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;p class=&quot;on-error&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;
       &lt;p class=&quot;on-ready&quot; role=&quot;status&quot; hidden&gt;Ready to create your piggy bank ✨&lt;/p&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-primary&quot; data-next=&quot;2&quot; disabled&gt;Create my piggy bank &lt;span&gt;↗&lt;/span&gt;&lt;/button&gt;
-      &lt;button type=&quot;button&quot; class=&quot;on-back&quot;&gt;← Back&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;on-back&quot;&gt;&lt;span&gt;← Back&lt;/span&gt;&lt;/button&gt;
     &lt;/section&gt;
   &lt;/div&gt;
   &lt;div class=&quot;on-result&quot; hidden&gt;
@@ -2154,12 +2154,13 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-custom-edit{display:block;min-height:44px;margin:2px 0 0;padding:0 4px;border:0;background:transparent;color:#c6a5ff;font:600 13px &#x27;DM Sans&#x27;,Arial,sans-serif;cursor:pointer}
   #piggy-onboarding .on-custom-confirm:focus-visible,#piggy-onboarding .on-custom-edit:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
   #piggy-onboarding .on-skip{display:block;width:auto;min-width:150px;margin:9px auto 0;padding:0 22px;border:0;background:transparent;color:#fff;font:600 13px &#x27;DM Sans&#x27;,Arial,sans-serif;box-shadow:none;cursor:pointer;touch-action:manipulation;transition:transform .15s ease}
-  #piggy-onboarding .on-skip span{display:inline-block;color:#fff}
-  @supports ((-webkit-background-clip:text) or (background-clip:text)){#piggy-onboarding .on-skip span{background-image:linear-gradient(100deg,#fff 0%,#fff 35%,#a6a6a6 46%,#fff 53%,#fff 100%);background-size:250% 100%;background-repeat:no-repeat;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:skip-shimmer 2.3s linear infinite}}
-  #piggy-onboarding .on-skip:active{transform:translateY(1px)}
-  #piggy-onboarding .on-skip:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
+  #piggy-onboarding .on-back{display:block;min-height:44px;padding:0 12px 0 0;border:0;background:transparent;color:#fff;font:600 13px &#x27;DM Sans&#x27;,Arial,sans-serif;box-shadow:none;cursor:pointer;touch-action:manipulation;transition:transform .15s ease}
+  #piggy-onboarding .on-skip span,#piggy-onboarding .on-back span{display:inline-block;color:#fff}
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){#piggy-onboarding .on-skip span,#piggy-onboarding .on-back span{background-image:linear-gradient(100deg,#fff 0%,#fff 35%,#a6a6a6 46%,#fff 53%,#fff 100%);background-size:250% 100%;background-repeat:no-repeat;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:skip-shimmer 2.3s linear infinite}}
+  #piggy-onboarding .on-skip:active,#piggy-onboarding .on-back:active{transform:translateY(1px)}
+  #piggy-onboarding .on-skip:focus-visible,#piggy-onboarding .on-back:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
   @keyframes skip-shimmer{from{background-position:100% 0}to{background-position:0 0}}
-  @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-skip{transition:none}#piggy-onboarding .on-skip span{animation:none;background:none;color:#fff;-webkit-text-fill-color:#fff}}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-skip,#piggy-onboarding .on-back{transition:none}#piggy-onboarding .on-skip span,#piggy-onboarding .on-back span{animation:none;background:none;color:#fff;-webkit-text-fill-color:#fff}}
   #piggy-onboarding [data-expenses-next]{font:600 13px &#x27;DM Sans&#x27;,Arial,sans-serif;touch-action:manipulation;transition:transform .15s ease}
   #piggy-onboarding [data-expenses-next] span{display:inline-block;color:#a7ff27}
   @supports ((-webkit-background-clip:text) or (background-clip:text)){#piggy-onboarding [data-expenses-next] span{background-image:linear-gradient(100deg,#a7ff27 0%,#a7ff27 35%,#6da81a 46%,#a7ff27 53%,#a7ff27 100%);background-size:250% 100%;background-repeat:no-repeat;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:skip-shimmer 2.3s linear infinite}}
