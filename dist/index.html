@@ -1555,6 +1555,11 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/div&gt;
       &lt;div class=&quot;on-custom&quot; hidden&gt;&lt;label for=&quot;on-custom-goal&quot;&gt;Name your goal&lt;/label&gt;&lt;div class=&quot;on-custom-entry&quot;&gt;&lt;input id=&quot;on-custom-goal&quot; type=&quot;text&quot; maxlength=&quot;32&quot; placeholder=&quot;Your goal&quot; autocomplete=&quot;off&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;on-custom-confirm&quot; aria-label=&quot;Add your goal&quot; hidden&gt;✓&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-custom-edit&quot; hidden&gt;✎ Edit goal&lt;/button&gt;
+      &lt;div class=&quot;on-goal-amount&quot; data-goal-amount-wrap hidden&gt;
+        &lt;label for=&quot;on-goal-amount&quot;&gt;How much do you need in total? &lt;span&gt;optional&lt;/span&gt;&lt;/label&gt;
+        &lt;div class=&quot;on-goal-amount-entry&quot;&gt;&lt;span aria-hidden=&quot;true&quot;&gt;✦&lt;/span&gt;&lt;input id=&quot;on-goal-amount&quot; type=&quot;text&quot; inputmode=&quot;decimal&quot; autocomplete=&quot;off&quot; enterkeyhint=&quot;done&quot; placeholder=&quot;e.g. 20000&quot; aria-describedby=&quot;on-goal-amount-hint&quot;&gt;&lt;/div&gt;
+        &lt;small id=&quot;on-goal-amount-hint&quot;&gt;You can choose your currency on the next screen.&lt;/small&gt;
+      &lt;/div&gt;
       &lt;p class=&quot;on-error&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-primary&quot; data-next=&quot;1&quot;&gt;Continue &lt;span&gt;↗&lt;/span&gt;&lt;/button&gt;
       &lt;button type=&quot;button&quot; class=&quot;on-skip&quot; data-skip-goal&gt;&lt;span&gt;Skip for now&lt;/span&gt;&lt;/button&gt;
@@ -1803,6 +1808,16 @@ html&gt;body{padding:0}&lt;/style&gt;
   const customConfirm = q(&#x27;.on-custom-confirm&#x27;);
   const customEdit = q(&#x27;.on-custom-edit&#x27;);
   const customLabel = q(&#x27;.on-custom-name&#x27;);
+  const goalAmount = q(&#x27;#on-goal-amount&#x27;);
+  const goalAmountWrap = q(&#x27;[data-goal-amount-wrap]&#x27;);
+  function readGoalAmount() {
+    const raw=goalAmount.value.trim().replace(/\s/g,&#x27;&#x27;).replace(&#x27;,&#x27;,&#x27;.&#x27;);
+    if (!raw) return null;
+    if (!/^\d+(?:\.\d{1,2})?$/.test(raw)) return NaN;
+    const amount=Number(raw);
+    return Number.isFinite(amount) &amp;&amp; amount&gt;0 &amp;&amp; amount&lt;=100000000 ? Math.round(amount*100) : NaN;
+  }
+  goalAmount.addEventListener(&#x27;input&#x27;, () =&gt; { q(&#x27;[data-step=&quot;1&quot;] .on-error&#x27;).hidden=true; });
   function formattedGoalName(value) {
     let name = value.trim().replace(/\s+/g, &#x27; &#x27;);
     if (name === name.toLocaleUpperCase() &amp;&amp; name !== name.toLocaleLowerCase()) name = name.toLocaleLowerCase();
@@ -1810,6 +1825,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   }
   function renderCustomGoal() {
     const isCustom = goal === &#x27;Custom&#x27;;
+    goalAmountWrap.hidden = !goal;
     customForm.hidden = !isCustom || !customEditing;
     customEdit.hidden = !isCustom || !customGoalName || customEditing;
     customConfirm.hidden = !customInput.value.trim();
@@ -1857,6 +1873,10 @@ html&gt;body{padding:0}&lt;/style&gt;
       error.textContent = goal === &#x27;Custom&#x27; ? (customInput.value.trim() ? &#x27;Tap the green checkmark to add your goal.&#x27; : &#x27;Give your goal a name, or skip for now.&#x27;) : &#x27;Choose one, or skip for now.&#x27;;
       error.hidden = false; return;
     }
+    if (Number.isNaN(readGoalAmount())) {
+      error.textContent=&#x27;Enter a goal amount greater than zero, with up to two decimal places, or leave it blank.&#x27;; error.hidden=false; goalAmount.focus(); return;
+    }
+    error.hidden=true;
     playChime();
     if (window.matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).matches) { show(2); return; }
     firstContinue.disabled = true;
@@ -1864,7 +1884,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     nextStepTimer = setTimeout(() =&gt; show(2), 380);
   });
   q(&#x27;[data-skip-goal]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
-    goal = &#x27;&#x27;; customEditing = false; renderCustomGoal(); show(2);
+    goal = &#x27;&#x27;; goalAmount.value = &#x27;&#x27;; customEditing = false; renderCustomGoal(); show(2);
   });
   q(&#x27;[data-step=&quot;2&quot;] .on-back&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; show(1));
   const incomeDetails = q(&#x27;#on-income-details&#x27;);
@@ -2137,6 +2157,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     goalLabel.textContent = goalLabel.hidden ? &#x27;&#x27; : `Цель: ${selectedGoal()}`;
     original.querySelector(&#x27;#pb-income&#x27;).value = String(incomeTotal() / 100);
     original.dataset.savingsTargetCents = savingsInput.value.trim() === &#x27;&#x27; ? &#x27;&#x27; : String(cents(savingsInput));
+    original.setProjectionFromOnboarding(readGoalAmount());
     original.querySelector(&#x27;#pb-housing&#x27;).value = String(number(q(&#x27;[data-rent]&#x27;)));
     original.querySelector(&#x27;.pb-housing label &gt; span:nth-child(2)&#x27;).firstChild.textContent = savedRentName;
     original.querySelector(&#x27;#pb-housing&#x27;).setAttribute(&#x27;aria-label&#x27;, savedRentName);
@@ -2169,6 +2190,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   const projectionTargetInput=root.querySelector(&#x27;[data-projection-target]&#x27;);
   const projectionSavedInput=root.querySelector(&#x27;[data-projection-saved]&#x27;);
   const projectionError=root.querySelector(&#x27;[data-projection-error]&#x27;);
+  root.setProjectionFromOnboarding = amount =&gt; { projectionTarget=amount; projectionSaved=0; projectionSavedSpecified=false; projectionForm.hidden=true; };
   function monthWord(n){const last=n%10, lastTwo=n%100;return lastTwo&gt;=11&amp;&amp;lastTwo&lt;=14?&#x27;месяцев&#x27;:last===1?&#x27;месяц&#x27;:last&gt;=2&amp;&amp;last&lt;=4?&#x27;месяца&#x27;:&#x27;месяцев&#x27;}
   function openProjection(){
     projectionTargetInput.value=projectionTarget===null?&#x27;&#x27;:String(projectionTarget/100);
@@ -2181,11 +2203,11 @@ html&gt;body{padding:0}&lt;/style&gt;
   root.querySelector(&#x27;[data-projection-open]&#x27;).addEventListener(&#x27;click&#x27;,openProjection);
   root.querySelector(&#x27;[data-projection-edit]&#x27;).addEventListener(&#x27;click&#x27;,openProjection);
   root.querySelector(&#x27;[data-projection-cancel]&#x27;).addEventListener(&#x27;click&#x27;,closeProjection);
-  root.querySelector(&#x27;[data-projection-remove]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{projectionTarget=null;projectionSaved=0;projectionSavedSpecified=false;closeProjection()});
+  root.querySelector(&#x27;[data-projection-remove]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{projectionTarget=null;projectionSaved=0;projectionSavedSpecified=false;root.closest(&#x27;#piggy-onboarding&#x27;).querySelector(&#x27;#on-goal-amount&#x27;).value=&#x27;&#x27;;closeProjection()});
   root.querySelector(&#x27;[data-projection-save]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{
     const total=parseProjection(projectionTargetInput,false),saved=parseProjection(projectionSavedInput,true);
     if(total===null||total&lt;=0||saved===null){projectionError.textContent=&#x27;Укажи сумму цели больше нуля и корректную сумму накоплений.&#x27;;projectionError.hidden=false;(total===null||total&lt;=0?projectionTargetInput:projectionSavedInput).focus();return}
-    projectionTarget=total;projectionSaved=saved;projectionSavedSpecified=projectionSavedInput.value.trim()!==&#x27;&#x27;;closeProjection();
+    projectionTarget=total;projectionSaved=saved;projectionSavedSpecified=projectionSavedInput.value.trim()!==&#x27;&#x27;;root.closest(&#x27;#piggy-onboarding&#x27;).querySelector(&#x27;#on-goal-amount&#x27;).value=String(total/100);closeProjection();
   });
   function render(){
     const fixedTotal=[...expenses.querySelectorAll(&#x27;input&#x27;)].reduce((sum,input)=&gt;sum+settings.cents(input),0);
@@ -2353,6 +2375,16 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-onboarding .on-goals button:active{transform:translateY(2px) scale(.985);box-shadow:inset 0 1px 0 #ffffff0d,0 1px 0 #101010}
   #piggy-onboarding .on-goals button[aria-pressed=&quot;true&quot;]{border-color:#a7ff27;background:linear-gradient(180deg,#3a4230,#2e3626);box-shadow:inset 0 1px 0 #ffffff1a,0 3px 0 #18240d}
   #piggy-onboarding .on-goals button[aria-pressed=&quot;true&quot;]::after{content:&#x27;✓&#x27;;position:absolute;top:50%;right:10px;transform:translateY(-50%);color:#a7ff27;font:bold 11px Arial}
+
+  #piggy-onboarding .on-goal-amount{padding:14px;margin:12px 0 0;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #0d0d0d}
+  #piggy-onboarding .on-goal-amount label{display:block;color:#fff;font:600 13px &#x27;DM Sans&#x27;,Arial,sans-serif}
+  #piggy-onboarding .on-goal-amount label span{color:#aaa;font-weight:500;font-size:11px}
+  #piggy-onboarding .on-goal-amount-entry{display:flex;align-items:center;gap:10px;margin-top:6px}
+  #piggy-onboarding .on-goal-amount-entry&gt;span{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:10px;background:#a7ff27;color:#26310d;font-size:15px}
+  #piggy-onboarding .on-goal-amount input{width:100%;min-width:0;padding:8px 0;border:0;background:transparent;color:#fff;font:600 18px &#x27;DM Sans&#x27;,Arial,sans-serif}
+  #piggy-onboarding .on-goal-amount input::placeholder{color:#777}
+  #piggy-onboarding .on-goal-amount input:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px;border-radius:5px}
+  #piggy-onboarding .on-goal-amount small{display:block;margin-top:5px;color:#aaa;font:11px/1.4 &#x27;DM Sans&#x27;,Arial,sans-serif}
   #piggy-onboarding .on-custom-name{min-width:0;overflow-wrap:anywhere}
   #piggy-onboarding .on-custom{padding:14px;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010}
   #piggy-onboarding .on-custom label{display:block;color:#bbb;font:600 12px &#x27;DM Sans&#x27;,Arial,sans-serif}

@@ -16,6 +16,11 @@
       </div>
       <div class="on-custom" hidden><label for="on-custom-goal">Name your goal</label><div class="on-custom-entry"><input id="on-custom-goal" type="text" maxlength="32" placeholder="Your goal" autocomplete="off"><button type="button" class="on-custom-confirm" aria-label="Add your goal" hidden>✓</button></div></div>
       <button type="button" class="on-custom-edit" hidden>✎ Edit goal</button>
+      <div class="on-goal-amount" data-goal-amount-wrap hidden>
+        <label for="on-goal-amount">How much do you need in total? <span>optional</span></label>
+        <div class="on-goal-amount-entry"><span aria-hidden="true">✦</span><input id="on-goal-amount" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="e.g. 20000" aria-describedby="on-goal-amount-hint"></div>
+        <small id="on-goal-amount-hint">You can choose your currency on the next screen.</small>
+      </div>
       <p class="on-error" role="alert" hidden></p>
       <button type="button" class="on-primary" data-next="1">Continue <span>↗</span></button>
       <button type="button" class="on-skip" data-skip-goal><span>Skip for now</span></button>
@@ -264,6 +269,16 @@
   const customConfirm = q('.on-custom-confirm');
   const customEdit = q('.on-custom-edit');
   const customLabel = q('.on-custom-name');
+  const goalAmount = q('#on-goal-amount');
+  const goalAmountWrap = q('[data-goal-amount-wrap]');
+  function readGoalAmount() {
+    const raw=goalAmount.value.trim().replace(/\s/g,'').replace(',','.');
+    if (!raw) return null;
+    if (!/^\d+(?:\.\d{1,2})?$/.test(raw)) return NaN;
+    const amount=Number(raw);
+    return Number.isFinite(amount) && amount>0 && amount<=100000000 ? Math.round(amount*100) : NaN;
+  }
+  goalAmount.addEventListener('input', () => { q('[data-step="1"] .on-error').hidden=true; });
   function formattedGoalName(value) {
     let name = value.trim().replace(/\s+/g, ' ');
     if (name === name.toLocaleUpperCase() && name !== name.toLocaleLowerCase()) name = name.toLocaleLowerCase();
@@ -271,6 +286,7 @@
   }
   function renderCustomGoal() {
     const isCustom = goal === 'Custom';
+    goalAmountWrap.hidden = !goal;
     customForm.hidden = !isCustom || !customEditing;
     customEdit.hidden = !isCustom || !customGoalName || customEditing;
     customConfirm.hidden = !customInput.value.trim();
@@ -318,6 +334,10 @@
       error.textContent = goal === 'Custom' ? (customInput.value.trim() ? 'Tap the green checkmark to add your goal.' : 'Give your goal a name, or skip for now.') : 'Choose one, or skip for now.';
       error.hidden = false; return;
     }
+    if (Number.isNaN(readGoalAmount())) {
+      error.textContent='Enter a goal amount greater than zero, with up to two decimal places, or leave it blank.'; error.hidden=false; goalAmount.focus(); return;
+    }
+    error.hidden=true;
     playChime();
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { show(2); return; }
     firstContinue.disabled = true;
@@ -325,7 +345,7 @@
     nextStepTimer = setTimeout(() => show(2), 380);
   });
   q('[data-skip-goal]').addEventListener('click', () => {
-    goal = ''; customEditing = false; renderCustomGoal(); show(2);
+    goal = ''; goalAmount.value = ''; customEditing = false; renderCustomGoal(); show(2);
   });
   q('[data-step="2"] .on-back').addEventListener('click', () => show(1));
   const incomeDetails = q('#on-income-details');
@@ -598,6 +618,7 @@
     goalLabel.textContent = goalLabel.hidden ? '' : `Цель: ${selectedGoal()}`;
     original.querySelector('#pb-income').value = String(incomeTotal() / 100);
     original.dataset.savingsTargetCents = savingsInput.value.trim() === '' ? '' : String(cents(savingsInput));
+    original.setProjectionFromOnboarding(readGoalAmount());
     original.querySelector('#pb-housing').value = String(number(q('[data-rent]')));
     original.querySelector('.pb-housing label > span:nth-child(2)').firstChild.textContent = savedRentName;
     original.querySelector('#pb-housing').setAttribute('aria-label', savedRentName);
@@ -630,6 +651,7 @@
   const projectionTargetInput=root.querySelector('[data-projection-target]');
   const projectionSavedInput=root.querySelector('[data-projection-saved]');
   const projectionError=root.querySelector('[data-projection-error]');
+  root.setProjectionFromOnboarding = amount => { projectionTarget=amount; projectionSaved=0; projectionSavedSpecified=false; projectionForm.hidden=true; };
   function monthWord(n){const last=n%10, lastTwo=n%100;return lastTwo>=11&&lastTwo<=14?'месяцев':last===1?'месяц':last>=2&&last<=4?'месяца':'месяцев'}
   function openProjection(){
     projectionTargetInput.value=projectionTarget===null?'':String(projectionTarget/100);
@@ -642,11 +664,11 @@
   root.querySelector('[data-projection-open]').addEventListener('click',openProjection);
   root.querySelector('[data-projection-edit]').addEventListener('click',openProjection);
   root.querySelector('[data-projection-cancel]').addEventListener('click',closeProjection);
-  root.querySelector('[data-projection-remove]').addEventListener('click',()=>{projectionTarget=null;projectionSaved=0;projectionSavedSpecified=false;closeProjection()});
+  root.querySelector('[data-projection-remove]').addEventListener('click',()=>{projectionTarget=null;projectionSaved=0;projectionSavedSpecified=false;root.closest('#piggy-onboarding').querySelector('#on-goal-amount').value='';closeProjection()});
   root.querySelector('[data-projection-save]').addEventListener('click',()=>{
     const total=parseProjection(projectionTargetInput,false),saved=parseProjection(projectionSavedInput,true);
     if(total===null||total<=0||saved===null){projectionError.textContent='Укажи сумму цели больше нуля и корректную сумму накоплений.';projectionError.hidden=false;(total===null||total<=0?projectionTargetInput:projectionSavedInput).focus();return}
-    projectionTarget=total;projectionSaved=saved;projectionSavedSpecified=projectionSavedInput.value.trim()!=='';closeProjection();
+    projectionTarget=total;projectionSaved=saved;projectionSavedSpecified=projectionSavedInput.value.trim()!=='';root.closest('#piggy-onboarding').querySelector('#on-goal-amount').value=String(total/100);closeProjection();
   });
   function render(){
     const fixedTotal=[...expenses.querySelectorAll('input')].reduce((sum,input)=>sum+settings.cents(input),0);
@@ -814,6 +836,16 @@
   #piggy-onboarding .on-goals button:active{transform:translateY(2px) scale(.985);box-shadow:inset 0 1px 0 #ffffff0d,0 1px 0 #101010}
   #piggy-onboarding .on-goals button[aria-pressed="true"]{border-color:#a7ff27;background:linear-gradient(180deg,#3a4230,#2e3626);box-shadow:inset 0 1px 0 #ffffff1a,0 3px 0 #18240d}
   #piggy-onboarding .on-goals button[aria-pressed="true"]::after{content:'✓';position:absolute;top:50%;right:10px;transform:translateY(-50%);color:#a7ff27;font:bold 11px Arial}
+
+  #piggy-onboarding .on-goal-amount{padding:14px;margin:12px 0 0;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #0d0d0d}
+  #piggy-onboarding .on-goal-amount label{display:block;color:#fff;font:600 13px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .on-goal-amount label span{color:#aaa;font-weight:500;font-size:11px}
+  #piggy-onboarding .on-goal-amount-entry{display:flex;align-items:center;gap:10px;margin-top:6px}
+  #piggy-onboarding .on-goal-amount-entry>span{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:10px;background:#a7ff27;color:#26310d;font-size:15px}
+  #piggy-onboarding .on-goal-amount input{width:100%;min-width:0;padding:8px 0;border:0;background:transparent;color:#fff;font:600 18px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .on-goal-amount input::placeholder{color:#777}
+  #piggy-onboarding .on-goal-amount input:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px;border-radius:5px}
+  #piggy-onboarding .on-goal-amount small{display:block;margin-top:5px;color:#aaa;font:11px/1.4 'DM Sans',Arial,sans-serif}
   #piggy-onboarding .on-custom-name{min-width:0;overflow-wrap:anywhere}
   #piggy-onboarding .on-custom{padding:14px;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010}
   #piggy-onboarding .on-custom label{display:block;color:#bbb;font:600 12px 'DM Sans',Arial,sans-serif}
