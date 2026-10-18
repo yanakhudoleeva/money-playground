@@ -2160,7 +2160,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     root.querySelector(&#x27;[data-result-note]&#x27;).textContent=short?&#x27;Расходы выше дохода. Попробуй изменить план.&#x27;:hasTarget?(actualSavings&lt;target?&#x27;Расходы на жизнь уменьшают сумму накоплений.&#x27;:&#x27;Твоя цель накоплений учтена в балансе.&#x27;):&#x27;То, что можно отложить после запланированных расходов.&#x27;;
     if(short){root.querySelector(&#x27;[data-six]&#x27;).textContent=&#x27;—&#x27;;root.querySelector(&#x27;[data-year]&#x27;).textContent=&#x27;—&#x27;}else{settings.setMoney(root.querySelector(&#x27;[data-six]&#x27;),actualSavings*6/100);settings.setMoney(root.querySelector(&#x27;[data-year]&#x27;),actualSavings*12/100)}
     root.querySelector(&#x27;[data-forecast-note]&#x27;).textContent=short?&#x27;Прогноз появится, когда план уложится в доход.&#x27;:&#x27;Дополнительно, если каждый месяц всё будет так же.&#x27;;
-    root.querySelector(&#x27;.pb-result&#x27;).classList.toggle(&#x27;is-short&#x27;,short);
+    root.querySelector(&#x27;.pb-result&#x27;).classList.toggle(&#x27;is-short&#x27;,short || (hasTarget &amp;&amp; actualSavings &lt; target));
     sliders.querySelectorAll(&#x27;.pb-slider&#x27;).forEach(slider=&gt;{const range=slider.querySelector(&#x27;.pb-range&#x27;);const amount=slider.querySelector(&#x27;.pb-slider-value input&#x27;);range.max=String(Math.max(1,Math.max(0,afterFixed)/100,value(amount)));range.value=String(value(amount))});
   }
   function wireExpense(row){row.querySelector(&#x27;input&#x27;).addEventListener(&#x27;input&#x27;,render);row.querySelector(&#x27;button&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{row.remove();render()})}
