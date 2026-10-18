@@ -62,9 +62,9 @@
     </section>
     <div class="pb-intro">Посмотрим, сколько может оставаться для мечты каждый месяц.</div>
 
-    <div class="pb-money-card pb-income"><label for="pb-income"><span class="pb-dot green">↗</span><span>Мой доход<small>в месяц</small></span></label><div class="pb-amount"><span>€</span><input id="pb-income" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="3100" inputmode="decimal" aria-label="Месячный доход"></div></div>
+    <div class="pb-money-card pb-income"><span class="pb-summary-label"><span class="pb-dot green">↗</span><span>Мой доход<small>в месяц</small></span></span><strong class="pb-summary-value" data-income-summary>€0.00</strong><input id="pb-income" type="hidden" value="0"></div>
     <section class="pb-fixed" aria-label="Ежемесячные расходы">
-      <button class="pb-fixed-toggle cursor-interaction" type="button" aria-expanded="false" aria-controls="pb-fixed-details"><span><span class="pb-dot purple">⌂</span><span>Ежемесячные расходы</span></span><strong><span data-fixed-total>€0.00</span><i>⌄</i></strong></button>
+      <div class="pb-fixed-toggle"><span><span class="pb-dot purple">⌂</span><span>Ежемесячные расходы</span></span><strong><span data-fixed-total>€0.00</span></strong></div>
       <div class="pb-fixed-details" id="pb-fixed-details" hidden>
         <div class="pb-money-card pb-housing"><label for="pb-housing"><span class="pb-dot purple">⌂</span><span>Жильё<small>в месяц</small></span></label><div class="pb-amount"><span>€</span><input id="pb-housing" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="1100" inputmode="decimal" aria-label="Расходы на жильё в месяц"></div></div>
         <div class="pb-expenses">
@@ -75,10 +75,11 @@
         <div class="pb-add-form" data-expense-form hidden><label><span>Название</span><input data-expense-name type="text" maxlength="28" placeholder="Например, связь"></label><label><span>Сумма, <span data-currency-symbol>€</span></span><input data-expense-amount type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0"></label><button class="cursor-interaction" type="button" data-add-expense>Добавить</button></div>
       </div>
     </section>
+    <div class="pb-money-card pb-saving-target" hidden><span class="pb-summary-label"><span class="pb-dot pink">✦</span><span>Цель накоплений<small>в месяц</small></span></span><strong class="pb-summary-value" data-target-summary></strong></div>
 
     <section class="pb-flex" aria-label="Бюджет на жизнь">
       <div class="pb-section-title"><div><span class="pb-kicker">ДЛЯ ЖИЗНИ И РАДОСТЕЙ</span><h2>Мой баланс.</h2></div><span class="pb-note">на месяц</span></div>
-      <p class="pb-subtext">После жилья и постоянных расходов: <strong data-after-fixed>€1 800</strong></p>
+      <p class="pb-subtext">Осталось на жизнь: <strong data-after-fixed>€0.00</strong></p>
       <div class="pb-sliders">
         <div class="pb-slider" data-color="green"><div class="pb-slider-head"><label for="pb-food"><span class="pb-dot green">☼</span> Еда</label><div class="pb-slider-value"><span>€</span><input type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="400" inputmode="decimal" aria-label="Бюджет на еду"></div><button class="pb-remove cursor-interaction" type="button" aria-label="Удалить еду">×</button></div><input id="pb-food" class="cursor-interaction pb-range" type="range" min="0" max="3100" step="10" value="400" aria-label="Ползунок бюджета на еду"></div>
         <div class="pb-slider" data-color="purple"><div class="pb-slider-head"><label for="pb-personal"><span class="pb-dot purple">✦</span> На себя</label><div class="pb-slider-value"><span>€</span><input type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="200" inputmode="decimal" aria-label="Бюджет на себя"></div><button class="pb-remove cursor-interaction" type="button" aria-label="Удалить категорию на себя">×</button></div><input id="pb-personal" class="cursor-interaction pb-range" type="range" min="0" max="3100" step="10" value="200" aria-label="Ползунок бюджета на себя"></div>
@@ -550,14 +551,6 @@
   addExpense.addEventListener('click', () => createExpenseRow());
   addIncome.addEventListener('click', () => createExpenseRow('income'));
   function selectedGoal() { return goal === 'Custom' ? customGoalName : goal; }
-  function refreshResult() {
-    const income = cents(original.querySelector('#pb-income'));
-    const housing = cents(original.querySelector('#pb-housing'));
-    const expenses = [...original.querySelectorAll('.pb-expense input')].reduce((sum, input) => sum + cents(input), 0);
-    const flexible = [...original.querySelectorAll('.pb-slider-value input')].reduce((sum, input) => sum + cents(input), 0);
-    original.querySelector('[data-result-label]').textContent = income-housing-expenses-flexible < 0 ? 'НЕ ХВАТАЕТ В МЕСЯЦ' : 'ОСТАЁТСЯ ПОСЛЕ РАСХОДОВ';
-    original.querySelector('[data-result-note]').textContent = income-housing-expenses-flexible < 0 ? 'Расходы выше дохода. Попробуй изменить план.' : 'До запланированных накоплений, без незапланированных расходов.';
-  }
   q('[data-next="2"]').addEventListener('click', () => {
     if (!finishRentName()) return;
     const fields = [q('[data-income]'), q('[data-savings]')];
@@ -575,6 +568,7 @@
     goalLabel.hidden = !selectedGoal() || goal === 'Just saving';
     goalLabel.textContent = goalLabel.hidden ? '' : `Цель: ${selectedGoal()}`;
     original.querySelector('#pb-income').value = String(incomeTotal() / 100);
+    original.dataset.savingsTargetCents = savingsInput.value.trim() === '' ? '' : String(cents(savingsInput));
     original.querySelector('#pb-housing').value = String(number(q('[data-rent]')));
     original.querySelector('.pb-housing label > span:nth-child(2)').firstChild.textContent = savedRentName;
     original.querySelector('#pb-housing').setAttribute('aria-label', savedRentName);
@@ -586,12 +580,10 @@
     });
     original.querySelectorAll('.pb-slider-value input').forEach(input => input.value = '0');
     original.querySelector('#pb-income').dispatchEvent(new Event('input', {bubbles:true}));
-    refreshResult(); phone.hidden = true; result.hidden = false;
+    phone.hidden = true; result.hidden = false;
     result.scrollIntoView({block:'start', behavior:'auto'});
     celebrate();
   });
-  original.addEventListener('input', refreshResult);
-  original.addEventListener('click', () => queueMicrotask(refreshResult));
   original.querySelector('.pb-predictions').hidden = true;
   original.querySelector('[data-forecast-note]').hidden = true;
   updateIncomeTotal();
@@ -603,28 +595,38 @@
 (()=>{
   const root=document.getElementById('piggy-bank-plan');
   const income=root.querySelector('#pb-income');const housing=root.querySelector('#pb-housing');
-  const fixed=root.querySelector('.pb-fixed');const fixedToggle=root.querySelector('.pb-fixed-toggle');const fixedDetails=root.querySelector('.pb-fixed-details');
   const expenses=root.querySelector('.pb-expenses');const sliders=root.querySelector('.pb-sliders');
   const settings = root.closest('#piggy-onboarding').moneySettings;
   const value=input=>settings.number(input);
   function render(){
     const fixedTotal=[...expenses.querySelectorAll('input')].reduce((sum,input)=>sum+settings.cents(input),0);
     const flexTotal=[...sliders.querySelectorAll('.pb-slider-value input')].reduce((sum,input)=>sum+settings.cents(input),0);
-    const afterFixed=settings.cents(income)-settings.cents(housing)-fixedTotal;const balance=afterFixed-flexTotal;const short=balance<0;
-    settings.setMoney(root.querySelector('[data-fixed-total]'),(fixedTotal+settings.cents(housing))/100);
-    settings.setMoney(root.querySelector('[data-after-fixed]'),Math.abs(afterFixed)/100,afterFixed<0?'−':'');
+    const monthlyIncome=settings.cents(income);
+    const expensesTotal=fixedTotal+settings.cents(housing);
+    const afterFixed=monthlyIncome-expensesTotal;
+    const hasTarget=root.dataset.savingsTargetCents!==undefined && root.dataset.savingsTargetCents!=='';
+    const target=hasTarget?Number(root.dataset.savingsTargetCents):0;
+    const afterSpending=afterFixed-flexTotal;
+    const short=afterSpending<0;
+    const actualSavings=hasTarget?Math.min(target,Math.max(0,afterSpending)):Math.max(0,afterSpending);
+    const spendable=short?afterSpending:hasTarget?Math.max(0,afterSpending-actualSavings):afterSpending;
+    const targetRow=root.querySelector('.pb-saving-target');
+    targetRow.hidden=!hasTarget;
+    settings.setMoney(root.querySelector('[data-income-summary]'),monthlyIncome/100);
+    settings.setMoney(root.querySelector('[data-fixed-total]'),expensesTotal/100);
+    if(hasTarget) settings.setMoney(root.querySelector('[data-target-summary]'),target/100);
+    settings.setMoney(root.querySelector('[data-after-fixed]'),Math.abs(spendable)/100,spendable<0?'−':'');
     root.querySelector('[data-result-label]').textContent=short?'НЕ ХВАТАЕТ В МЕСЯЦ':'МОЖНО ОТЛОЖИТЬ';
-    settings.setMoney(root.querySelector('[data-savings]'),Math.abs(balance)/100);
-    root.querySelector('[data-result-note]').textContent=short?'Расходы выше дохода. Попробуй изменить план.':'То, что остаётся после запланированных расходов.';
-    if(short){root.querySelector('[data-six]').textContent='—';root.querySelector('[data-year]').textContent='—'}else{settings.setMoney(root.querySelector('[data-six]'),balance*6/100);settings.setMoney(root.querySelector('[data-year]'),balance*12/100)}
+    settings.setMoney(root.querySelector('[data-savings]'),(short?-afterSpending:actualSavings)/100);
+    root.querySelector('[data-result-note]').textContent=short?'Расходы выше дохода. Попробуй изменить план.':hasTarget?(actualSavings<target?'Расходы на жизнь уменьшают сумму накоплений.':'Твоя цель накоплений учтена в балансе.'):'То, что можно отложить после запланированных расходов.';
+    if(short){root.querySelector('[data-six]').textContent='—';root.querySelector('[data-year]').textContent='—'}else{settings.setMoney(root.querySelector('[data-six]'),actualSavings*6/100);settings.setMoney(root.querySelector('[data-year]'),actualSavings*12/100)}
     root.querySelector('[data-forecast-note]').textContent=short?'Прогноз появится, когда план уложится в доход.':'Дополнительно, если каждый месяц всё будет так же.';
     root.querySelector('.pb-result').classList.toggle('is-short',short);
-    sliders.querySelectorAll('.pb-slider').forEach(slider=>{const range=slider.querySelector('.pb-range');const amount=slider.querySelector('.pb-slider-value input');range.max=String(Math.max(100,value(income),value(amount)));range.value=String(value(amount))});
+    sliders.querySelectorAll('.pb-slider').forEach(slider=>{const range=slider.querySelector('.pb-range');const amount=slider.querySelector('.pb-slider-value input');range.max=String(Math.max(1,Math.max(0,afterFixed)/100,value(amount)));range.value=String(value(amount))});
   }
   function wireExpense(row){row.querySelector('input').addEventListener('input',render);row.querySelector('button').addEventListener('click',()=>{row.remove();render()})}
   function wireSlider(row){const range=row.querySelector('.pb-range');const amount=row.querySelector('.pb-slider-value input');range.addEventListener('input',()=>{amount.value=range.value;render()});amount.addEventListener('input',render);row.querySelector('button').addEventListener('click',()=>{row.remove();render()})}
   income.addEventListener('input',render);housing.addEventListener('input',render);expenses.querySelectorAll('.pb-expense').forEach(wireExpense);sliders.querySelectorAll('.pb-slider').forEach(wireSlider);
-  fixedToggle.addEventListener('click',()=>{const open=fixedDetails.hidden;fixedDetails.hidden=!open;fixed.classList.toggle('is-open',open);fixedToggle.setAttribute('aria-expanded',String(open))});
   root.querySelector('[data-open-expense]').addEventListener('click',()=>{root.querySelector('[data-expense-form]').hidden=false;root.querySelector('[data-expense-name]').focus()});
   root.querySelector('[data-add-expense]').addEventListener('click',()=>{const name=root.querySelector('[data-expense-name]');const amount=root.querySelector('[data-expense-amount]');const label=name.value.trim();if(!label)return;if(!amount.checkValidity()){amount.reportValidity();return}const row=document.createElement('div');row.className='pb-expense';const text=document.createElement('label');text.textContent=label;const euro=document.createElement('span');settings.setSymbol(euro);const input=document.createElement('input');input.type='text';input.inputMode='decimal';input.pattern='[0-9]+([.,][0-9]{1,2})?';input.value=String(value(amount));input.setAttribute('aria-label',label);const button=document.createElement('button');button.type='button';button.className='pb-remove cursor-interaction';button.textContent='×';button.setAttribute('aria-label','Удалить '+label);row.append(text,euro,input,button);expenses.append(row);wireExpense(row);name.value='';amount.value='';root.querySelector('[data-expense-form]').hidden=true;render()});
   root.querySelector('[data-open-category]').addEventListener('click',()=>{root.querySelector('[data-category-form]').hidden=false;root.querySelector('[data-category-name]').focus()});
@@ -831,6 +833,10 @@
   #piggy-bank-plan .pb-fixed-details .pb-housing label .pb-dot,#piggy-bank-plan .pb-fixed-details .pb-housing label small{display:none}
   #piggy-bank-plan .pb-fixed-details .pb-housing .pb-amount input{width:65px;font-size:14px}
   #piggy-bank-plan .pb-expense,#piggy-bank-plan .pb-expense input,#piggy-bank-plan .pb-add-text,#piggy-bank-plan .pb-add-form input,#piggy-bank-plan .pb-add-form button{font-family:'DM Sans',Arial,sans-serif}
+  #piggy-bank-plan .pb-summary-label{display:flex;align-items:center;gap:10px;min-width:0;font:600 15px 'DM Sans',Arial,sans-serif}
+  #piggy-bank-plan .pb-summary-label small{display:block;margin-top:3px;color:#aaa;font:400 12px 'DM Sans',Arial,sans-serif}
+  #piggy-bank-plan .pb-summary-value{font:600 16px 'DM Sans',Arial,sans-serif;white-space:nowrap}
+  #piggy-bank-plan .pb-fixed-toggle{cursor:default}
   /* A subtle underline replaces the browser's rectangular numeric focus ring. */
   #piggy-onboarding input[inputmode="decimal"]:focus{outline:none;border-radius:0;box-shadow:none;background-image:linear-gradient(#a7ff27,#a7ff27);background-size:var(--amount-line-width,1ch) 2px;background-repeat:no-repeat;background-position:right 2px bottom;caret-color:#a7ff27}
   #piggy-onboarding input[inputmode="decimal"]:invalid:focus{background-image:linear-gradient(#f3759a,#f3759a)}

@@ -1601,9 +1601,9 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;/section&gt;
     &lt;div class=&quot;pb-intro&quot;&gt;Посмотрим, сколько может оставаться для мечты каждый месяц.&lt;/div&gt;
 
-    &lt;div class=&quot;pb-money-card pb-income&quot;&gt;&lt;label for=&quot;pb-income&quot;&gt;&lt;span class=&quot;pb-dot green&quot;&gt;↗&lt;/span&gt;&lt;span&gt;Мой доход&lt;small&gt;в месяц&lt;/small&gt;&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;pb-amount&quot;&gt;&lt;span&gt;€&lt;/span&gt;&lt;input id=&quot;pb-income&quot; type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; value=&quot;3100&quot; inputmode=&quot;decimal&quot; aria-label=&quot;Месячный доход&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;div class=&quot;pb-money-card pb-income&quot;&gt;&lt;span class=&quot;pb-summary-label&quot;&gt;&lt;span class=&quot;pb-dot green&quot;&gt;↗&lt;/span&gt;&lt;span&gt;Мой доход&lt;small&gt;в месяц&lt;/small&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;pb-summary-value&quot; data-income-summary&gt;€0.00&lt;/strong&gt;&lt;input id=&quot;pb-income&quot; type=&quot;hidden&quot; value=&quot;0&quot;&gt;&lt;/div&gt;
     &lt;section class=&quot;pb-fixed&quot; aria-label=&quot;Ежемесячные расходы&quot;&gt;
-      &lt;button class=&quot;pb-fixed-toggle cursor-interaction&quot; type=&quot;button&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;pb-fixed-details&quot;&gt;&lt;span&gt;&lt;span class=&quot;pb-dot purple&quot;&gt;⌂&lt;/span&gt;&lt;span&gt;Ежемесячные расходы&lt;/span&gt;&lt;/span&gt;&lt;strong&gt;&lt;span data-fixed-total&gt;€0.00&lt;/span&gt;&lt;i&gt;⌄&lt;/i&gt;&lt;/strong&gt;&lt;/button&gt;
+      &lt;div class=&quot;pb-fixed-toggle&quot;&gt;&lt;span&gt;&lt;span class=&quot;pb-dot purple&quot;&gt;⌂&lt;/span&gt;&lt;span&gt;Ежемесячные расходы&lt;/span&gt;&lt;/span&gt;&lt;strong&gt;&lt;span data-fixed-total&gt;€0.00&lt;/span&gt;&lt;/strong&gt;&lt;/div&gt;
       &lt;div class=&quot;pb-fixed-details&quot; id=&quot;pb-fixed-details&quot; hidden&gt;
         &lt;div class=&quot;pb-money-card pb-housing&quot;&gt;&lt;label for=&quot;pb-housing&quot;&gt;&lt;span class=&quot;pb-dot purple&quot;&gt;⌂&lt;/span&gt;&lt;span&gt;Жильё&lt;small&gt;в месяц&lt;/small&gt;&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;pb-amount&quot;&gt;&lt;span&gt;€&lt;/span&gt;&lt;input id=&quot;pb-housing&quot; type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; value=&quot;1100&quot; inputmode=&quot;decimal&quot; aria-label=&quot;Расходы на жильё в месяц&quot;&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;div class=&quot;pb-expenses&quot;&gt;
@@ -1614,10 +1614,11 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div class=&quot;pb-add-form&quot; data-expense-form hidden&gt;&lt;label&gt;&lt;span&gt;Название&lt;/span&gt;&lt;input data-expense-name type=&quot;text&quot; maxlength=&quot;28&quot; placeholder=&quot;Например, связь&quot;&gt;&lt;/label&gt;&lt;label&gt;&lt;span&gt;Сумма, &lt;span data-currency-symbol&gt;€&lt;/span&gt;&lt;/span&gt;&lt;input data-expense-amount type=&quot;text&quot; inputmode=&quot;decimal&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; placeholder=&quot;0&quot;&gt;&lt;/label&gt;&lt;button class=&quot;cursor-interaction&quot; type=&quot;button&quot; data-add-expense&gt;Добавить&lt;/button&gt;&lt;/div&gt;
       &lt;/div&gt;
     &lt;/section&gt;
+    &lt;div class=&quot;pb-money-card pb-saving-target&quot; hidden&gt;&lt;span class=&quot;pb-summary-label&quot;&gt;&lt;span class=&quot;pb-dot pink&quot;&gt;✦&lt;/span&gt;&lt;span&gt;Цель накоплений&lt;small&gt;в месяц&lt;/small&gt;&lt;/span&gt;&lt;/span&gt;&lt;strong class=&quot;pb-summary-value&quot; data-target-summary&gt;&lt;/strong&gt;&lt;/div&gt;
 
     &lt;section class=&quot;pb-flex&quot; aria-label=&quot;Бюджет на жизнь&quot;&gt;
       &lt;div class=&quot;pb-section-title&quot;&gt;&lt;div&gt;&lt;span class=&quot;pb-kicker&quot;&gt;ДЛЯ ЖИЗНИ И РАДОСТЕЙ&lt;/span&gt;&lt;h2&gt;Мой баланс.&lt;/h2&gt;&lt;/div&gt;&lt;span class=&quot;pb-note&quot;&gt;на месяц&lt;/span&gt;&lt;/div&gt;
-      &lt;p class=&quot;pb-subtext&quot;&gt;После жилья и постоянных расходов: &lt;strong data-after-fixed&gt;€1 800&lt;/strong&gt;&lt;/p&gt;
+      &lt;p class=&quot;pb-subtext&quot;&gt;Осталось на жизнь: &lt;strong data-after-fixed&gt;€0.00&lt;/strong&gt;&lt;/p&gt;
       &lt;div class=&quot;pb-sliders&quot;&gt;
         &lt;div class=&quot;pb-slider&quot; data-color=&quot;green&quot;&gt;&lt;div class=&quot;pb-slider-head&quot;&gt;&lt;label for=&quot;pb-food&quot;&gt;&lt;span class=&quot;pb-dot green&quot;&gt;☼&lt;/span&gt; Еда&lt;/label&gt;&lt;div class=&quot;pb-slider-value&quot;&gt;&lt;span&gt;€&lt;/span&gt;&lt;input type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; value=&quot;400&quot; inputmode=&quot;decimal&quot; aria-label=&quot;Бюджет на еду&quot;&gt;&lt;/div&gt;&lt;button class=&quot;pb-remove cursor-interaction&quot; type=&quot;button&quot; aria-label=&quot;Удалить еду&quot;&gt;×&lt;/button&gt;&lt;/div&gt;&lt;input id=&quot;pb-food&quot; class=&quot;cursor-interaction pb-range&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;3100&quot; step=&quot;10&quot; value=&quot;400&quot; aria-label=&quot;Ползунок бюджета на еду&quot;&gt;&lt;/div&gt;
         &lt;div class=&quot;pb-slider&quot; data-color=&quot;purple&quot;&gt;&lt;div class=&quot;pb-slider-head&quot;&gt;&lt;label for=&quot;pb-personal&quot;&gt;&lt;span class=&quot;pb-dot purple&quot;&gt;✦&lt;/span&gt; На себя&lt;/label&gt;&lt;div class=&quot;pb-slider-value&quot;&gt;&lt;span&gt;€&lt;/span&gt;&lt;input type=&quot;text&quot; pattern=&quot;[0-9]+([.,][0-9]{1,2})?&quot; value=&quot;200&quot; inputmode=&quot;decimal&quot; aria-label=&quot;Бюджет на себя&quot;&gt;&lt;/div&gt;&lt;button class=&quot;pb-remove cursor-interaction&quot; type=&quot;button&quot; aria-label=&quot;Удалить категорию на себя&quot;&gt;×&lt;/button&gt;&lt;/div&gt;&lt;input id=&quot;pb-personal&quot; class=&quot;cursor-interaction pb-range&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;3100&quot; step=&quot;10&quot; value=&quot;200&quot; aria-label=&quot;Ползунок бюджета на себя&quot;&gt;&lt;/div&gt;
@@ -2089,14 +2090,6 @@ html&gt;body{padding:0}&lt;/style&gt;
   addExpense.addEventListener(&#x27;click&#x27;, () =&gt; createExpenseRow());
   addIncome.addEventListener(&#x27;click&#x27;, () =&gt; createExpenseRow(&#x27;income&#x27;));
   function selectedGoal() { return goal === &#x27;Custom&#x27; ? customGoalName : goal; }
-  function refreshResult() {
-    const income = cents(original.querySelector(&#x27;#pb-income&#x27;));
-    const housing = cents(original.querySelector(&#x27;#pb-housing&#x27;));
-    const expenses = [...original.querySelectorAll(&#x27;.pb-expense input&#x27;)].reduce((sum, input) =&gt; sum + cents(input), 0);
-    const flexible = [...original.querySelectorAll(&#x27;.pb-slider-value input&#x27;)].reduce((sum, input) =&gt; sum + cents(input), 0);
-    original.querySelector(&#x27;[data-result-label]&#x27;).textContent = income-housing-expenses-flexible &lt; 0 ? &#x27;НЕ ХВАТАЕТ В МЕСЯЦ&#x27; : &#x27;ОСТАЁТСЯ ПОСЛЕ РАСХОДОВ&#x27;;
-    original.querySelector(&#x27;[data-result-note]&#x27;).textContent = income-housing-expenses-flexible &lt; 0 ? &#x27;Расходы выше дохода. Попробуй изменить план.&#x27; : &#x27;До запланированных накоплений, без незапланированных расходов.&#x27;;
-  }
   q(&#x27;[data-next=&quot;2&quot;]&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
     if (!finishRentName()) return;
     const fields = [q(&#x27;[data-income]&#x27;), q(&#x27;[data-savings]&#x27;)];
@@ -2114,6 +2107,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     goalLabel.hidden = !selectedGoal() || goal === &#x27;Just saving&#x27;;
     goalLabel.textContent = goalLabel.hidden ? &#x27;&#x27; : `Цель: ${selectedGoal()}`;
     original.querySelector(&#x27;#pb-income&#x27;).value = String(incomeTotal() / 100);
+    original.dataset.savingsTargetCents = savingsInput.value.trim() === &#x27;&#x27; ? &#x27;&#x27; : String(cents(savingsInput));
     original.querySelector(&#x27;#pb-housing&#x27;).value = String(number(q(&#x27;[data-rent]&#x27;)));
     original.querySelector(&#x27;.pb-housing label &gt; span:nth-child(2)&#x27;).firstChild.textContent = savedRentName;
     original.querySelector(&#x27;#pb-housing&#x27;).setAttribute(&#x27;aria-label&#x27;, savedRentName);
@@ -2125,12 +2119,10 @@ html&gt;body{padding:0}&lt;/style&gt;
     });
     original.querySelectorAll(&#x27;.pb-slider-value input&#x27;).forEach(input =&gt; input.value = &#x27;0&#x27;);
     original.querySelector(&#x27;#pb-income&#x27;).dispatchEvent(new Event(&#x27;input&#x27;, {bubbles:true}));
-    refreshResult(); phone.hidden = true; result.hidden = false;
+    phone.hidden = true; result.hidden = false;
     result.scrollIntoView({block:&#x27;start&#x27;, behavior:&#x27;auto&#x27;});
     celebrate();
   });
-  original.addEventListener(&#x27;input&#x27;, refreshResult);
-  original.addEventListener(&#x27;click&#x27;, () =&gt; queueMicrotask(refreshResult));
   original.querySelector(&#x27;.pb-predictions&#x27;).hidden = true;
   original.querySelector(&#x27;[data-forecast-note]&#x27;).hidden = true;
   updateIncomeTotal();
@@ -2142,28 +2134,38 @@ html&gt;body{padding:0}&lt;/style&gt;
 (()=&gt;{
   const root=document.getElementById(&#x27;piggy-bank-plan&#x27;);
   const income=root.querySelector(&#x27;#pb-income&#x27;);const housing=root.querySelector(&#x27;#pb-housing&#x27;);
-  const fixed=root.querySelector(&#x27;.pb-fixed&#x27;);const fixedToggle=root.querySelector(&#x27;.pb-fixed-toggle&#x27;);const fixedDetails=root.querySelector(&#x27;.pb-fixed-details&#x27;);
   const expenses=root.querySelector(&#x27;.pb-expenses&#x27;);const sliders=root.querySelector(&#x27;.pb-sliders&#x27;);
   const settings = root.closest(&#x27;#piggy-onboarding&#x27;).moneySettings;
   const value=input=&gt;settings.number(input);
   function render(){
     const fixedTotal=[...expenses.querySelectorAll(&#x27;input&#x27;)].reduce((sum,input)=&gt;sum+settings.cents(input),0);
     const flexTotal=[...sliders.querySelectorAll(&#x27;.pb-slider-value input&#x27;)].reduce((sum,input)=&gt;sum+settings.cents(input),0);
-    const afterFixed=settings.cents(income)-settings.cents(housing)-fixedTotal;const balance=afterFixed-flexTotal;const short=balance&lt;0;
-    settings.setMoney(root.querySelector(&#x27;[data-fixed-total]&#x27;),(fixedTotal+settings.cents(housing))/100);
-    settings.setMoney(root.querySelector(&#x27;[data-after-fixed]&#x27;),Math.abs(afterFixed)/100,afterFixed&lt;0?&#x27;−&#x27;:&#x27;&#x27;);
+    const monthlyIncome=settings.cents(income);
+    const expensesTotal=fixedTotal+settings.cents(housing);
+    const afterFixed=monthlyIncome-expensesTotal;
+    const hasTarget=root.dataset.savingsTargetCents!==undefined &amp;&amp; root.dataset.savingsTargetCents!==&#x27;&#x27;;
+    const target=hasTarget?Number(root.dataset.savingsTargetCents):0;
+    const afterSpending=afterFixed-flexTotal;
+    const short=afterSpending&lt;0;
+    const actualSavings=hasTarget?Math.min(target,Math.max(0,afterSpending)):Math.max(0,afterSpending);
+    const spendable=short?afterSpending:hasTarget?Math.max(0,afterSpending-actualSavings):afterSpending;
+    const targetRow=root.querySelector(&#x27;.pb-saving-target&#x27;);
+    targetRow.hidden=!hasTarget;
+    settings.setMoney(root.querySelector(&#x27;[data-income-summary]&#x27;),monthlyIncome/100);
+    settings.setMoney(root.querySelector(&#x27;[data-fixed-total]&#x27;),expensesTotal/100);
+    if(hasTarget) settings.setMoney(root.querySelector(&#x27;[data-target-summary]&#x27;),target/100);
+    settings.setMoney(root.querySelector(&#x27;[data-after-fixed]&#x27;),Math.abs(spendable)/100,spendable&lt;0?&#x27;−&#x27;:&#x27;&#x27;);
     root.querySelector(&#x27;[data-result-label]&#x27;).textContent=short?&#x27;НЕ ХВАТАЕТ В МЕСЯЦ&#x27;:&#x27;МОЖНО ОТЛОЖИТЬ&#x27;;
-    settings.setMoney(root.querySelector(&#x27;[data-savings]&#x27;),Math.abs(balance)/100);
-    root.querySelector(&#x27;[data-result-note]&#x27;).textContent=short?&#x27;Расходы выше дохода. Попробуй изменить план.&#x27;:&#x27;То, что остаётся после запланированных расходов.&#x27;;
-    if(short){root.querySelector(&#x27;[data-six]&#x27;).textContent=&#x27;—&#x27;;root.querySelector(&#x27;[data-year]&#x27;).textContent=&#x27;—&#x27;}else{settings.setMoney(root.querySelector(&#x27;[data-six]&#x27;),balance*6/100);settings.setMoney(root.querySelector(&#x27;[data-year]&#x27;),balance*12/100)}
+    settings.setMoney(root.querySelector(&#x27;[data-savings]&#x27;),(short?-afterSpending:actualSavings)/100);
+    root.querySelector(&#x27;[data-result-note]&#x27;).textContent=short?&#x27;Расходы выше дохода. Попробуй изменить план.&#x27;:hasTarget?(actualSavings&lt;target?&#x27;Расходы на жизнь уменьшают сумму накоплений.&#x27;:&#x27;Твоя цель накоплений учтена в балансе.&#x27;):&#x27;То, что можно отложить после запланированных расходов.&#x27;;
+    if(short){root.querySelector(&#x27;[data-six]&#x27;).textContent=&#x27;—&#x27;;root.querySelector(&#x27;[data-year]&#x27;).textContent=&#x27;—&#x27;}else{settings.setMoney(root.querySelector(&#x27;[data-six]&#x27;),actualSavings*6/100);settings.setMoney(root.querySelector(&#x27;[data-year]&#x27;),actualSavings*12/100)}
     root.querySelector(&#x27;[data-forecast-note]&#x27;).textContent=short?&#x27;Прогноз появится, когда план уложится в доход.&#x27;:&#x27;Дополнительно, если каждый месяц всё будет так же.&#x27;;
     root.querySelector(&#x27;.pb-result&#x27;).classList.toggle(&#x27;is-short&#x27;,short);
-    sliders.querySelectorAll(&#x27;.pb-slider&#x27;).forEach(slider=&gt;{const range=slider.querySelector(&#x27;.pb-range&#x27;);const amount=slider.querySelector(&#x27;.pb-slider-value input&#x27;);range.max=String(Math.max(100,value(income),value(amount)));range.value=String(value(amount))});
+    sliders.querySelectorAll(&#x27;.pb-slider&#x27;).forEach(slider=&gt;{const range=slider.querySelector(&#x27;.pb-range&#x27;);const amount=slider.querySelector(&#x27;.pb-slider-value input&#x27;);range.max=String(Math.max(1,Math.max(0,afterFixed)/100,value(amount)));range.value=String(value(amount))});
   }
   function wireExpense(row){row.querySelector(&#x27;input&#x27;).addEventListener(&#x27;input&#x27;,render);row.querySelector(&#x27;button&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{row.remove();render()})}
   function wireSlider(row){const range=row.querySelector(&#x27;.pb-range&#x27;);const amount=row.querySelector(&#x27;.pb-slider-value input&#x27;);range.addEventListener(&#x27;input&#x27;,()=&gt;{amount.value=range.value;render()});amount.addEventListener(&#x27;input&#x27;,render);row.querySelector(&#x27;button&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{row.remove();render()})}
   income.addEventListener(&#x27;input&#x27;,render);housing.addEventListener(&#x27;input&#x27;,render);expenses.querySelectorAll(&#x27;.pb-expense&#x27;).forEach(wireExpense);sliders.querySelectorAll(&#x27;.pb-slider&#x27;).forEach(wireSlider);
-  fixedToggle.addEventListener(&#x27;click&#x27;,()=&gt;{const open=fixedDetails.hidden;fixedDetails.hidden=!open;fixed.classList.toggle(&#x27;is-open&#x27;,open);fixedToggle.setAttribute(&#x27;aria-expanded&#x27;,String(open))});
   root.querySelector(&#x27;[data-open-expense]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{root.querySelector(&#x27;[data-expense-form]&#x27;).hidden=false;root.querySelector(&#x27;[data-expense-name]&#x27;).focus()});
   root.querySelector(&#x27;[data-add-expense]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{const name=root.querySelector(&#x27;[data-expense-name]&#x27;);const amount=root.querySelector(&#x27;[data-expense-amount]&#x27;);const label=name.value.trim();if(!label)return;if(!amount.checkValidity()){amount.reportValidity();return}const row=document.createElement(&#x27;div&#x27;);row.className=&#x27;pb-expense&#x27;;const text=document.createElement(&#x27;label&#x27;);text.textContent=label;const euro=document.createElement(&#x27;span&#x27;);settings.setSymbol(euro);const input=document.createElement(&#x27;input&#x27;);input.type=&#x27;text&#x27;;input.inputMode=&#x27;decimal&#x27;;input.pattern=&#x27;[0-9]+([.,][0-9]{1,2})?&#x27;;input.value=String(value(amount));input.setAttribute(&#x27;aria-label&#x27;,label);const button=document.createElement(&#x27;button&#x27;);button.type=&#x27;button&#x27;;button.className=&#x27;pb-remove cursor-interaction&#x27;;button.textContent=&#x27;×&#x27;;button.setAttribute(&#x27;aria-label&#x27;,&#x27;Удалить &#x27;+label);row.append(text,euro,input,button);expenses.append(row);wireExpense(row);name.value=&#x27;&#x27;;amount.value=&#x27;&#x27;;root.querySelector(&#x27;[data-expense-form]&#x27;).hidden=true;render()});
   root.querySelector(&#x27;[data-open-category]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{root.querySelector(&#x27;[data-category-form]&#x27;).hidden=false;root.querySelector(&#x27;[data-category-name]&#x27;).focus()});
@@ -2370,6 +2372,10 @@ html&gt;body{padding:0}&lt;/style&gt;
   #piggy-bank-plan .pb-fixed-details .pb-housing label .pb-dot,#piggy-bank-plan .pb-fixed-details .pb-housing label small{display:none}
   #piggy-bank-plan .pb-fixed-details .pb-housing .pb-amount input{width:65px;font-size:14px}
   #piggy-bank-plan .pb-expense,#piggy-bank-plan .pb-expense input,#piggy-bank-plan .pb-add-text,#piggy-bank-plan .pb-add-form input,#piggy-bank-plan .pb-add-form button{font-family:&#x27;DM Sans&#x27;,Arial,sans-serif}
+  #piggy-bank-plan .pb-summary-label{display:flex;align-items:center;gap:10px;min-width:0;font:600 15px &#x27;DM Sans&#x27;,Arial,sans-serif}
+  #piggy-bank-plan .pb-summary-label small{display:block;margin-top:3px;color:#aaa;font:400 12px &#x27;DM Sans&#x27;,Arial,sans-serif}
+  #piggy-bank-plan .pb-summary-value{font:600 16px &#x27;DM Sans&#x27;,Arial,sans-serif;white-space:nowrap}
+  #piggy-bank-plan .pb-fixed-toggle{cursor:default}
   /* A subtle underline replaces the browser&#x27;s rectangular numeric focus ring. */
   #piggy-onboarding input[inputmode=&quot;decimal&quot;]:focus{outline:none;border-radius:0;box-shadow:none;background-image:linear-gradient(#a7ff27,#a7ff27);background-size:var(--amount-line-width,1ch) 2px;background-repeat:no-repeat;background-position:right 2px bottom;caret-color:#a7ff27}
   #piggy-onboarding input[inputmode=&quot;decimal&quot;]:invalid:focus{background-image:linear-gradient(#f3759a,#f3759a)}
