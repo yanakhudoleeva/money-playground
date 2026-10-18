@@ -90,13 +90,42 @@
 
     <section class="pb-result" aria-live="polite">
       <div class="pb-result-top"><span data-result-label>МОЖНО ОТЛОЖИТЬ</span><span>✦</span></div><div class="pb-result-value"><strong data-savings>€1 200</strong><span>/ месяц</span></div><p data-result-note>То, что остаётся после запланированных расходов.</p>
-      <div class="pb-predictions"><div><span>ЧЕРЕЗ 6 МЕСЯЦЕВ</span><strong data-six>€7 200</strong></div><div><span>ЧЕРЕЗ ГОД</span><strong data-year>€14 400</strong></div></div><small data-forecast-note>Дополнительно, если каждый месяц всё будет так же.</small>
+      <button type="button" class="pb-goal-open" data-projection-open>＋ Указать сумму цели</button>
+      <div class="pb-goal-form" data-projection-form hidden>
+        <label>Сколько нужно для цели?<input type="text" inputmode="decimal" autocomplete="off" aria-label="Сумма цели" placeholder="Например, 20 000" data-projection-target></label>
+        <label>Уже накоплено <span>необязательно</span><input type="text" inputmode="decimal" autocomplete="off" aria-label="Уже накоплено" placeholder="0" data-projection-saved></label>
+        <div class="pb-goal-error" role="alert" data-projection-error hidden></div>
+        <div class="pb-goal-actions"><button type="button" data-projection-save>Показать прогноз</button><button type="button" data-projection-cancel>Отмена</button><button type="button" data-projection-remove hidden>Убрать цель</button></div>
+      </div>
+      <div class="pb-projection" data-projection hidden>
+        <div class="pb-goal-summary"><div><span>МОЯ ЦЕЛЬ</span><strong data-projection-amount></strong><small data-projection-base></small></div><button type="button" data-projection-edit>Изменить</button></div>
+        <div class="pb-goal-timing" data-projection-timing></div>
+        <div class="pb-predictions"><div><span>ЧЕРЕЗ 6 МЕСЯЦЕВ</span><strong data-six></strong></div><div><span>ЧЕРЕЗ ГОД</span><strong data-year></strong></div></div>
+        <small data-forecast-note></small>
+      </div>
     </section>
     <div class="pb-footer">SMALL STEPS. BIG DREAMS. <span>✳</span></div>
   </div>
 </div>
 <style>
 #piggy-bank-plan{padding:12px 0 20px}#piggy-bank-plan *{box-sizing:border-box}#piggy-bank-plan [hidden]{display:none!important}.pb-phone{width:min(100%,430px);margin:0 auto;padding:27px 23px 22px;border-radius:32px;background:#171717;color:#fff;font-family:Arial,Helvetica,sans-serif;box-shadow:0 18px 45px #0006}.pb-head{display:flex;justify-content:space-between;align-items:start;gap:12px}.pb-brand{font-size:18px;font-weight:700;letter-spacing:-.8px;line-height:.95}.pb-brand span{display:block;font-family:'Baloo 2',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.16px;line-height:.85;margin-top:4px;text-align:center}.pb-top-note,.pb-kicker{font-size:10px;letter-spacing:1.2px;font-weight:700;color:#a7ff27}.pb-top-note{color:#c6a5ff;text-align:right}.pb-hero{display:flex;align-items:center;min-height:168px;position:relative;margin-top:12px}.pb-hero-copy{position:relative;z-index:1;flex:1;min-width:0}.pb-hero h1{font-size:40px;line-height:1;letter-spacing:-2px;font-weight:500;margin:10px 0}.pb-hero p{font-size:13px;line-height:1.45;color:#bbb;margin:0}.pb-hero p strong{font-size:20px;color:#fff;font-weight:500}.pb-pig{width:50%;max-width:188px;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 12px 9px #0007)}.pb-intro{color:#bbb;font-size:13px;line-height:1.4;margin:0 0 17px}.pb-money-card,.pb-fixed{border-radius:20px;background:#292929;margin-top:10px}.pb-money-card{min-height:70px;padding:12px 14px;display:flex;align-items:center;gap:8px;justify-content:space-between}.pb-money-card label,.pb-fixed-toggle>span{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500}.pb-money-card small,.pb-fixed-toggle small{display:block;color:#aaa;font-size:12px;font-weight:400;margin-top:3px}.pb-dot{width:36px;height:36px;flex:0 0 36px;border-radius:13px;display:grid;place-items:center;font-size:18px;font-style:normal}.pb-dot.green{background:#a7ff27;color:#26310d}.pb-dot.purple{background:#c6a5ff;color:#341d4a}.pb-dot.pink{background:#f3759a;color:#461127}.pb-amount,.pb-slider-value{display:flex;align-items:center;gap:2px;font-size:16px;color:#fff}.pb-amount>span,.pb-slider-value>span{color:#aaa}.pb-amount input,.pb-slider-value input{width:75px;border:0;background:transparent;color:#fff;text-align:right;font:500 19px Arial;outline:none;padding:4px 0}.pb-fixed-toggle{width:100%;min-height:70px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;background:transparent;color:#fff;text-align:left;font-family:inherit}.pb-fixed-toggle strong{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:500;white-space:nowrap}.pb-fixed-toggle i{font-style:normal;font-size:20px;color:#aaa;transition:transform .2s}.pb-fixed.is-open .pb-fixed-toggle i{transform:rotate(180deg)}.pb-fixed-details{padding:0 14px 15px}.pb-expenses{display:grid;gap:8px}.pb-expense{display:flex;align-items:center;gap:5px;min-height:44px;background:#383838;border-radius:12px;padding:0 9px;font-size:13px}.pb-expense label{flex:1;min-width:0;overflow-wrap:anywhere}.pb-expense>span{color:#aaa}.pb-expense input{width:65px;border:0;background:transparent;color:#fff;text-align:right;font:14px Arial;outline:none}.pb-remove{flex:0 0 30px;width:30px;height:30px;border:0;border-radius:50%;background:#434343;color:#ccc;font:20px Arial}.pb-add-text{border:0;background:transparent;color:#a7ff27;padding:14px 0 0;font:13px Arial;text-align:left}.pb-add-form{display:flex;gap:7px;align-items:end;margin-top:12px}.pb-add-form label{min-width:0;flex:1}.pb-add-form label:nth-child(2){flex:0 0 76px}.pb-add-form label span{display:block;color:#bbb;font-size:11px;margin:0 0 5px}.pb-add-form input{width:100%;height:40px;border:0;border-radius:10px;background:#424242;color:#fff;padding:0 9px;font:14px Arial}.pb-add-form button{height:40px;border:0;border-radius:10px;background:#c6a5ff;color:#311a48;padding:0 10px;font:12px Arial;font-weight:700}.pb-flex{margin-top:26px}.pb-section-title{display:flex;justify-content:space-between;align-items:end}.pb-section-title h2{font-size:28px;letter-spacing:-1px;font-weight:500;margin:7px 0 0}.pb-note{font-size:12px;color:#aaa}.pb-subtext{font-size:12px;color:#bdbdbd;line-height:1.4;margin:10px 0 14px}.pb-subtext strong{color:#fff;font-weight:500}.pb-sliders{display:grid;gap:9px}.pb-slider{background:#292929;border-radius:18px;padding:13px 13px 11px}.pb-slider-head{display:flex;align-items:center;gap:6px}.pb-slider-head label{display:flex;align-items:center;gap:9px;flex:1;min-width:0;font-size:15px;overflow-wrap:anywhere}.pb-slider-head .pb-dot{width:31px;height:31px;flex-basis:31px;border-radius:11px;font-size:15px}.pb-slider-value{font-size:13px}.pb-slider-value input{width:58px;font-size:16px}.pb-range{width:100%;height:24px;margin:8px 0 0;accent-color:#a7ff27}.pb-slider[data-color=purple] .pb-range{accent-color:#c6a5ff}.pb-slider[data-color=pink] .pb-range{accent-color:#f3759a}.pb-add-category{padding:15px 0}.pb-category-form{margin:0 0 14px}.pb-result{margin-top:14px;border-radius:24px;padding:19px;background:linear-gradient(135deg,#eaff86,#a7ff27);color:#1f2c0d;box-shadow:0 5px 0 #608d15}.pb-result-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;letter-spacing:1.1px}.pb-result-top span:last-child{font-size:20px}.pb-result-value{display:flex;gap:7px;align-items:baseline;margin-top:5px}.pb-result-value strong{font-size:37px;font-weight:500;letter-spacing:-1.7px;line-height:1}.pb-result-value>span{font-size:13px}.pb-result p{font-size:12px;line-height:1.4;margin:9px 0 16px;color:#3d4e1b}.pb-predictions{display:grid;grid-template-columns:1fr 1fr;gap:14px;border-top:1px solid #627f3355;padding-top:13px}.pb-predictions span{font-size:10px;letter-spacing:.8px;font-weight:700;display:block}.pb-predictions strong{font-size:22px;letter-spacing:-.7px;font-weight:500;display:block;margin-top:6px}.pb-result small{display:block;font-size:11px;line-height:1.4;color:#3d4e1b;margin-top:12px}.pb-result.is-short{background:linear-gradient(135deg,#ffd1dc,#f3759a);color:#48152a;box-shadow:0 5px 0 #a83b5f}.pb-result.is-short p,.pb-result.is-short small{color:#6b273e}.pb-footer{display:flex;justify-content:space-between;color:#aaa;letter-spacing:1px;font-size:10px;margin:25px 2px 0}.pb-footer span{color:#c6a5ff;font-size:16px}@media(max-width:390px){.pb-phone{padding:24px 18px 20px;border-radius:26px}.pb-hero h1{font-size:36px}.pb-pig{width:48%}.pb-result-value strong{font-size:33px}.pb-amount input{width:64px}.pb-fixed-toggle>span{font-size:14px}}@media(prefers-reduced-motion:reduce){.pb-fixed-toggle i{transition:none}}
+
+#piggy-bank-plan .pb-goal-open{border:0;background:#20300e;color:#eaffae;border-radius:13px;padding:10px 13px;font:600 13px 'DM Sans',Arial,sans-serif;cursor:pointer}
+#piggy-bank-plan .pb-goal-form,#piggy-bank-plan .pb-projection{border-top:1px solid #627f3355;padding-top:14px}
+#piggy-bank-plan .pb-goal-form{display:grid;gap:11px}
+#piggy-bank-plan .pb-goal-form label{font-size:12px;font-weight:700;display:block}
+#piggy-bank-plan .pb-goal-form label span{font-weight:400;opacity:.75}
+#piggy-bank-plan .pb-goal-form input{display:block;width:100%;height:42px;margin-top:5px;padding:0 11px;border:1px solid #5b7a3d66;border-radius:11px;background:#f7ffd6;color:#20300e;font-size:16px;outline-color:#395c13}
+#piggy-bank-plan .pb-goal-actions{display:flex;flex-wrap:wrap;gap:7px}
+#piggy-bank-plan .pb-goal-actions button,#piggy-bank-plan .pb-goal-summary button{border:0;border-radius:10px;padding:9px 11px;background:#20300e;color:#eaffae;font:600 12px 'DM Sans',Arial,sans-serif;cursor:pointer}
+#piggy-bank-plan .pb-goal-actions button:not(:first-child),#piggy-bank-plan .pb-goal-summary button{background:#20300e18;color:inherit}
+#piggy-bank-plan .pb-goal-error{font-size:12px;color:#8a1438;font-weight:700}
+#piggy-bank-plan .pb-goal-summary{display:flex;align-items:start;justify-content:space-between;gap:10px}
+#piggy-bank-plan .pb-goal-summary>div>span{display:block;font-size:10px;letter-spacing:.8px;font-weight:700}
+#piggy-bank-plan .pb-goal-summary strong{display:block;font-size:22px;line-height:1.2;margin-top:5px;overflow-wrap:anywhere}
+#piggy-bank-plan .pb-goal-summary small{margin-top:4px}
+#piggy-bank-plan .pb-goal-timing{margin:15px 0;padding:10px 12px;border-radius:12px;background:#20300e14;font-size:13px;font-weight:700;line-height:1.4}
+#piggy-bank-plan .pb-predictions strong{font-size:clamp(17px,5vw,22px);overflow-wrap:anywhere}
 </style>
 <script>
 (() => {
@@ -584,8 +613,6 @@
     result.scrollIntoView({block:'start', behavior:'auto'});
     celebrate();
   });
-  original.querySelector('.pb-predictions').hidden = true;
-  original.querySelector('[data-forecast-note]').hidden = true;
   updateIncomeTotal();
   updateExpenseTotal();
   show(1);
@@ -598,6 +625,29 @@
   const expenses=root.querySelector('.pb-expenses');const sliders=root.querySelector('.pb-sliders');
   const settings = root.closest('#piggy-onboarding').moneySettings;
   const value=input=>settings.number(input);
+  let projectionTarget=null, projectionSaved=0, projectionSavedSpecified=false;
+  const projectionForm=root.querySelector('[data-projection-form]');
+  const projectionTargetInput=root.querySelector('[data-projection-target]');
+  const projectionSavedInput=root.querySelector('[data-projection-saved]');
+  const projectionError=root.querySelector('[data-projection-error]');
+  function monthWord(n){const last=n%10, lastTwo=n%100;return lastTwo>=11&&lastTwo<=14?'месяцев':last===1?'месяц':last>=2&&last<=4?'месяца':'месяцев'}
+  function openProjection(){
+    projectionTargetInput.value=projectionTarget===null?'':String(projectionTarget/100);
+    projectionSavedInput.value=projectionSavedSpecified?String(projectionSaved/100):'';
+    projectionError.hidden=true;root.querySelector('[data-projection-remove]').hidden=projectionTarget===null;
+    projectionForm.hidden=false;root.querySelector('[data-projection-open]').hidden=true;root.querySelector('[data-projection]').hidden=true;projectionTargetInput.focus();
+  }
+  function closeProjection(){projectionForm.hidden=true;render()}
+  function parseProjection(input,optional){const raw=input.value.trim().replace(/\s/g,'').replace(',','.');if(optional&&!raw)return 0;if(!/^\d+(?:\.\d{1,2})?$/.test(raw))return null;const n=Number(raw);return Number.isFinite(n)&&n<=100000000?Math.round(n*100):null}
+  root.querySelector('[data-projection-open]').addEventListener('click',openProjection);
+  root.querySelector('[data-projection-edit]').addEventListener('click',openProjection);
+  root.querySelector('[data-projection-cancel]').addEventListener('click',closeProjection);
+  root.querySelector('[data-projection-remove]').addEventListener('click',()=>{projectionTarget=null;projectionSaved=0;projectionSavedSpecified=false;closeProjection()});
+  root.querySelector('[data-projection-save]').addEventListener('click',()=>{
+    const total=parseProjection(projectionTargetInput,false),saved=parseProjection(projectionSavedInput,true);
+    if(total===null||total<=0||saved===null){projectionError.textContent='Укажи сумму цели больше нуля и корректную сумму накоплений.';projectionError.hidden=false;(total===null||total<=0?projectionTargetInput:projectionSavedInput).focus();return}
+    projectionTarget=total;projectionSaved=saved;projectionSavedSpecified=projectionSavedInput.value.trim()!=='';closeProjection();
+  });
   function render(){
     const fixedTotal=[...expenses.querySelectorAll('input')].reduce((sum,input)=>sum+settings.cents(input),0);
     const flexTotal=[...sliders.querySelectorAll('.pb-slider-value input')].reduce((sum,input)=>sum+settings.cents(input),0);
@@ -619,8 +669,21 @@
     root.querySelector('[data-result-label]').textContent=short?'НЕ ХВАТАЕТ В МЕСЯЦ':'МОЖНО ОТЛОЖИТЬ';
     settings.setMoney(root.querySelector('[data-savings]'),(short?-afterSpending:actualSavings)/100);
     root.querySelector('[data-result-note]').textContent=short?'Расходы выше дохода. Попробуй изменить план.':hasTarget?(actualSavings<target?'Расходы на жизнь уменьшают сумму накоплений.':'Твоя цель накоплений учтена в балансе.'):'То, что можно отложить после запланированных расходов.';
-    if(short){root.querySelector('[data-six]').textContent='—';root.querySelector('[data-year]').textContent='—'}else{settings.setMoney(root.querySelector('[data-six]'),actualSavings*6/100);settings.setMoney(root.querySelector('[data-year]'),actualSavings*12/100)}
-    root.querySelector('[data-forecast-note]').textContent=short?'Прогноз появится, когда план уложится в доход.':'Дополнительно, если каждый месяц всё будет так же.';
+    const projectionVisible=projectionTarget!==null && projectionForm.hidden;
+    root.querySelector('[data-projection-open]').hidden=projectionTarget!==null || !projectionForm.hidden;
+    root.querySelector('[data-projection]').hidden=!projectionVisible;
+    if(projectionVisible){
+      settings.setMoney(root.querySelector('[data-projection-amount]'),projectionTarget/100);
+      const base=root.querySelector('[data-projection-base]');base.textContent=projectionSavedSpecified?'Уже накоплено: ':'Расчёт с нуля: ';
+      const baseAmount=document.createElement('span');settings.setMoney(baseAmount,projectionSaved/100);base.append(baseAmount);
+      const timing=root.querySelector('[data-projection-timing]');
+      if(projectionSaved>=projectionTarget) timing.textContent='Цель уже достигнута ✨';
+      else if(short||actualSavings<=0) timing.textContent='По текущему плану пока нечего откладывать.';
+      else {const months=Math.ceil((projectionTarget-projectionSaved)/actualSavings);timing.textContent=`Цель примерно через ${months} ${monthWord(months)} ✨`}
+      if(short||actualSavings<=0){root.querySelector('[data-six]').textContent='—';root.querySelector('[data-year]').textContent='—'}
+      else {settings.setMoney(root.querySelector('[data-six]'),(projectionSaved+actualSavings*6)/100);settings.setMoney(root.querySelector('[data-year]'),(projectionSaved+actualSavings*12)/100)}
+      root.querySelector('[data-forecast-note]').textContent=short||actualSavings<=0?'Измени месячный план, чтобы увидеть прогноз.':'Прогноз по месячному плану, если откладывать эту сумму каждый месяц.';
+    }
     root.querySelector('.pb-result').classList.toggle('is-short',short || (hasTarget && actualSavings < target));
     sliders.querySelectorAll('.pb-slider').forEach(slider=>{const range=slider.querySelector('.pb-range');const amount=slider.querySelector('.pb-slider-value input');range.max=String(Math.max(1,Math.max(0,afterFixed)/100,value(amount)));range.value=String(value(amount))});
   }

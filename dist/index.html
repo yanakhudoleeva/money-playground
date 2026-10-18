@@ -1629,13 +1629,42 @@ html&gt;body{padding:0}&lt;/style&gt;
 
     &lt;section class=&quot;pb-result&quot; aria-live=&quot;polite&quot;&gt;
       &lt;div class=&quot;pb-result-top&quot;&gt;&lt;span data-result-label&gt;МОЖНО ОТЛОЖИТЬ&lt;/span&gt;&lt;span&gt;✦&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;pb-result-value&quot;&gt;&lt;strong data-savings&gt;€1 200&lt;/strong&gt;&lt;span&gt;/ месяц&lt;/span&gt;&lt;/div&gt;&lt;p data-result-note&gt;То, что остаётся после запланированных расходов.&lt;/p&gt;
-      &lt;div class=&quot;pb-predictions&quot;&gt;&lt;div&gt;&lt;span&gt;ЧЕРЕЗ 6 МЕСЯЦЕВ&lt;/span&gt;&lt;strong data-six&gt;€7 200&lt;/strong&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;ЧЕРЕЗ ГОД&lt;/span&gt;&lt;strong data-year&gt;€14 400&lt;/strong&gt;&lt;/div&gt;&lt;/div&gt;&lt;small data-forecast-note&gt;Дополнительно, если каждый месяц всё будет так же.&lt;/small&gt;
+      &lt;button type=&quot;button&quot; class=&quot;pb-goal-open&quot; data-projection-open&gt;＋ Указать сумму цели&lt;/button&gt;
+      &lt;div class=&quot;pb-goal-form&quot; data-projection-form hidden&gt;
+        &lt;label&gt;Сколько нужно для цели?&lt;input type=&quot;text&quot; inputmode=&quot;decimal&quot; autocomplete=&quot;off&quot; aria-label=&quot;Сумма цели&quot; placeholder=&quot;Например, 20 000&quot; data-projection-target&gt;&lt;/label&gt;
+        &lt;label&gt;Уже накоплено &lt;span&gt;необязательно&lt;/span&gt;&lt;input type=&quot;text&quot; inputmode=&quot;decimal&quot; autocomplete=&quot;off&quot; aria-label=&quot;Уже накоплено&quot; placeholder=&quot;0&quot; data-projection-saved&gt;&lt;/label&gt;
+        &lt;div class=&quot;pb-goal-error&quot; role=&quot;alert&quot; data-projection-error hidden&gt;&lt;/div&gt;
+        &lt;div class=&quot;pb-goal-actions&quot;&gt;&lt;button type=&quot;button&quot; data-projection-save&gt;Показать прогноз&lt;/button&gt;&lt;button type=&quot;button&quot; data-projection-cancel&gt;Отмена&lt;/button&gt;&lt;button type=&quot;button&quot; data-projection-remove hidden&gt;Убрать цель&lt;/button&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;pb-projection&quot; data-projection hidden&gt;
+        &lt;div class=&quot;pb-goal-summary&quot;&gt;&lt;div&gt;&lt;span&gt;МОЯ ЦЕЛЬ&lt;/span&gt;&lt;strong data-projection-amount&gt;&lt;/strong&gt;&lt;small data-projection-base&gt;&lt;/small&gt;&lt;/div&gt;&lt;button type=&quot;button&quot; data-projection-edit&gt;Изменить&lt;/button&gt;&lt;/div&gt;
+        &lt;div class=&quot;pb-goal-timing&quot; data-projection-timing&gt;&lt;/div&gt;
+        &lt;div class=&quot;pb-predictions&quot;&gt;&lt;div&gt;&lt;span&gt;ЧЕРЕЗ 6 МЕСЯЦЕВ&lt;/span&gt;&lt;strong data-six&gt;&lt;/strong&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;ЧЕРЕЗ ГОД&lt;/span&gt;&lt;strong data-year&gt;&lt;/strong&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;small data-forecast-note&gt;&lt;/small&gt;
+      &lt;/div&gt;
     &lt;/section&gt;
     &lt;div class=&quot;pb-footer&quot;&gt;SMALL STEPS. BIG DREAMS. &lt;span&gt;✳&lt;/span&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;style&gt;
 #piggy-bank-plan{padding:12px 0 20px}#piggy-bank-plan *{box-sizing:border-box}#piggy-bank-plan [hidden]{display:none!important}.pb-phone{width:min(100%,430px);margin:0 auto;padding:27px 23px 22px;border-radius:32px;background:#171717;color:#fff;font-family:Arial,Helvetica,sans-serif;box-shadow:0 18px 45px #0006}.pb-head{display:flex;justify-content:space-between;align-items:start;gap:12px}.pb-brand{font-size:18px;font-weight:700;letter-spacing:-.8px;line-height:.95}.pb-brand span{display:block;font-family:&#x27;Baloo 2&#x27;,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.16px;line-height:.85;margin-top:4px;text-align:center}.pb-top-note,.pb-kicker{font-size:10px;letter-spacing:1.2px;font-weight:700;color:#a7ff27}.pb-top-note{color:#c6a5ff;text-align:right}.pb-hero{display:flex;align-items:center;min-height:168px;position:relative;margin-top:12px}.pb-hero-copy{position:relative;z-index:1;flex:1;min-width:0}.pb-hero h1{font-size:40px;line-height:1;letter-spacing:-2px;font-weight:500;margin:10px 0}.pb-hero p{font-size:13px;line-height:1.45;color:#bbb;margin:0}.pb-hero p strong{font-size:20px;color:#fff;font-weight:500}.pb-pig{width:50%;max-width:188px;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 12px 9px #0007)}.pb-intro{color:#bbb;font-size:13px;line-height:1.4;margin:0 0 17px}.pb-money-card,.pb-fixed{border-radius:20px;background:#292929;margin-top:10px}.pb-money-card{min-height:70px;padding:12px 14px;display:flex;align-items:center;gap:8px;justify-content:space-between}.pb-money-card label,.pb-fixed-toggle&gt;span{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500}.pb-money-card small,.pb-fixed-toggle small{display:block;color:#aaa;font-size:12px;font-weight:400;margin-top:3px}.pb-dot{width:36px;height:36px;flex:0 0 36px;border-radius:13px;display:grid;place-items:center;font-size:18px;font-style:normal}.pb-dot.green{background:#a7ff27;color:#26310d}.pb-dot.purple{background:#c6a5ff;color:#341d4a}.pb-dot.pink{background:#f3759a;color:#461127}.pb-amount,.pb-slider-value{display:flex;align-items:center;gap:2px;font-size:16px;color:#fff}.pb-amount&gt;span,.pb-slider-value&gt;span{color:#aaa}.pb-amount input,.pb-slider-value input{width:75px;border:0;background:transparent;color:#fff;text-align:right;font:500 19px Arial;outline:none;padding:4px 0}.pb-fixed-toggle{width:100%;min-height:70px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;background:transparent;color:#fff;text-align:left;font-family:inherit}.pb-fixed-toggle strong{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:500;white-space:nowrap}.pb-fixed-toggle i{font-style:normal;font-size:20px;color:#aaa;transition:transform .2s}.pb-fixed.is-open .pb-fixed-toggle i{transform:rotate(180deg)}.pb-fixed-details{padding:0 14px 15px}.pb-expenses{display:grid;gap:8px}.pb-expense{display:flex;align-items:center;gap:5px;min-height:44px;background:#383838;border-radius:12px;padding:0 9px;font-size:13px}.pb-expense label{flex:1;min-width:0;overflow-wrap:anywhere}.pb-expense&gt;span{color:#aaa}.pb-expense input{width:65px;border:0;background:transparent;color:#fff;text-align:right;font:14px Arial;outline:none}.pb-remove{flex:0 0 30px;width:30px;height:30px;border:0;border-radius:50%;background:#434343;color:#ccc;font:20px Arial}.pb-add-text{border:0;background:transparent;color:#a7ff27;padding:14px 0 0;font:13px Arial;text-align:left}.pb-add-form{display:flex;gap:7px;align-items:end;margin-top:12px}.pb-add-form label{min-width:0;flex:1}.pb-add-form label:nth-child(2){flex:0 0 76px}.pb-add-form label span{display:block;color:#bbb;font-size:11px;margin:0 0 5px}.pb-add-form input{width:100%;height:40px;border:0;border-radius:10px;background:#424242;color:#fff;padding:0 9px;font:14px Arial}.pb-add-form button{height:40px;border:0;border-radius:10px;background:#c6a5ff;color:#311a48;padding:0 10px;font:12px Arial;font-weight:700}.pb-flex{margin-top:26px}.pb-section-title{display:flex;justify-content:space-between;align-items:end}.pb-section-title h2{font-size:28px;letter-spacing:-1px;font-weight:500;margin:7px 0 0}.pb-note{font-size:12px;color:#aaa}.pb-subtext{font-size:12px;color:#bdbdbd;line-height:1.4;margin:10px 0 14px}.pb-subtext strong{color:#fff;font-weight:500}.pb-sliders{display:grid;gap:9px}.pb-slider{background:#292929;border-radius:18px;padding:13px 13px 11px}.pb-slider-head{display:flex;align-items:center;gap:6px}.pb-slider-head label{display:flex;align-items:center;gap:9px;flex:1;min-width:0;font-size:15px;overflow-wrap:anywhere}.pb-slider-head .pb-dot{width:31px;height:31px;flex-basis:31px;border-radius:11px;font-size:15px}.pb-slider-value{font-size:13px}.pb-slider-value input{width:58px;font-size:16px}.pb-range{width:100%;height:24px;margin:8px 0 0;accent-color:#a7ff27}.pb-slider[data-color=purple] .pb-range{accent-color:#c6a5ff}.pb-slider[data-color=pink] .pb-range{accent-color:#f3759a}.pb-add-category{padding:15px 0}.pb-category-form{margin:0 0 14px}.pb-result{margin-top:14px;border-radius:24px;padding:19px;background:linear-gradient(135deg,#eaff86,#a7ff27);color:#1f2c0d;box-shadow:0 5px 0 #608d15}.pb-result-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;letter-spacing:1.1px}.pb-result-top span:last-child{font-size:20px}.pb-result-value{display:flex;gap:7px;align-items:baseline;margin-top:5px}.pb-result-value strong{font-size:37px;font-weight:500;letter-spacing:-1.7px;line-height:1}.pb-result-value&gt;span{font-size:13px}.pb-result p{font-size:12px;line-height:1.4;margin:9px 0 16px;color:#3d4e1b}.pb-predictions{display:grid;grid-template-columns:1fr 1fr;gap:14px;border-top:1px solid #627f3355;padding-top:13px}.pb-predictions span{font-size:10px;letter-spacing:.8px;font-weight:700;display:block}.pb-predictions strong{font-size:22px;letter-spacing:-.7px;font-weight:500;display:block;margin-top:6px}.pb-result small{display:block;font-size:11px;line-height:1.4;color:#3d4e1b;margin-top:12px}.pb-result.is-short{background:linear-gradient(135deg,#ffd1dc,#f3759a);color:#48152a;box-shadow:0 5px 0 #a83b5f}.pb-result.is-short p,.pb-result.is-short small{color:#6b273e}.pb-footer{display:flex;justify-content:space-between;color:#aaa;letter-spacing:1px;font-size:10px;margin:25px 2px 0}.pb-footer span{color:#c6a5ff;font-size:16px}@media(max-width:390px){.pb-phone{padding:24px 18px 20px;border-radius:26px}.pb-hero h1{font-size:36px}.pb-pig{width:48%}.pb-result-value strong{font-size:33px}.pb-amount input{width:64px}.pb-fixed-toggle&gt;span{font-size:14px}}@media(prefers-reduced-motion:reduce){.pb-fixed-toggle i{transition:none}}
+
+#piggy-bank-plan .pb-goal-open{border:0;background:#20300e;color:#eaffae;border-radius:13px;padding:10px 13px;font:600 13px &#x27;DM Sans&#x27;,Arial,sans-serif;cursor:pointer}
+#piggy-bank-plan .pb-goal-form,#piggy-bank-plan .pb-projection{border-top:1px solid #627f3355;padding-top:14px}
+#piggy-bank-plan .pb-goal-form{display:grid;gap:11px}
+#piggy-bank-plan .pb-goal-form label{font-size:12px;font-weight:700;display:block}
+#piggy-bank-plan .pb-goal-form label span{font-weight:400;opacity:.75}
+#piggy-bank-plan .pb-goal-form input{display:block;width:100%;height:42px;margin-top:5px;padding:0 11px;border:1px solid #5b7a3d66;border-radius:11px;background:#f7ffd6;color:#20300e;font-size:16px;outline-color:#395c13}
+#piggy-bank-plan .pb-goal-actions{display:flex;flex-wrap:wrap;gap:7px}
+#piggy-bank-plan .pb-goal-actions button,#piggy-bank-plan .pb-goal-summary button{border:0;border-radius:10px;padding:9px 11px;background:#20300e;color:#eaffae;font:600 12px &#x27;DM Sans&#x27;,Arial,sans-serif;cursor:pointer}
+#piggy-bank-plan .pb-goal-actions button:not(:first-child),#piggy-bank-plan .pb-goal-summary button{background:#20300e18;color:inherit}
+#piggy-bank-plan .pb-goal-error{font-size:12px;color:#8a1438;font-weight:700}
+#piggy-bank-plan .pb-goal-summary{display:flex;align-items:start;justify-content:space-between;gap:10px}
+#piggy-bank-plan .pb-goal-summary&gt;div&gt;span{display:block;font-size:10px;letter-spacing:.8px;font-weight:700}
+#piggy-bank-plan .pb-goal-summary strong{display:block;font-size:22px;line-height:1.2;margin-top:5px;overflow-wrap:anywhere}
+#piggy-bank-plan .pb-goal-summary small{margin-top:4px}
+#piggy-bank-plan .pb-goal-timing{margin:15px 0;padding:10px 12px;border-radius:12px;background:#20300e14;font-size:13px;font-weight:700;line-height:1.4}
+#piggy-bank-plan .pb-predictions strong{font-size:clamp(17px,5vw,22px);overflow-wrap:anywhere}
 &lt;/style&gt;
 &lt;script&gt;
 (() =&gt; {
@@ -2123,8 +2152,6 @@ html&gt;body{padding:0}&lt;/style&gt;
     result.scrollIntoView({block:&#x27;start&#x27;, behavior:&#x27;auto&#x27;});
     celebrate();
   });
-  original.querySelector(&#x27;.pb-predictions&#x27;).hidden = true;
-  original.querySelector(&#x27;[data-forecast-note]&#x27;).hidden = true;
   updateIncomeTotal();
   updateExpenseTotal();
   show(1);
@@ -2137,6 +2164,29 @@ html&gt;body{padding:0}&lt;/style&gt;
   const expenses=root.querySelector(&#x27;.pb-expenses&#x27;);const sliders=root.querySelector(&#x27;.pb-sliders&#x27;);
   const settings = root.closest(&#x27;#piggy-onboarding&#x27;).moneySettings;
   const value=input=&gt;settings.number(input);
+  let projectionTarget=null, projectionSaved=0, projectionSavedSpecified=false;
+  const projectionForm=root.querySelector(&#x27;[data-projection-form]&#x27;);
+  const projectionTargetInput=root.querySelector(&#x27;[data-projection-target]&#x27;);
+  const projectionSavedInput=root.querySelector(&#x27;[data-projection-saved]&#x27;);
+  const projectionError=root.querySelector(&#x27;[data-projection-error]&#x27;);
+  function monthWord(n){const last=n%10, lastTwo=n%100;return lastTwo&gt;=11&amp;&amp;lastTwo&lt;=14?&#x27;месяцев&#x27;:last===1?&#x27;месяц&#x27;:last&gt;=2&amp;&amp;last&lt;=4?&#x27;месяца&#x27;:&#x27;месяцев&#x27;}
+  function openProjection(){
+    projectionTargetInput.value=projectionTarget===null?&#x27;&#x27;:String(projectionTarget/100);
+    projectionSavedInput.value=projectionSavedSpecified?String(projectionSaved/100):&#x27;&#x27;;
+    projectionError.hidden=true;root.querySelector(&#x27;[data-projection-remove]&#x27;).hidden=projectionTarget===null;
+    projectionForm.hidden=false;root.querySelector(&#x27;[data-projection-open]&#x27;).hidden=true;root.querySelector(&#x27;[data-projection]&#x27;).hidden=true;projectionTargetInput.focus();
+  }
+  function closeProjection(){projectionForm.hidden=true;render()}
+  function parseProjection(input,optional){const raw=input.value.trim().replace(/\s/g,&#x27;&#x27;).replace(&#x27;,&#x27;,&#x27;.&#x27;);if(optional&amp;&amp;!raw)return 0;if(!/^\d+(?:\.\d{1,2})?$/.test(raw))return null;const n=Number(raw);return Number.isFinite(n)&amp;&amp;n&lt;=100000000?Math.round(n*100):null}
+  root.querySelector(&#x27;[data-projection-open]&#x27;).addEventListener(&#x27;click&#x27;,openProjection);
+  root.querySelector(&#x27;[data-projection-edit]&#x27;).addEventListener(&#x27;click&#x27;,openProjection);
+  root.querySelector(&#x27;[data-projection-cancel]&#x27;).addEventListener(&#x27;click&#x27;,closeProjection);
+  root.querySelector(&#x27;[data-projection-remove]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{projectionTarget=null;projectionSaved=0;projectionSavedSpecified=false;closeProjection()});
+  root.querySelector(&#x27;[data-projection-save]&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{
+    const total=parseProjection(projectionTargetInput,false),saved=parseProjection(projectionSavedInput,true);
+    if(total===null||total&lt;=0||saved===null){projectionError.textContent=&#x27;Укажи сумму цели больше нуля и корректную сумму накоплений.&#x27;;projectionError.hidden=false;(total===null||total&lt;=0?projectionTargetInput:projectionSavedInput).focus();return}
+    projectionTarget=total;projectionSaved=saved;projectionSavedSpecified=projectionSavedInput.value.trim()!==&#x27;&#x27;;closeProjection();
+  });
   function render(){
     const fixedTotal=[...expenses.querySelectorAll(&#x27;input&#x27;)].reduce((sum,input)=&gt;sum+settings.cents(input),0);
     const flexTotal=[...sliders.querySelectorAll(&#x27;.pb-slider-value input&#x27;)].reduce((sum,input)=&gt;sum+settings.cents(input),0);
@@ -2158,8 +2208,21 @@ html&gt;body{padding:0}&lt;/style&gt;
     root.querySelector(&#x27;[data-result-label]&#x27;).textContent=short?&#x27;НЕ ХВАТАЕТ В МЕСЯЦ&#x27;:&#x27;МОЖНО ОТЛОЖИТЬ&#x27;;
     settings.setMoney(root.querySelector(&#x27;[data-savings]&#x27;),(short?-afterSpending:actualSavings)/100);
     root.querySelector(&#x27;[data-result-note]&#x27;).textContent=short?&#x27;Расходы выше дохода. Попробуй изменить план.&#x27;:hasTarget?(actualSavings&lt;target?&#x27;Расходы на жизнь уменьшают сумму накоплений.&#x27;:&#x27;Твоя цель накоплений учтена в балансе.&#x27;):&#x27;То, что можно отложить после запланированных расходов.&#x27;;
-    if(short){root.querySelector(&#x27;[data-six]&#x27;).textContent=&#x27;—&#x27;;root.querySelector(&#x27;[data-year]&#x27;).textContent=&#x27;—&#x27;}else{settings.setMoney(root.querySelector(&#x27;[data-six]&#x27;),actualSavings*6/100);settings.setMoney(root.querySelector(&#x27;[data-year]&#x27;),actualSavings*12/100)}
-    root.querySelector(&#x27;[data-forecast-note]&#x27;).textContent=short?&#x27;Прогноз появится, когда план уложится в доход.&#x27;:&#x27;Дополнительно, если каждый месяц всё будет так же.&#x27;;
+    const projectionVisible=projectionTarget!==null &amp;&amp; projectionForm.hidden;
+    root.querySelector(&#x27;[data-projection-open]&#x27;).hidden=projectionTarget!==null || !projectionForm.hidden;
+    root.querySelector(&#x27;[data-projection]&#x27;).hidden=!projectionVisible;
+    if(projectionVisible){
+      settings.setMoney(root.querySelector(&#x27;[data-projection-amount]&#x27;),projectionTarget/100);
+      const base=root.querySelector(&#x27;[data-projection-base]&#x27;);base.textContent=projectionSavedSpecified?&#x27;Уже накоплено: &#x27;:&#x27;Расчёт с нуля: &#x27;;
+      const baseAmount=document.createElement(&#x27;span&#x27;);settings.setMoney(baseAmount,projectionSaved/100);base.append(baseAmount);
+      const timing=root.querySelector(&#x27;[data-projection-timing]&#x27;);
+      if(projectionSaved&gt;=projectionTarget) timing.textContent=&#x27;Цель уже достигнута ✨&#x27;;
+      else if(short||actualSavings&lt;=0) timing.textContent=&#x27;По текущему плану пока нечего откладывать.&#x27;;
+      else {const months=Math.ceil((projectionTarget-projectionSaved)/actualSavings);timing.textContent=`Цель примерно через ${months} ${monthWord(months)} ✨`}
+      if(short||actualSavings&lt;=0){root.querySelector(&#x27;[data-six]&#x27;).textContent=&#x27;—&#x27;;root.querySelector(&#x27;[data-year]&#x27;).textContent=&#x27;—&#x27;}
+      else {settings.setMoney(root.querySelector(&#x27;[data-six]&#x27;),(projectionSaved+actualSavings*6)/100);settings.setMoney(root.querySelector(&#x27;[data-year]&#x27;),(projectionSaved+actualSavings*12)/100)}
+      root.querySelector(&#x27;[data-forecast-note]&#x27;).textContent=short||actualSavings&lt;=0?&#x27;Измени месячный план, чтобы увидеть прогноз.&#x27;:&#x27;Прогноз по месячному плану, если откладывать эту сумму каждый месяц.&#x27;;
+    }
     root.querySelector(&#x27;.pb-result&#x27;).classList.toggle(&#x27;is-short&#x27;,short || (hasTarget &amp;&amp; actualSavings &lt; target));
     sliders.querySelectorAll(&#x27;.pb-slider&#x27;).forEach(slider=&gt;{const range=slider.querySelector(&#x27;.pb-range&#x27;);const amount=slider.querySelector(&#x27;.pb-slider-value input&#x27;);range.max=String(Math.max(1,Math.max(0,afterFixed)/100,value(amount)));range.value=String(value(amount))});
   }
