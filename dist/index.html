@@ -3324,16 +3324,31 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 })();
 &lt;/script&gt;
 
+&lt;script&gt;
+(() =&gt; {
+  const root=document.getElementById(&#x27;piggy-onboarding&#x27;), key=&#x27;money-playground-profile-v1&#x27;, q=s=&gt;root.querySelector(s), saved=s=&gt;[...root.querySelectorAll(s)].map(r=&gt;({name:r.dataset.savedName,amount:r.dataset.savedAmount}));
+  let restoring=false,timer;
+  const snapshot=()=&gt;({goal:q(&#x27;[data-goal][aria-pressed=&quot;true&quot;]&#x27;)?.dataset.goal||&#x27;&#x27;,customGoal:q(&#x27;#on-custom-goal&#x27;)?.value||q(&#x27;.on-custom-name&#x27;)?.textContent||&#x27;&#x27;,goalAmount:q(&#x27;#on-goal-amount&#x27;)?.value||&#x27;&#x27;,currency:q(&#x27;[data-currency-option][aria-pressed=&quot;true&quot;]&#x27;)?.dataset.currencyOption||&#x27;EUR&#x27;,income:q(&#x27;[data-income]&#x27;)?.value||&#x27;&#x27;,rent:q(&#x27;[data-rent]&#x27;)?.value||&#x27;&#x27;,savings:q(&#x27;[data-savings]&#x27;)?.value||&#x27;&#x27;,incomes:saved(&#x27;.on-income-list .on-expense-row[data-saved=&quot;true&quot;]&#x27;),expenses:saved(&#x27;#on-expenses-details .on-expense-row[data-saved=&quot;true&quot;]&#x27;),planCreated:!q(&#x27;.on-result&#x27;).hidden});
+  function save(){if(restoring)return;const data=snapshot();try{localStorage.setItem(key,JSON.stringify(data))}catch(_){}try{parent.postMessage({type:&#x27;money-playground-profile-save&#x27;,payload:data},&#x27;*&#x27;)}catch(_){}}
+  function later(){clearTimeout(timer);timer=setTimeout(save,120)}
+  function value(selector,v){const el=q(selector);if(!el||typeof v!==&#x27;string&#x27;)return;el.value=v;el.dispatchEvent(new Event(&#x27;input&#x27;,{bubbles:true}))}
+  function rows(items,button){if(!Array.isArray(items))return;items.forEach(item=&gt;{if(!item?.name||item.amount===undefined)return;q(button)?.click();const list=button===&#x27;[data-add-income]&#x27;?q(&#x27;.on-income-list&#x27;):q(&#x27;#on-expenses-details .on-expense-list&#x27;),row=list?.querySelector(&#x27;.on-expense-row:last-child&#x27;);if(!row)return;const name=row.querySelector(&#x27;.on-expense-name&#x27;),amount=row.querySelector(&#x27;.on-expense-amount&#x27;);name.value=item.name;name.dispatchEvent(new Event(&#x27;input&#x27;,{bubbles:true}));amount.value=String(item.amount);amount.dispatchEvent(new Event(&#x27;input&#x27;,{bubbles:true}));row.querySelector(&#x27;.on-expense-confirm&#x27;)?.click()})}
+  function apply(data){if(!data||typeof data!==&#x27;object&#x27;)return;restoring=true;q(`[data-currency-option=&quot;${data.currency||&#x27;EUR&#x27;}&quot;]`)?.click();if(data.goal){q(`[data-goal=&quot;${data.goal}&quot;]`)?.click();if(data.goal===&#x27;Custom&#x27;&amp;&amp;data.customGoal){value(&#x27;#on-custom-goal&#x27;,data.customGoal);q(&#x27;.on-custom-confirm&#x27;)?.click()}}value(&#x27;#on-goal-amount&#x27;,data.goalAmount);value(&#x27;[data-income]&#x27;,data.income);value(&#x27;[data-rent]&#x27;,data.rent);value(&#x27;[data-savings]&#x27;,data.savings);rows(data.incomes,&#x27;[data-add-income]&#x27;);rows(data.expenses,&#x27;#on-expenses-details .on-add-expense&#x27;);if(data.planCreated)q(&#x27;[data-skip-plan]&#x27;)?.click();restoring=false}
+  root.addEventListener(&#x27;input&#x27;,later);root.addEventListener(&#x27;change&#x27;,later);root.addEventListener(&#x27;click&#x27;,()=&gt;setTimeout(later,0));try{const raw=localStorage.getItem(key);if(raw)apply(JSON.parse(raw))}catch(_){}window.addEventListener(&#x27;message&#x27;,e=&gt;{if(e.source===parent&amp;&amp;e.data?.type===&#x27;money-playground-profile-load&#x27;)apply(e.data.payload)});try{parent.postMessage({type:&#x27;money-playground-profile-request&#x27;},&#x27;*&#x27;)}catch(_){}
+})();
+&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
 <script>
 (() => {
- const frame=document.getElementById('codex-visualization'), key='money-playground-spending-v1';
+ const frame=document.getElementById('codex-visualization'), key='money-playground-spending-v1', profileKey='money-playground-profile-v1';
  window.addEventListener('message',e=>{
   if(e.source!==frame.contentWindow||!e.data)return;
   try{if(e.data.type==='money-playground-spending-save')localStorage.setItem(key,JSON.stringify(e.data.payload));
-  else if(e.data.type==='money-playground-spending-request'){const raw=localStorage.getItem(key);frame.contentWindow.postMessage({type:'money-playground-spending-load',payload:raw?JSON.parse(raw):null},'*')}}catch(_){}
+  else if(e.data.type==='money-playground-spending-request'){const raw=localStorage.getItem(key);frame.contentWindow.postMessage({type:'money-playground-spending-load',payload:raw?JSON.parse(raw):null},'*')}
+  else if(e.data.type==='money-playground-profile-save')localStorage.setItem(profileKey,JSON.stringify(e.data.payload));
+  else if(e.data.type==='money-playground-profile-request'){const raw=localStorage.getItem(profileKey);frame.contentWindow.postMessage({type:'money-playground-profile-load',payload:raw?JSON.parse(raw):null},'*')}}catch(_){}
  });
 })();
 </script>
