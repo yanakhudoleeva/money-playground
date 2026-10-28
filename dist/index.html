@@ -1,12 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>My Money Playground</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
-</head>
-<body>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
 <div id="piggy-onboarding" class="viz-dotted-background" aria-label="Знакомство с My Money Playground">
   <div class="on-phone">
     <header class="on-head"><span class="on-brand">my money<span>playground</span></span></header>
@@ -57,10 +50,9 @@
             <div class="on-expense-list"></div>
           </div>
           <button class="on-add-expense" type="button"><span class="on-add-expense-plus" aria-hidden="true">+</span><span class="on-add-expense-label">Add an expense</span></button>
-          <button class="on-field-next" type="button" data-expenses-next><span>Next: savings →</span></button>
+          <button class="on-field-next" type="button" data-expenses-next><span>Plan my money →</span></button>
         </div>
       </section>
-      <div class="on-expenses on-savings"><button class="on-expenses-toggle on-savings-toggle" type="button" aria-expanded="false" aria-controls="on-savings-details"><span class="on-icon pink"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 18c0-6 4-10 10-10 4 0 7 2 8 6l3 1-3 3c0 5-4 8-10 8H8v-8Zm4-11L9 4h4l2 3Zm1 11h8v2h-8Zm9-5a2 2 0 1 0 0 .1Z"/></svg></span><span class="on-expenses-title">I'd like to save <small class="on-optional">optional</small></span><span class="on-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><strong data-savings-total hidden></strong></button><div class="on-expenses-details" id="on-savings-details" hidden><div class="on-savings-entry"><label for="on-savings-amount">Monthly savings</label><input id="on-savings-amount" data-savings type="text" inputmode="decimal" enterkeyhint="done" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Desired monthly savings (optional)"><button class="on-savings-confirm" type="button" data-savings-done aria-label="Confirm monthly savings" hidden><span aria-hidden="true">✓</span></button></div></div></div>
       <p class="on-error" role="alert" hidden></p>
       <p class="on-ready" role="status" hidden>Ready to create your piggy bank ✨</p>
       <div class="on-actions">
@@ -79,7 +71,7 @@
     </section>
     <section class="pb-goal" aria-label="My Goal" hidden>
       <div class="pb-goal-caption">My Goal</div>
-      <div class="pb-goal-journey"><div class="pb-goal-route" aria-hidden="true"><span class="pb-route-start">✦</span><span class="pb-route-line"><i></i><i></i></span><span class="pb-route-arrow">→</span></div><strong class="pb-goal-name"></strong></div>
+      <div class="pb-goal-journey"><div class="pb-goal-route" aria-hidden="true"><span class="pb-route-start">✦</span><span class="pb-route-line"><i></i><i></i></span><span class="pb-route-coin">✦</span></div><strong class="pb-goal-name"></strong></div>
     </section>
 
     <section class="pb-plan" aria-label="Plan your month">
@@ -101,10 +93,6 @@
         <div class="pb-add-form" data-expense-form hidden><label><span>Name</span><input data-expense-name type="text" maxlength="28" placeholder="e.g. phone"></label><label><span>Amount, <span data-currency-symbol>€</span></span><input data-expense-amount type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0"></label><button class="cursor-interaction" type="button" data-add-expense>Add</button></div>
       </div>
         </section>
-        <section class="pb-fixed pb-saving-target" aria-label="Savings goal">
-          <button type="button" class="pb-fixed-toggle cursor-interaction" data-target-toggle aria-expanded="false"><span><span class="pb-dot pink"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 18c0-6 4-10 10-10 4 0 7 2 8 6l3 1-3 3c0 5-4 8-10 8H8v-8Zm4-11L9 4h4l2 3Zm1 11h8v2h-8Zm9-5a2 0 1 0 0 .1Z"/></svg></span><span>Savings goal<small>per month · optional</small></span></span><strong><span data-target-total>Not set</span><i aria-hidden="true">⌄</i></strong></button>
-          <div class="pb-fixed-details" data-target-details hidden><div class="pb-money-card pb-saving-edit"><span class="pb-summary-label">Monthly saving</span><div class="pb-amount"><span>€</span><input data-target-input type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0" aria-label="Monthly savings goal"></div></div></div>
-        </section>
       </div>
     </section>
 
@@ -125,10 +113,6 @@
       </div>
     </section>
 
-    <section class="pb-plan-glance" aria-label="Your plan at a glance">
-      <div class="pb-glance-title"><span>YOUR PLAN, AT A GLANCE</span><span>✦</span></div>
-      <div class="pb-glance-grid"><div><span>Available this month</span><strong data-month-available>€0.00</strong></div><div><span>Category limits<small>set in My Limits</small></span><strong data-month-planned>€0.00</strong></div><div><span>Still flexible</span><strong data-month-flexible>€0.00</strong></div></div>
-    </section>
 
   </div>
 </div>
@@ -170,6 +154,20 @@
 #piggy-bank-plan .pb-goal-summary small{margin-top:4px}
 #piggy-bank-plan .pb-goal-timing{margin:15px 0;padding:10px 12px;border-radius:12px;background:#20300e14;font-size:13px;font-weight:700;line-height:1.4}
 #piggy-bank-plan .pb-predictions strong{font-size:clamp(17px,5vw,22px);overflow-wrap:anywhere}
+  #piggy-onboarding .sp-summary-available{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:12px;padding-top:11px;border-top:1px solid #ffffff18;color:#c5c8bf;font:600 11px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .sp-summary-available strong{color:#a7ff27;font:700 18px 'DM Sans',Arial,sans-serif;letter-spacing:-.5px}
+  #piggy-onboarding .sp-summary-available.is-over strong{color:#f3759a}
+  #piggy-onboarding .sp-summary .sp-category-limits{display:block;margin-top:12px;padding-top:0;border:1px solid #ffffff16;border-radius:13px;background:#ffffff08;overflow:hidden}
+  #piggy-onboarding .sp-summary .sp-category-limits summary{display:flex;align-items:center;gap:8px;min-height:43px;padding:0 11px;list-style:none;cursor:pointer}
+  #piggy-onboarding .sp-summary .sp-category-limits summary::-webkit-details-marker{display:none}
+  #piggy-onboarding .sp-summary .sp-category-limits summary span{flex:1;color:#d9e0d2;font:600 12px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .sp-summary .sp-category-limits summary strong{color:#a7ff27;font:700 11px 'DM Sans',Arial,sans-serif}
+  #piggy-onboarding .sp-summary .sp-category-limits.is-over summary strong{color:#f3759a}
+  #piggy-onboarding .sp-summary .sp-category-limits summary i{color:#c6a5ff;font:18px/1 Arial;transition:transform .18s ease}
+  #piggy-onboarding .sp-summary .sp-category-limits[open] summary{border-bottom:1px solid #ffffff14}
+  #piggy-onboarding .sp-summary .sp-category-limits[open] summary i{transform:rotate(180deg)}
+  #piggy-onboarding .sp-category-limit-list{display:grid;gap:8px;padding:10px 11px 12px}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-summary .sp-category-limits summary i{transition:none}}
 </style>
 <script>
 (() => {
@@ -273,8 +271,6 @@
   }
   const number = input => Math.max(0, Number(input.value.trim().replace(',', '.')) || 0);
   const cents = input => Math.round(number(input) * 100);
-  const savingsInput = q('[data-savings]');
-  savingsInput.addEventListener('input', () => { q('[data-step="2"] .on-error').hidden = true; });
   root.moneySettings = {money, number, cents, currencySymbol, setSymbol, setMoney};
   function updateCurrencySymbols() {
     root.querySelectorAll('[data-currency-symbol], #piggy-bank-plan .pb-amount > span, #piggy-bank-plan .pb-slider-value > span, #piggy-bank-plan .pb-expense > span').forEach(item => setSymbol(item));
@@ -410,19 +406,8 @@
   const incomeTotal = () => cents(incomeInput) + savedIncomeRows().reduce((sum, row) => sum + Math.round(Number(row.dataset.savedAmount) * 100), 0);
   const incomeReady = () => incomeInput.checkValidity() && (hasValidAmount(incomeInput) || savedIncomeRows().length > 0);
   const unfinishedRows = list => !!list.querySelector('.on-expense-row[data-editing="true"], .on-expense-row[data-saved="false"]');
-  let savingsConfirmed = false;
-  const savingsToggle = q('.on-savings-toggle');
-  const savingsDetails = q('#on-savings-details');
-  function openSavings() { savingsDetails.hidden = false; savingsToggle.setAttribute('aria-expanded', 'true'); }
-  savingsToggle.addEventListener('click', () => { const open = savingsDetails.hidden; savingsDetails.hidden = !open; savingsToggle.setAttribute('aria-expanded', String(open)); if (open) savingsInput.focus(); });
   function updatePlanReadiness() {
-    const savingsReady = hasValidAmount(savingsInput);
-    savingsInput.closest('.on-savings').classList.toggle('is-complete', savingsReady && savingsConfirmed);
-    const savingsTotal = q('[data-savings-total]');
-    savingsTotal.hidden = !savingsReady;
-    savingsTotal.textContent = savingsReady ? new Intl.NumberFormat('en-IE', {maximumFractionDigits:2}).format(number(savingsInput)) : '';
-    q('[data-savings-done]').hidden = !savingsReady || savingsConfirmed;
-    planButton.disabled = !incomeReady() || !savingsInput.checkValidity() || !rentInput.checkValidity() || unfinishedRows(incomeList) || unfinishedRows(expenseList);
+    planButton.disabled = !incomeReady() || !rentInput.checkValidity() || unfinishedRows(incomeList) || unfinishedRows(expenseList);
     q('.on-ready').hidden = planButton.disabled;
   }
   function goToExpenses() {
@@ -433,25 +418,12 @@
     updatePlanReadiness();
     rentInput.focus();
   }
-  function goToSavings() {
-    if (!finishRentName()) return;
-    if (!rentInput.checkValidity()) { rentInput.reportValidity(); rentInput.focus(); return; }
-    openSavings(); savingsInput.focus();
-  }
   function goToExpenseEntry() {
     if (!finishRentName()) return;
     if (!rentInput.checkValidity()) { rentInput.reportValidity(); rentInput.focus(); return; }
     const editingName = expenseList.querySelector('.on-expense-row[data-editing="true"] .on-expense-name');
     if (editingName) editingName.focus();
     else createExpenseRow();
-  }
-  function finishSavings() {
-    if (!savingsInput.checkValidity()) { savingsInput.reportValidity(); savingsInput.focus(); return; }
-    savingsConfirmed = hasValidAmount(savingsInput);
-    updatePlanReadiness();
-    if (savingsConfirmed) { savingsDetails.hidden = true; savingsToggle.setAttribute('aria-expanded', 'false'); }
-    if (!planButton.disabled) planButton.focus();
-    else savingsInput.blur();
   }
   function onEnter(input, action) {
     input.addEventListener('keydown', event => {
@@ -461,7 +433,6 @@
   }
   onEnter(incomeInput, goToExpenses);
   onEnter(rentInput, goToExpenseEntry);
-  onEnter(savingsInput, finishSavings);
   function finishRentName() {
     if (!editingRentName) return true;
     const value = rentName.value.trim();
@@ -506,10 +477,8 @@
   });
   if (document.fonts) document.fonts.ready.then(() => [incomeInput, rentInput].forEach(sizeRowAmount));
   q('[data-income-next]').addEventListener('click', goToExpenses);
-  q('[data-expenses-next]').addEventListener('click', goToSavings);
-  q('[data-savings-done]').addEventListener('click', finishSavings);
+  q('[data-expenses-next]').addEventListener('click', () => { if (finishRentName() && rentInput.checkValidity()) planButton.focus(); });
   [incomeInput, rentInput].forEach(input => input.addEventListener('input', updatePlanReadiness));
-  savingsInput.addEventListener('input', () => { savingsConfirmed = false; updatePlanReadiness(); });
   function updateIncomeTotal() {
     const rows = savedIncomeRows();
     rows.forEach(row => renderSavedAmount(row));
@@ -563,14 +532,6 @@
     addIncome.querySelector('.on-add-expense-label').textContent = savedIncomeRows().length ? 'Add another income' : 'Add an income';
     updatePlanReadiness();
   }
-  savingsInput.addEventListener('focus', () => {
-    const draft = expenseList.querySelector('.on-expense-row[data-editing="true"]:not([data-saved="true"])');
-    if (draft && !draft.querySelector('.on-expense-name').value.trim() && !draft.querySelector('.on-expense-amount').value.trim()) {
-      draft.remove();
-      updateExpenseTotal();
-      updateAddExpense();
-    }
-  });
   updatePlanReadiness();
   function createExpenseRow(kind = 'expense') {
     const isIncome = kind === 'income';
@@ -649,7 +610,7 @@
   const storageKey = 'money-playground.personal-plan.v1';
   const savedRows = list => [...list.querySelectorAll('.on-expense-row[data-saved="true"]')].map(row => ({name: row.dataset.savedName, amount: row.dataset.savedAmount}));
   function savePersonalPlan() {
-    try { const previous=JSON.parse(localStorage.getItem(storageKey)||'{}'); localStorage.setItem(storageKey, JSON.stringify({goal, customGoalName, goalAmount:goalAmount.value, currency:selectedCurrency, income:incomeInput.value, rent:rentInput.value, rentName:savedRentName, savings:savingsInput.value, incomeRows:savedRows(incomeList), expenseRows:savedRows(expenseList), piggyOverrides:previous.piggyOverrides})); } catch (_) {}
+    try { const previous=JSON.parse(localStorage.getItem(storageKey)||'{}'); localStorage.setItem(storageKey, JSON.stringify({goal, customGoalName, goalAmount:goalAmount.value, currency:selectedCurrency, income:incomeInput.value, rent:rentInput.value, rentName:savedRentName, incomeRows:savedRows(incomeList), expenseRows:savedRows(expenseList), piggyOverrides:previous.piggyOverrides})); } catch (_) {}
   }
   function restorePersonalPlan() {
     let saved; try { saved=JSON.parse(localStorage.getItem(storageKey)||'null'); } catch (_) { return false; }
@@ -658,12 +619,11 @@
       const direct=saved.piggyOverrides;
       if (typeof direct.income === 'string') { saved.income=direct.income; saved.incomeRows=[]; }
       if (typeof direct.housing === 'string') saved.rent=direct.housing;
-      if (typeof direct.target === 'string') saved.savings=direct.target;
       if (Array.isArray(direct.expenses)) saved.expenseRows=direct.expenses;
     }
     goal=typeof saved.goal==='string'?saved.goal:''; customGoalName=typeof saved.customGoalName==='string'?saved.customGoalName:''; goalAmount.value=typeof saved.goalAmount==='string'?saved.goalAmount:'';
     if (['EUR','USD','GBP','PIGGY'].includes(saved.currency)) selectedCurrency=saved.currency;
-    incomeInput.value=typeof saved.income==='string'?saved.income:''; rentInput.value=typeof saved.rent==='string'?saved.rent:''; savingsInput.value=typeof saved.savings==='string'?saved.savings:'';
+    incomeInput.value=typeof saved.income==='string'?saved.income:''; rentInput.value=typeof saved.rent==='string'?saved.rent:'';
     savedRentName=typeof saved.rentName==='string'&&saved.rentName?saved.rentName:'Monthly rent'; rentLabel.textContent=savedRentName; rentInput.setAttribute('aria-label',savedRentName);
     const restoreRows=(rows,kind)=>(Array.isArray(rows)?rows:[]).forEach(item=>{if(!item||typeof item.name!=='string'||typeof item.amount!=='string')return;createExpenseRow(kind);const list=kind==='income'?incomeList:expenseList,row=list.lastElementChild;row.querySelector('.on-expense-name').value=item.name;row.querySelector('.on-expense-amount').value=item.amount;row.querySelector('.on-expense-confirm').click()});
     restoreRows(saved.incomeRows,'income'); restoreRows(saved.expenseRows,'expense');
@@ -674,10 +634,9 @@
   root.addEventListener('input',savePersonalPlan); root.addEventListener('change',savePersonalPlan); root.addEventListener('click',()=>setTimeout(savePersonalPlan,0));
   function createPlan(skip = false) {
     if (!skip && !finishRentName()) return;
-    const fields = [q('[data-income]'), q('[data-savings]')];
     const error = q('[data-step="2"] .on-error');
-    if (!skip && (!incomeReady() || unfinishedRows(incomeList) || !fields[1].checkValidity())) {
-      error.textContent = 'Enter your income and use up to two decimal places for amounts. Savings are optional.'; error.hidden = false; return;
+    if (!skip && (!incomeReady() || unfinishedRows(incomeList))) {
+      error.textContent = 'Enter your income and use up to two decimal places for amounts.'; error.hidden = false; return;
     }
     const allRows = [...expenseList.querySelectorAll('.on-expense-row')];
     const rows = allRows.filter(row => row.dataset.saved === 'true');
@@ -695,7 +654,6 @@
     original.dataset.incomeEntered = String(hasIncome);
     original.dataset.expensesEntered = String(hasExpenses);
     original.querySelector('#pb-income').value = String(((incomeInput.checkValidity() ? cents(incomeInput) : 0) + savedIncomeRows().reduce((sum, row) => sum + Math.round(Number(row.dataset.savedAmount) * 100), 0)) / 100);
-    original.dataset.savingsTargetCents = hasValidAmount(savingsInput) ? String(cents(savingsInput)) : '';
     if (!original.dataset.planInitialized) original.setProjectionFromOnboarding(readGoalAmount());
     original.querySelector('#pb-housing').value = String(rentInput.checkValidity() ? number(rentInput) : 0);
     original.querySelector('.pb-housing label > span:nth-child(2)').firstChild.textContent = savedRentName;
@@ -723,12 +681,10 @@
   if (restorePersonalPlan()) createPlan(true); else show(1);
 })();
 </script>
-</body>
-</html>
 <script>
 (()=>{
   const root=document.getElementById('piggy-bank-plan');
-  const income=root.querySelector('#pb-income');const housing=root.querySelector('#pb-housing');const targetInput=root.querySelector('[data-target-input]');
+  const income=root.querySelector('#pb-income');const housing=root.querySelector('#pb-housing');
   const expenses=root.querySelector('.pb-expenses');const sliders=document.createElement('div');
   const budgetKey='money-playground.category-budgets.v1';const budgetStatus=document.createElement('p');
   const settings = root.closest('#piggy-onboarding').moneySettings;
@@ -738,7 +694,6 @@
   if(expensesToggle&&expensesDetails)expensesToggle.addEventListener('click',()=>{const opening=expensesDetails.hidden;expensesDetails.hidden=!opening;expensesToggle.setAttribute('aria-expanded',String(opening));expensesToggle.closest('.pb-fixed').classList.toggle('is-open',opening)});
   function wirePlanRow(toggle,details){if(!toggle||!details)return;toggle.addEventListener('click',()=>{const opening=details.hidden;details.hidden=!opening;toggle.setAttribute('aria-expanded',String(opening));toggle.closest('.pb-fixed').classList.toggle('is-open',opening)})}
   wirePlanRow(root.querySelector('[data-income-toggle]'),root.querySelector('[data-income-details]'));
-  wirePlanRow(root.querySelector('[data-target-toggle]'),root.querySelector('[data-target-details]'));
   const value=input=>settings.number(input);
   const budgetId=name=>'budget-'+name.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
   function readBudgetPlan(){try{const data=JSON.parse(localStorage.getItem(budgetKey)||'[]');return Array.isArray(data)?data.filter(item=>item&&typeof item.id==='string'&&typeof item.name==='string'&&Number.isFinite(item.limitCents)):[]}catch(_){return[]}}
@@ -753,7 +708,7 @@
   function persistPlanEdits(){
     try{
       const key='money-playground.personal-plan.v1';const saved=JSON.parse(localStorage.getItem(key)||'{}');
-      saved.piggyOverrides={income:income.value,housing:housing.value,target:targetInput.value,expenses:[...expenses.querySelectorAll('.pb-expense')].map(row=>({name:row.querySelector('label').textContent,amount:row.querySelector('input').value}))};
+      saved.piggyOverrides={income:income.value,housing:housing.value,expenses:[...expenses.querySelectorAll('.pb-expense')].map(row=>({name:row.querySelector('label').textContent,amount:row.querySelector('input').value}))};
       localStorage.setItem(key,JSON.stringify(saved));
     }catch(_){}
   }
@@ -764,6 +719,21 @@
   const projectionError=root.querySelector('[data-projection-error]');
   root.setProjectionFromOnboarding = amount => { projectionTarget=amount; projectionSaved=0; projectionSavedSpecified=false; projectionForm.hidden=true; };
   function monthWord(n){return n===1?'month':'months'}
+  function savedFromHistory(){
+    try{
+      const state=JSON.parse(localStorage.getItem('money-playground-spending-v2')||'{}'),reports=state.monthReports&&typeof state.monthReports==='object'?state.monthReports:{},expenses=Array.isArray(state.expenses)?state.expenses:[];
+      return Object.entries(reports).reduce((total,[period,report])=>{
+        const income=Number(report?.income);if(!Number.isFinite(income)||income<=0)return total;
+        const spent=expenses.filter(item=>item.date?.slice(0,7)===period).reduce((sum,item)=>sum+Number(item.amount||0),0);
+        return total+Math.max(0,income-spent);
+      },0);
+    }catch(_){return 0}
+  }
+  function updateGoalJourney(){
+    const route=root.querySelector('.pb-goal-route');if(!route)return;
+    const saved=projectionTarget===null?0:projectionSaved+savedFromHistory(),progress=projectionTarget>0?Math.min(1,Math.max(0,saved/projectionTarget)):0;
+    route.style.setProperty('--goal-progress-position',(10+progress*80)+'%');
+  }
   function openProjection(){
     projectionTargetInput.value=projectionTarget===null?'':String(projectionTarget/100);
     projectionSavedInput.value=projectionSavedSpecified?String(projectionSaved/100):'';
@@ -789,28 +759,21 @@
     const hasExpenses=root.dataset.expensesEntered !== 'false';
     const expensesTotal=fixedTotal+settings.cents(housing);
     const afterFixed=monthlyIncome-expensesTotal;
-    const hasTarget=root.dataset.savingsTargetCents!==undefined && root.dataset.savingsTargetCents!=='';
-    const target=hasTarget?Number(root.dataset.savingsTargetCents):0;
     const overBudget=overBudgetCents();
     const afterSpending=afterFixed-flexTotal-overBudget;
     const short=afterSpending<0;
-    const actualSavings=hasTarget?Math.min(target,Math.max(0,afterSpending)):Math.max(0,afterSpending);
-    const spendable=short?afterSpending:hasTarget?Math.max(0,afterSpending-actualSavings):afterSpending;
+    const actualSavings=Math.max(0,afterSpending);
+    updateGoalJourney();
     if(hasExpenses) settings.setMoney(root.querySelector('[data-fixed-total]'),expensesTotal/100);
     else root.querySelector('[data-fixed-total]').textContent='Not entered';
     if(hasIncome) settings.setMoney(root.querySelector('[data-income-total]'),monthlyIncome/100);
     else root.querySelector('[data-income-total]').textContent='Not set';
-    if(hasTarget) settings.setMoney(root.querySelector('[data-target-total]'),target/100);
-    else root.querySelector('[data-target-total]').textContent='Not set';
-    if(document.activeElement!==targetInput)targetInput.value=hasTarget?String(target/100):'';
     const afterFixedDisplay=root.querySelector('[data-after-fixed]');
-    if(afterFixedDisplay){if(hasIncome) settings.setMoney(afterFixedDisplay,Math.abs(spendable)/100,spendable<0?'−':'');else afterFixedDisplay.textContent='—'}
-    if(hasIncome){settings.setMoney(root.querySelector('[data-month-available]'),Math.max(0,afterFixed)/100);settings.setMoney(root.querySelector('[data-month-planned]'),flexTotal/100);settings.setMoney(root.querySelector('[data-month-flexible]'),Math.max(0,spendable)/100)}
-    else root.querySelectorAll('[data-month-available],[data-month-planned],[data-month-flexible]').forEach(item=>item.textContent='—');
+    if(afterFixedDisplay){if(hasIncome) settings.setMoney(afterFixedDisplay,Math.abs(afterSpending)/100,afterSpending<0?'−':'');else afterFixedDisplay.textContent='—'}
     root.querySelector('[data-result-label]').textContent=!hasIncome?'ADD INCOME TO CALCULATE':short?'SHORT EACH MONTH':'AVAILABLE TO SAVE';
     if(hasIncome) settings.setMoney(root.querySelector('[data-savings]'),(short?-afterSpending:actualSavings)/100);
     else root.querySelector('[data-savings]').textContent='—';
-    root.querySelector('[data-result-note]').textContent=!hasIncome?'Add income and expenses whenever you are ready.':!hasExpenses?'No expenses entered yet. This calculation uses only the amounts you add.':overBudget?'You are '+settings.money(overBudget/100)+' over your category limits this month.':short?'Your expenses are higher than your income. Try adjusting your plan.':hasTarget?(actualSavings<target?'Your living expenses reduce the amount available to save.':'Your savings goal is included in this balance.'):'What you can save after your planned expenses.';
+    root.querySelector('[data-result-note]').textContent=!hasIncome?'Add income and expenses whenever you are ready.':!hasExpenses?'No expenses entered yet. This calculation uses only the amounts you add.':overBudget?'You are '+settings.money(overBudget/100)+' over your category limits this month.':short?'Your expenses are higher than your income. Try adjusting your plan.':'What you can save after your planned expenses.';
     const projectionVisible=projectionTarget!==null && projectionForm.hidden;
     root.querySelector('[data-projection-open]').hidden=projectionTarget!==null || !projectionForm.hidden;
     root.querySelector('[data-projection]').hidden=!projectionVisible;
@@ -827,7 +790,7 @@
       else {settings.setMoney(root.querySelector('[data-six]'),(projectionSaved+actualSavings*6)/100);settings.setMoney(root.querySelector('[data-year]'),(projectionSaved+actualSavings*12)/100)}
       root.querySelector('[data-forecast-note]').textContent=!hasIncome?'Add income to see your forecast.':short||actualSavings<=0?'Adjust your monthly plan to see a forecast.':'Your forecast assumes you save this amount every month.';
     }
-    root.querySelector('.pb-result').classList.toggle('is-short',hasIncome && (short || (hasTarget && actualSavings < target)));
+    root.querySelector('.pb-result').classList.toggle('is-short',hasIncome && short);
     sliders.querySelectorAll('.pb-slider').forEach(slider=>{const range=slider.querySelector('.pb-range');const amount=slider.querySelector('.pb-slider-value input');range.max=String(Math.max(1,Math.max(0,afterFixed)/100,value(amount)));range.value=String(value(amount))});
     renderBudgetUsage();
   }
@@ -835,7 +798,6 @@
   function wireSlider(row){const range=row.querySelector('.pb-range');const amount=row.querySelector('.pb-slider-value input');range.addEventListener('input',()=>{amount.value=range.value;markBudgetDirty(row);render()});amount.addEventListener('input',()=>{markBudgetDirty(row);render()});row.querySelector('.pb-budget-save').addEventListener('click',()=>saveBudgetRow(row));row.querySelector('.pb-remove').addEventListener('click',()=>removeBudgetRow(row))}
   income.addEventListener('input',()=>{root.dataset.incomeEntered=String(income.value.trim()!==''&&income.checkValidity());persistPlanEdits();render()});
   housing.addEventListener('input',()=>{root.dataset.expensesEntered=String(housing.value.trim()!==''&&housing.checkValidity()||expenses.children.length>0);persistPlanEdits();render()});
-  targetInput.addEventListener('input',()=>{root.dataset.savingsTargetCents=targetInput.value.trim()!==''&&targetInput.checkValidity()?String(settings.cents(targetInput)):'';persistPlanEdits();render()});
   expenses.querySelectorAll('.pb-expense').forEach(wireExpense);sliders.querySelectorAll('.pb-slider').forEach(wireSlider);
   root.querySelector('[data-open-expense]').addEventListener('click',()=>{root.querySelector('[data-expense-form]').hidden=false;root.querySelector('[data-expense-name]').focus()});
   root.querySelector('[data-add-expense]').addEventListener('click',()=>{const name=root.querySelector('[data-expense-name]');const amount=root.querySelector('[data-expense-amount]');const label=name.value.trim();if(!label)return;if(!amount.checkValidity()){amount.reportValidity();return}const row=document.createElement('div');row.className='pb-expense';const text=document.createElement('label');text.textContent=label;const euro=document.createElement('span');settings.setSymbol(euro);const input=document.createElement('input');input.type='text';input.inputMode='decimal';input.pattern='[0-9]+([.,][0-9]{1,2})?';input.value=String(value(amount));input.setAttribute('aria-label',label);const button=document.createElement('button');button.type='button';button.className='pb-remove cursor-interaction';button.textContent='×';button.setAttribute('aria-label','Remove '+label);row.append(text,euro,input,button);expenses.append(row);wireExpense(row);name.value='';amount.value='';root.querySelector('[data-expense-form]').hidden=true;persistPlanEdits();render()});
@@ -1063,22 +1025,12 @@
   #piggy-bank-plan .pb-route-start{display:grid;place-items:center;width:27px;height:27px;flex:0 0 27px;border-radius:50%;background:#a7ff27;color:#27350e;font-size:13px}
   #piggy-bank-plan .pb-route-line{position:relative;display:flex;justify-content:space-evenly;align-items:center;flex:1;height:2px;background:#a7ff2780}
   #piggy-bank-plan .pb-route-line i{width:6px;height:6px;border-radius:50%;background:#c6a5ff;box-shadow:0 0 0 3px #38313e}
-  #piggy-bank-plan .pb-route-arrow{font:400 22px/1 Arial,sans-serif;margin-left:-2px}
+  #piggy-bank-plan .pb-route-coin{font:700 11px/1 'DM Sans',Arial,sans-serif}
   #piggy-bank-plan .pb-goal-name{flex:0 1 auto;max-width:60%;padding:9px 14px;border-radius:14px;background:#a7ff27;color:#24320c;font:700 21px/1.15 'DM Sans',Arial,sans-serif;letter-spacing:-.5px;overflow-wrap:anywhere}
   #piggy-bank-plan .pb-goal-footnote{margin-top:10px;color:#d0c8d4;font:500 11px/1.4 'DM Sans',Arial,sans-serif}
   #piggy-bank-plan .pb-plan-details{margin-top:15px;padding-top:14px;border-top:1px solid #ffffff1a}
   #piggy-bank-plan .pb-plan-details .pb-intro{margin:0 0 11px}
   #piggy-bank-plan .pb-plan-details .pb-money-card:first-of-type{margin-top:0}
-  #piggy-bank-plan .pb-plan-glance{margin-top:16px;padding:15px;border:1px solid #c6a5ff55;border-radius:20px;background:linear-gradient(135deg,#302a38,#202024);box-shadow:0 4px 0 #0d0d0d}
-  #piggy-bank-plan .pb-glance-title{display:flex;align-items:center;justify-content:space-between;color:#c6a5ff;font:700 10px/1 'DM Sans',Arial,sans-serif;letter-spacing:1px}
-  #piggy-bank-plan .pb-glance-title span:last-child{font-size:16px;color:#a7ff27}
-  #piggy-bank-plan .pb-glance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}
-  #piggy-bank-plan .pb-glance-grid>div{min-width:0;padding:9px 8px;border-radius:12px;background:#171717}
-  #piggy-bank-plan .pb-glance-grid span{display:block;min-height:27px;color:#bdb6c5;font:500 10px/1.28 'DM Sans',Arial,sans-serif}
-  #piggy-bank-plan .pb-glance-grid small{display:block;margin-top:2px;color:#817b8a;font:500 9px/1.2 'DM Sans',Arial,sans-serif}
-  #piggy-bank-plan .pb-glance-grid strong{display:block;margin-top:5px;color:#fff;font:700 14px/1.1 'DM Sans',Arial,sans-serif;letter-spacing:-.35px;overflow-wrap:anywhere}
-  #piggy-bank-plan .pb-glance-grid>div:first-child strong{color:#a7ff27}
-  #piggy-bank-plan .pb-glance-grid>div:nth-child(2) strong{color:#c6a5ff}
   #piggy-bank-plan .pb-money-card label,#piggy-bank-plan .pb-fixed-toggle>span,#piggy-bank-plan .pb-slider-head label{font-family:'DM Sans',Arial,sans-serif;font-weight:600}
   #piggy-bank-plan .pb-fixed-toggle>span{flex:1;min-width:0}
   #piggy-bank-plan .pb-fixed-toggle>span>span:last-child{font-size:14px;line-height:1.25}
@@ -1097,8 +1049,10 @@
   /* Use the app's type scale consistently throughout the completed-plan screen. */
   #piggy-bank-plan .pb-phone input,#piggy-bank-plan .pb-phone button,#piggy-bank-plan .pb-phone label,#piggy-bank-plan .pb-phone p,#piggy-bank-plan .pb-phone span,#piggy-bank-plan .pb-phone strong{font-family:'DM Sans',Arial,sans-serif}
   #piggy-bank-plan .pb-brand span{font-family:'Baloo 2',Arial,sans-serif}
-  #piggy-bank-plan .pb-route-line{align-self:center}
-  #piggy-bank-plan .pb-route-arrow{display:grid;place-items:center;align-self:center;width:24px;height:24px;margin-left:0;color:#a7ff2780;font-family:'DM Sans',Arial,sans-serif;line-height:1;transform:none}
+  #piggy-bank-plan .pb-goal-route{position:relative;min-height:27px}
+  #piggy-bank-plan .pb-route-line{align-self:center;margin-right:12px}
+  #piggy-bank-plan .pb-route-coin{position:absolute;top:50%;left:var(--goal-progress-position,10%);display:grid;place-items:center;width:21px;height:21px;margin:0;border-radius:50%;background:#a7ff27;color:#26310d;box-shadow:0 0 0 3px #38313e,0 2px 5px #0004;font-family:'DM Sans',Arial,sans-serif;line-height:1;transform:translate(-50%,-50%);transition:left .58s cubic-bezier(.22,.8,.25,1)}
+  @media(prefers-reduced-motion:reduce){#piggy-bank-plan .pb-route-coin{transition:none}}
   /* The celebration layer reuses this image outside the hero. Keep both layers exactly coincident. */
   #piggy-onboarding .pb-pig-stage .pb-pig{width:100%!important;max-width:none!important;height:100%!important;transform:none!important}
   #piggy-bank-plan .pb-dot svg{display:block;width:19px;height:19px;fill:currentColor;stroke:none}.pb-dot.pb-category-icon{background:var(--pb-category-accent);color:#292d32}.pb-dot.pb-category-icon img{display:block;width:19px;height:19px;object-fit:contain}
@@ -1134,22 +1088,23 @@
 #piggy-onboarding .sp-page{width:min(100%,402px);min-height:640px;margin:0 auto;padding:27px 23px 100px;border-radius:32px;background:#171717;color:#fff;box-shadow:0 18px 45px #0006;font-family:'DM Sans',Arial,sans-serif}
 #piggy-onboarding .sp-head{display:flex;justify-content:space-between;align-items:center}.sp-brand{font:700 18px/.95 Arial;letter-spacing:-.8px}.sp-brand span{display:block;font:700 12px/.85 'Baloo 2',Arial;text-align:center;letter-spacing:.16px;margin-top:4px}.sp-sparkle{color:#a7ff27;font-size:20px}
 #piggy-onboarding .sp-title{margin:39px 0 4px;font:500 37px/1.05 'DM Sans',Arial;letter-spacing:-1.8px}.sp-subtitle{margin:0 0 22px;color:#aaa;font-size:13px}
-#piggy-onboarding .sp-summary{padding:14px 16px 15px;border:1px solid #3c4036;border-radius:18px;background:linear-gradient(140deg,#30382b,#252923);box-shadow:inset 0 1px #ffffff13,0 3px 0 #0b0b0b}.sp-month{display:flex;justify-content:space-between;align-items:center;color:#c6a5ff;font-size:12px;font-weight:700}.sp-month button{width:32px;height:30px;border:0;border-radius:10px;background:#ffffff0d;color:#fff;font-size:21px;cursor:pointer}.sp-month button:disabled{opacity:.3}.sp-total-label{margin-top:12px;color:#c5c8bf;font-size:11px}.sp-total{margin-top:2px;font-size:29px;letter-spacing:-1.2px;font-weight:600;overflow-wrap:anywhere}.sp-total .piggy-currency-mark{width:1em}.sp-plan-compact{display:flex;align-items:center;gap:10px;margin-top:12px;padding-top:11px;border-top:1px solid #ffffff18}.sp-plan-compact span{flex:1;color:#c5c8bf;font-size:11px}.sp-plan-compact strong{color:#a7ff27;font-size:15px;white-space:nowrap}.sp-plan-compact.is-over strong{color:#f3759a}.sp-plan-compact button{border:0;background:transparent;color:#c6a5ff;font:600 11px 'DM Sans',Arial;cursor:pointer}
+#piggy-onboarding .sp-summary{padding:15px 16px 16px;border:1px solid #3c4036;border-radius:20px;background:linear-gradient(140deg,#30382b,#252923);box-shadow:inset 0 1px #ffffff13,0 3px 0 #0b0b0b}.sp-month{display:flex;justify-content:space-between;align-items:center;color:#c6a5ff;font-size:12px;font-weight:700}.sp-month button{width:32px;height:30px;border:0;border-radius:10px;background:#ffffff0d;color:#fff;font-size:21px;cursor:pointer}.sp-month button:disabled{opacity:.3}.sp-total-label{margin-top:13px;color:#c5c8bf;font-size:11px}.sp-total{margin-top:2px;font-size:29px;letter-spacing:-1.2px;font-weight:600;overflow-wrap:anywhere}.sp-total .piggy-currency-mark{width:1em}
+#piggy-onboarding .sp-summary{padding:15px 16px 16px;border:1px solid #3c4036;border-radius:20px;background:linear-gradient(140deg,#30382b,#252923);box-shadow:inset 0 1px #ffffff13,0 3px 0 #0b0b0b}.sp-month{display:flex;justify-content:space-between;align-items:center;color:#c6a5ff;font-size:12px;font-weight:700}.sp-month button{width:32px;height:30px;border:0;border-radius:10px;background:#ffffff0d;color:#fff;font-size:21px;cursor:pointer}.sp-month button:disabled{opacity:.3}.sp-total-label{margin-top:13px;color:#c5c8bf;font-size:11px}.sp-total{margin-top:2px;font-size:29px;letter-spacing:-1.2px;font-weight:600;overflow-wrap:anywhere}.sp-total .piggy-currency-mark{width:1em}
 #piggy-onboarding .sp-section-head{display:flex;align-items:center;justify-content:space-between;margin:28px 1px 11px}.sp-section-head h2{margin:0;font-size:17px}.sp-text-button{padding:8px 0;border:0;background:none;color:#c6a5ff;font:600 13px 'DM Sans',Arial;cursor:pointer}.sp-categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.sp-cat{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:118px;padding:13px;border:1px solid #3b3b3b;border-radius:18px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px #ffffff12,0 3px 0 #101010;color:#fff;text-align:left;font:600 13px 'DM Sans',Arial;cursor:pointer}.sp-cat-name{overflow-wrap:anywhere}.sp-cat-amount{color:#aaa;font-weight:500}.sp-icon{display:grid;place-items:center;flex:none;width:35px;height:35px;border-radius:12px;font-size:19px;background:#a7ff27;color:#26310d}.sp-icon svg{display:block;width:20px;height:20px;fill:currentColor;stroke:none}.sp-icon img{display:block;width:18px;height:18px;object-fit:contain}.sp-icon.pink{background:#f3759a}.sp-icon.purple{background:#c6a5ff}.sp-icon.neutral{background:#555}.sp-empty{padding:24px 18px;border:1px dashed #555;border-radius:18px;color:#bdbdbd;font:13px/1.5 'DM Sans',Arial}.sp-empty strong{display:block;margin-bottom:4px;color:#fff;font-size:15px}.sp-add{display:flex;justify-content:center;align-items:center;gap:9px;width:100%;min-height:54px;margin-top:20px;border:0;border-radius:17px;background:#a7ff27;box-shadow:0 4px 0 #608d15;color:#26310d;font:700 15px 'DM Sans',Arial;cursor:pointer}.sp-add:disabled{opacity:.45;box-shadow:none}.sp-add span{font-size:22px;line-height:1}
 #piggy-onboarding .sp-transactions{display:grid;gap:7px}.sp-transaction{display:flex;align-items:center;gap:10px;width:100%;min-height:58px;padding:8px 11px;border:0;border-radius:15px;background:#292929;color:#fff;text-align:left;font:600 13px 'DM Sans',Arial;cursor:pointer}.sp-transaction .sp-icon{width:34px;height:34px;font-size:17px}.sp-txt{flex:1;min-width:0;overflow-wrap:anywhere}.sp-txt small{display:block;margin-top:3px;color:#aaa;font-size:11px;font-weight:400}.sp-trans-value{white-space:nowrap}.sp-nav{position:sticky;bottom:8px;z-index:10;display:flex;width:min(calc(100% - 30px),400px);margin:-75px auto 0;padding:5px;border:1px solid #ffffff1c;border-radius:20px;background:#242424;box-shadow:0 9px 25px #0009}.sp-nav button{flex:1;min-height:49px;border:0;border-radius:15px;background:transparent;color:#aaa;font:600 12px 'DM Sans',Arial;cursor:pointer}.sp-nav button[aria-current="page"]{background:#a7ff27;color:#26310d}.sp-nav .nav-icon{font-size:17px;vertical-align:-1px;margin-right:5px}.sp-nav-pig{width:27px;height:27px;object-fit:contain;vertical-align:middle;margin-right:3px}
 #piggy-onboarding .sp-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center;background:#000a}.sp-sheet{width:min(100%,402px);max-height:min(85vh,760px);overflow:auto;padding:22px 22px max(24px,env(safe-area-inset-bottom));border:1px solid #454545;border-radius:27px 27px 0 0;background:#222;color:#fff;box-shadow:0 -10px 45px #0007}.sp-sheet-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.sp-sheet h2{margin:0;font-size:22px;letter-spacing:-.5px}.sp-close{width:40px;height:40px;border:0;border-radius:50%;background:#363636;color:#fff;font-size:22px;cursor:pointer}.sp-sheet p{color:#aaa;font-size:12px;line-height:1.5}.sp-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:18px 0}.sp-pick{display:flex;align-items:center;gap:8px;min-height:58px;padding:8px;border:1px solid #444;border-radius:15px;background:#303030;color:#fff;text-align:left;font:600 12px 'DM Sans',Arial;cursor:pointer}.sp-pick[aria-pressed="true"]{border-color:#a7ff27;background:#343d2c}.sp-pick .sp-icon{width:31px;height:31px;font-size:16px}.sp-pick-name{flex:1;overflow-wrap:anywhere}.sp-check{color:#a7ff27}.sp-custom{display:flex;gap:7px}.sp-custom input{flex:1;min-width:0}.sp-input,.sp-select{width:100%;min-height:50px;padding:11px 13px;border:1px solid #4a4a4a;border-radius:13px;background:#303030;color:#fff;font:500 15px 'DM Sans',Arial;color-scheme:dark}.sp-custom button{border:0;border-radius:13px;padding:0 15px;background:#c6a5ff;color:#30243c;font-weight:700;cursor:pointer}.sp-field{display:block;margin-top:16px;color:#bbb;font-size:12px;font-weight:600}.sp-field input,.sp-field select{display:block;margin-top:6px}.sp-error{color:#ff9db7!important}.sp-danger{display:block;margin:12px auto 0;padding:10px;border:0;background:none;color:#f3759a;font:600 13px 'DM Sans',Arial;cursor:pointer}.sp-category-select{position:relative;margin-top:6px}.sp-select-trigger{display:flex;align-items:center;gap:8px;width:100%;min-height:54px;padding:8px 11px;border:1px solid #4a4a4a;border-radius:13px;background:#303030;color:#fff;text-align:left;font:500 15px 'DM Sans',Arial;cursor:pointer}.sp-select-trigger .sp-selected-category{flex:1}.sp-select-trigger .sp-icon{width:35px;height:35px;border-radius:12px}.sp-select-trigger .sp-icon img{width:18px;height:18px}.sp-select-chevron{color:#aaa;font-size:18px}.sp-category-options{position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:5;max-height:250px;overflow:auto;padding:6px;border:1px solid #4a4a4a;border-radius:14px;background:#292929;box-shadow:0 8px 20px #0009}.sp-category-option{display:flex;align-items:center;gap:9px;width:100%;min-height:43px;padding:6px 8px;border:0;border-radius:10px;background:transparent;color:#fff;text-align:left;font:500 13px 'DM Sans',Arial;cursor:pointer}.sp-category-option:hover,.sp-category-option[aria-selected=true]{background:#ffffff12}.sp-category-option .sp-icon{width:30px;height:30px;border-radius:10px}.sp-category-option .sp-icon img{width:16px;height:16px}.sp-select-trigger:focus-visible,.sp-category-option:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
 #piggy-onboarding .sp-page button:focus-visible,#piggy-onboarding .sp-overlay :focus-visible,#piggy-onboarding .sp-nav button:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}@media(max-width:390px){#piggy-onboarding .sp-page{padding:24px 18px 100px;border-radius:26px}.sp-title{font-size:34px}}
 #piggy-onboarding .sp-picker-item{position:relative;min-width:0}#piggy-onboarding .sp-picker-item .sp-pick{width:100%;height:100%}#piggy-onboarding .sp-picker-item:has(.sp-remove-category) .sp-pick{padding-right:34px}#piggy-onboarding .sp-remove-category{position:absolute;z-index:1;right:4px;top:50%;transform:translateY(-50%);width:31px;height:36px;border:0;border-radius:10px;background:transparent;color:#f3759a;font:20px/1 Arial;cursor:pointer}#piggy-onboarding .sp-remove-category:focus-visible{outline:2px solid #c6a5ff;outline-offset:1px}
 #piggy-onboarding .sp-plan{margin-top:17px}#piggy-onboarding .sp-progress{height:7px;overflow:hidden;border-radius:999px;background:#ffffff20}#piggy-onboarding .sp-progress span{display:block;height:100%;border-radius:inherit;background:#a7ff27}#piggy-onboarding .sp-plan.is-over .sp-progress span{background:#f3759a}#piggy-onboarding .sp-progress-caption{display:flex;justify-content:space-between;gap:10px;margin-top:8px;color:#aeb4a8;font:500 11px 'DM Sans',Arial}#piggy-onboarding .sp-plan-label{margin-top:22px;color:#d9e0d2;font:600 12px 'DM Sans',Arial}#piggy-onboarding .sp-plan-value{margin-top:3px;color:#a7ff27;font:600 29px/1.2 'DM Sans',Arial;letter-spacing:-1px;overflow-wrap:anywhere}#piggy-onboarding .sp-plan.is-over .sp-plan-value{color:#f3759a}#piggy-onboarding .sp-plan-copy{margin:5px 0 0;color:#e0e3dd;font:400 12px/1.45 'DM Sans',Arial}#piggy-onboarding .sp-plan-copy strong{font-weight:700}#piggy-onboarding .sp-plan-footnote,#piggy-onboarding .sp-plan-note{margin:15px 0 0;color:#aeb4a8;font:400 11px/1.4 'DM Sans',Arial}#piggy-onboarding .sp-adjust-target,#piggy-onboarding .sp-plan-empty button{margin-top:7px;padding:5px 0;border:0;background:transparent;color:#c6a5ff;font:600 12px 'DM Sans',Arial;text-align:left;cursor:pointer}#piggy-onboarding .sp-plan-empty{margin-top:18px;padding-top:15px;border-top:1px solid #ffffff18}#piggy-onboarding .sp-plan-empty p{margin:0;color:#c9cec5;font:400 12px/1.4 'DM Sans',Arial}
-.sp-quick{margin-top:17px;padding:15px;border:1px solid #3c4036;border-radius:20px;background:#222}.sp-quick-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.sp-quick h2{margin:0;font-size:16px}.sp-quick-head span{color:#a7ff27;font-size:11px;font-weight:600}.sp-quick-amount{margin:13px 0 10px;text-align:center;font:600 31px/1 'DM Sans',Arial;letter-spacing:-1.5px}.sp-quick-categories{display:flex;gap:7px;overflow-x:auto;padding:1px 0 9px;scrollbar-width:none}.sp-quick-category{flex:none;max-width:112px;padding:8px 10px;border:1px solid #4a4a4a;border-radius:999px;background:#303030;color:#d9d9d9;font:600 11px 'DM Sans',Arial;cursor:pointer}.sp-quick-category[aria-pressed="true"]{border-color:#a7ff27;background:#343d2c;color:#fff}.sp-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.sp-key{min-height:42px;border:0;border-radius:12px;background:#343434;color:#fff;font:600 17px 'DM Sans',Arial;cursor:pointer}.sp-key:active{background:#454545}.sp-key.is-action{color:#c6a5ff}.sp-key.is-save{background:#a7ff27;color:#26310d;font-size:13px}.sp-quick-hint{margin:10px 0 0;color:#aeb4a8;font-size:11px;text-align:center}
-#piggy-onboarding .sp-quick-categories{padding:1px 0 10px}.sp-quick-category{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;max-width:none;padding:8px 10px;text-align:left}.sp-quick-category>span:not(.sp-icon){flex:1}.sp-quick-category:after{content:'Change';color:#c6a5ff;font-size:10px}.sp-quick-category .sp-icon{width:22px;height:22px;border-radius:8px;font-size:12px}.sp-quick-category .sp-icon svg{width:13px;height:13px}.sp-key.is-save{grid-column:span 3}.sp-added{position:fixed;z-index:1100;right:50%;bottom:88px;transform:translate(50%,18px);display:flex;align-items:center;gap:9px;padding:11px 15px;border:1px solid #a7ff2780;border-radius:15px;background:#293020;color:#fff;font:600 13px 'DM Sans',Arial;box-shadow:0 10px 24px #0008;opacity:0;pointer-events:none}.sp-added.is-visible{animation:sp-added 1.8s ease both}.sp-added-mark{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#a7ff27;color:#26310d;font-size:15px;font-weight:700}@keyframes sp-added{0%{opacity:0;transform:translate(50%,18px) scale(.92)}16%,82%{opacity:1;transform:translate(50%,0) scale(1)}100%{opacity:0;transform:translate(50%,-6px) scale(.96)}}
-#piggy-onboarding .sp-quick-recent{margin:0 0 11px;padding:10px 0 1px;border-top:1px solid #ffffff12}.sp-quick-recent-title{display:block;margin:0 1px 7px;color:#aeb4a8;font:700 9px 'DM Sans',Arial;letter-spacing:.9px}.sp-quick-recent-row{display:flex;gap:7px;overflow-x:auto;padding:1px 1px 3px;scrollbar-width:none}.sp-quick-recent-row::-webkit-scrollbar{display:none}.sp-quick-recent-item{display:flex;align-items:center;gap:5px;flex:none;max-width:128px;padding:6px 8px;border:1px solid #4a4a4a;border-radius:10px;background:#303030;color:#d9d9d9;font:600 10px 'DM Sans',Arial;cursor:pointer}.sp-quick-recent-item[aria-pressed="true"]{border-color:#a7ff27;background:#343d2c;color:#fff}.sp-quick-recent-item .sp-icon{width:20px;height:20px;border-radius:7px}.sp-quick-recent-item .sp-icon img{width:12px;height:12px}
+#piggy-onboarding .sp-plan{margin-top:12px}.sp-daily{display:grid;grid-template-columns:1fr auto;gap:3px 12px;padding-top:12px;border-top:1px solid #ffffff18}.sp-daily-label{color:#d9e0d2;font:600 12px 'DM Sans',Arial}.sp-daily-set{padding:0;border:0;background:transparent;color:#c6a5ff;font:600 11px 'DM Sans',Arial;cursor:pointer}.sp-daily-value{color:#aeb4a8;font:500 11px 'DM Sans',Arial}.sp-daily-value strong{color:#fff;font-weight:600}.sp-daily .sp-progress{grid-column:1/-1;height:6px;margin-top:5px}.sp-daily.is-over .sp-progress span{background:#f3759a}.sp-quick{margin-top:17px;padding:15px;border:1px solid #3c4036;border-radius:20px;background:#222}.sp-quick-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.sp-quick h2{margin:0;font-size:16px}.sp-quick-head span{color:#a7ff27;font-size:11px;font-weight:600}.sp-quick-amount{margin:13px 0 10px;text-align:center;font:600 31px/1 'DM Sans',Arial;letter-spacing:-1.5px}.sp-quick-categories{display:flex;gap:7px;overflow-x:auto;padding:1px 0 9px;scrollbar-width:none}.sp-quick-category{flex:none;max-width:112px;padding:8px 10px;border:1px solid #4a4a4a;border-radius:999px;background:#303030;color:#d9d9d9;font:600 11px 'DM Sans',Arial;cursor:pointer}.sp-quick-category[aria-pressed="true"]{border-color:#a7ff27;background:#343d2c;color:#fff}.sp-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.sp-key{min-height:42px;border:0;border-radius:12px;background:#343434;color:#fff;font:600 17px 'DM Sans',Arial;cursor:pointer}.sp-key:active{background:#454545}.sp-key.is-action{color:#c6a5ff}.sp-key.is-save{background:#a7ff27;color:#26310d;font-size:13px}.sp-quick-hint{margin:10px 0 0;color:#aeb4a8;font-size:11px;text-align:center}
 #piggy-onboarding .sp-recap-button{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:14px;padding:16px;border:1px solid #c6a5ff55;border-radius:17px;background:linear-gradient(125deg,#382d43,#29272d);color:#fff;text-align:left;font:700 14px 'DM Sans',Arial;cursor:pointer}
 #piggy-onboarding .sp-recap-button span{display:block;color:#c6a5ff;font-size:11px;font-weight:500;margin-top:4px}
 #piggy-onboarding .sp-recap-button b{color:#c6a5ff;font-size:21px}
 #piggy-onboarding .sp-chart-open{display:flex;align-items:center;gap:11px;width:100%;margin-top:11px;padding:14px 16px;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(125deg,#303030,#252525);box-shadow:inset 0 1px #ffffff12,0 3px 0 #101010;color:#fff;text-align:left;font:700 14px 'DM Sans',Arial;cursor:pointer}.sp-chart-open .sp-chart-mark{display:grid;place-items:center;width:33px;height:33px;border-radius:11px;background:#a7ff27;color:#26310d;font:700 23px/1 Arial}.sp-chart-open div{flex:1}.sp-chart-open span:not(.sp-chart-mark){display:block;margin-top:3px;color:#bbb;font-size:11px;font-weight:500}.sp-chart-open b{color:#a7ff27;font-size:21px}.sp-chart{margin-top:11px;padding:17px;border:1px solid #3b3b3b;border-radius:20px;background:#252525;box-shadow:inset 0 1px #ffffff12,0 3px 0 #101010}.sp-chart-head{display:flex;justify-content:space-between;gap:12px}.sp-chart-head h2{margin:0;font-size:17px}.sp-chart-head p{margin:4px 0 0;color:#aaa;font-size:11px}.sp-chart-head button{width:29px;height:29px;border:0;border-radius:10px;background:#3a3a3a;color:#fff;font:22px/1 Arial;cursor:pointer}.sp-pie{width:min(178px,60vw);aspect-ratio:1;margin:18px auto;border:8px solid #171717;border-radius:50%;box-shadow:0 7px 18px #0007,inset 0 1px #ffffff2b}.sp-pie-list{display:grid;gap:7px}.sp-pie-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid #ffffff12;font-size:12px}.sp-pie-row .sp-icon{width:26px;height:26px;border-radius:9px}.sp-pie-row .sp-icon svg,.sp-pie-row .sp-icon img{width:13px;height:13px}.sp-pie-row .sp-icon.chart-icon{background:var(--sp-accent);color:#241f2c}.sp-pie-row span{flex:1;overflow-wrap:anywhere}.sp-pie-row strong{font-weight:600}.sp-chart-open:focus-visible,.sp-chart-head button:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
 #piggy-onboarding .sp-icon{background:var(--sp-accent,#a7ff27)}
 #piggy-onboarding .sp-nav{position:fixed;right:50%;bottom:max(12px,env(safe-area-inset-bottom));left:auto;transform:translateX(50%);width:min(calc(100% - 30px),400px);margin:0}
+#piggy-onboarding .sp-quick-categories{padding:1px 2px 10px;scroll-snap-type:x proximity}.sp-quick-categories:after{content:'›';align-self:center;color:#c6a5ff;font-size:20px;line-height:1}.sp-quick-category{display:flex;align-items:center;gap:5px;max-width:132px;padding:7px 10px;scroll-snap-align:start}.sp-quick-category .sp-icon{width:22px;height:22px;border-radius:8px;font-size:12px}.sp-quick-category .sp-icon svg{width:13px;height:13px}
+#piggy-onboarding .sp-key.is-save{grid-column:span 3}.sp-added{position:fixed;z-index:1100;right:50%;bottom:88px;transform:translate(50%,18px);display:flex;align-items:center;gap:9px;padding:11px 15px;border:1px solid #a7ff2780;border-radius:15px;background:#293020;color:#fff;font:600 13px 'DM Sans',Arial;box-shadow:0 10px 24px #0008;opacity:0;pointer-events:none}.sp-added.is-visible{animation:sp-added 1.8s ease both}.sp-added-mark{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#a7ff27;color:#26310d;font-size:15px;font-weight:700}@keyframes sp-added{0%{opacity:0;transform:translate(50%,18px) scale(.92)}16%,82%{opacity:1;transform:translate(50%,0) scale(1)}100%{opacity:0;transform:translate(50%,-6px) scale(.96)}}
 #piggy-onboarding .mr-overlay{position:relative;width:100%}
 #piggy-onboarding .mr-page{width:min(100%,402px);min-height:100%;margin:0 auto;padding:27px 23px 36px;background:#171717;color:#fff;font-family:'DM Sans',Arial,sans-serif}
 #piggy-onboarding .mr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px}
@@ -1231,6 +1186,7 @@
 #piggy-onboarding .on-action-links .on-skip{min-width:0;margin:6px 0 0;padding:0 14px}
 #piggy-bank-plan .pb-phone{width:min(100%,402px);min-height:calc(100vh - 32px);min-height:calc(100dvh - 32px)}
 #piggy-onboarding .sp-page{width:min(100%,402px);min-height:calc(100vh - 32px);min-height:calc(100dvh - 32px);padding-bottom:180px}
+#piggy-onboarding .sp-page>.sp-add{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));z-index:9;width:min(calc(100vw - 46px),356px);margin:0;transform:translateX(-50%)}
 #piggy-onboarding .sp-nav{position:fixed;left:50%;bottom:max(8px,env(safe-area-inset-bottom));margin:0;transform:translateX(-50%)}
 #piggy-onboarding .sp-sheet form>.sp-add{position:sticky;bottom:0;z-index:2;box-shadow:0 -10px 18px #222;margin-top:12px}
 #piggy-onboarding .sp-sheet>[data-done]{position:sticky;bottom:0;z-index:2;margin-top:12px;box-shadow:0 -10px 18px #222}
@@ -1298,14 +1254,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  const settings=root.moneySettings, key='money-playground-spending-v2';
  const categoryAccents={home:'#F3759A',groceries:'#A7FF27',eating:'#FFAD53',transport:'#55D7DF',fun:'#C6A5FF',travel:'#88A9FF',shopping:'#F08AC2',care:'#FF956B',health:'#6BD98A',subscriptions:'#9DABFF',gifts:'#FFD84D',education:'#73C8F2',pets:'#D38BE8',family:'#58D7BD',debt:'#FF8172',other:'#B4BBC6'};
  const catalog=[['home','Home & Bills','home','purple'],['groceries','Groceries','groceries','green'],['eating','Eating Out','eating','pink'],['transport','Transport','transport','green'],['fun','Fun & Entertainment','fun','purple'],['travel','Travel','travel','green'],['shopping','Shopping','shopping','pink'],['care','Personal Care','care','pink'],['health','Health & Wellness','health','green'],['subscriptions','Subscriptions','subscriptions','purple'],['gifts','Gifts & Giving','gifts','green'],['education','Education & Work','education','pink'],['pets','Pets','pets','purple'],['family','Family & Kids','family','green'],['debt','Debt & Fees','debt','pink'],['other','Other','other','neutral']].map(([id,name,icon,color])=>({id,name,icon,color,accent:categoryAccents[id]}));
- let state={selected:[],custom:[],expenses:[]}, month=new Date();month.setDate(1);let pending=false,quickAmount='',quickCategory='',activeTab='spending';let historyFilters={date:'',min:'',max:'',category:''};
+ let state={selected:[],custom:[],expenses:[],dailyLimitCents:null}, month=new Date();month.setDate(1);let pending=false,quickAmount='',quickCategory='',activeTab='spending';let historyFilters={date:'',min:'',max:'',category:''};
  const page=document.createElement('section');page.className='sp-page';page.hidden=false;page.setAttribute('aria-label','My Spending');
- page.innerHTML='<header class="sp-head"><span class="sp-brand">my money<span>playground</span></span><span class="sp-sparkle" aria-hidden="true">✳</span></header><button class="sp-history-open" type="button" data-open-history aria-label="Open expense history"><span aria-hidden="true">⌁</span> History</button><h1 class="sp-title">My Spending.</h1><p class="sp-subtitle">A little look at where your money goes.</p><div class="sp-summary"><div class="sp-month"><button type="button" data-prev aria-label="Previous month">‹</button><span data-month></span><button type="button" data-next-month aria-label="Next month">›</button></div><div class="sp-total-label">Total spent</div><div class="sp-total" data-total>€0.00</div><div data-spending-plan aria-live="polite"></div></div><section class="sp-quick" aria-label="Quick expense"><div class="sp-quick-head"><h2>Quick add</h2><span>Today</span></div><div class="sp-quick-amount" data-quick-amount>€0.00</div><div class="sp-quick-categories" data-quick-categories></div><div class="sp-keypad" data-keypad><button class="sp-key" type="button" data-key="1">1</button><button class="sp-key" type="button" data-key="2">2</button><button class="sp-key" type="button" data-key="3">3</button><button class="sp-key" type="button" data-key="4">4</button><button class="sp-key" type="button" data-key="5">5</button><button class="sp-key" type="button" data-key="6">6</button><button class="sp-key" type="button" data-key="7">7</button><button class="sp-key" type="button" data-key="8">8</button><button class="sp-key" type="button" data-key="9">9</button><button class="sp-key is-action" type="button" data-key="clear" aria-label="Clear amount">⌫</button><button class="sp-key" type="button" data-key="0">0</button><button class="sp-key is-save" type="button" data-key="save">Add</button></div><p class="sp-quick-hint" data-quick-hint>Choose a category, then enter an amount.</p></section><button type="button" class="sp-recap-button" data-recap><div>My monthly recap<span>See your month at a glance</span></div><b>↗</b></button><button class="sp-add" type="button" data-add><span>+</span> More details ✳</button>';
- page.querySelector('[data-add]').remove();
- page.querySelector('[data-quick-categories]').insertAdjacentHTML('afterend','<div class="sp-quick-recent" data-quick-recent hidden></div>');
+ page.innerHTML='<header class="sp-head"><span class="sp-brand">my money<span>playground</span></span><span class="sp-sparkle" aria-hidden="true">✳</span></header><button class="sp-history-open" type="button" data-open-history aria-label="Open expense history"><span aria-hidden="true">⌁</span> History</button><h1 class="sp-title">My Spending.</h1><p class="sp-subtitle">A little look at where your money goes.</p><div class="sp-summary"><div class="sp-month"><button type="button" data-prev aria-label="Previous month">‹</button><span data-month></span><button type="button" data-next-month aria-label="Next month">›</button></div><div class="sp-total-label">Total spent</div><div class="sp-total" data-total>€0.00</div><div class="sp-summary-available"><span>Available to spend</span><strong data-available-spend>€0.00</strong></div><div data-spending-plan aria-live="polite"></div></div><section class="sp-quick" aria-label="Quick expense"><div class="sp-quick-head"><h2>Quick add</h2><span>Today</span></div><div class="sp-quick-amount" data-quick-amount>€0.00</div><div class="sp-quick-categories" data-quick-categories></div><div class="sp-keypad" data-keypad><button class="sp-key" type="button" data-key="1">1</button><button class="sp-key" type="button" data-key="2">2</button><button class="sp-key" type="button" data-key="3">3</button><button class="sp-key" type="button" data-key="4">4</button><button class="sp-key" type="button" data-key="5">5</button><button class="sp-key" type="button" data-key="6">6</button><button class="sp-key" type="button" data-key="7">7</button><button class="sp-key" type="button" data-key="8">8</button><button class="sp-key" type="button" data-key="9">9</button><button class="sp-key is-action" type="button" data-key="clear" aria-label="Clear amount">⌫</button><button class="sp-key" type="button" data-key="0">0</button><button class="sp-key is-save" type="button" data-key="save">Add</button></div><p class="sp-quick-hint" data-quick-hint>Choose a category, then enter an amount.</p></section><button type="button" class="sp-recap-button" data-recap><div>My monthly recap<span>See your month at a glance</span></div><b>↗</b></button><button type="button" class="sp-chart-open" data-chart-open hidden><span class="sp-chart-mark" aria-hidden="true">◔</span><div>Spending pie<span>See your categories grow</span></div><b>↗</b></button><section class="sp-chart" data-spending-chart hidden aria-live="polite"></section><button class="sp-add" type="button" data-add><span>+</span> Add details</button>';
  const limits=document.createElement('section');limits.className='sp-page';limits.hidden=true;limits.setAttribute('aria-label','My Limits');limits.innerHTML='<header class="sp-head"><span class="sp-brand">my money<span>playground</span></span><span class="sp-sparkle" aria-hidden="true">✳</span></header><h1 class="sp-title">My Limits.</h1><p class="sp-subtitle">Set a limit for each category — your goal stays visible as you spend.</p><div data-limits-content aria-live="polite"></div>';
- const analytics=document.createElement('section');analytics.className='sp-page';analytics.hidden=true;analytics.setAttribute('aria-label','Analytics');analytics.innerHTML='<header class="sp-head"><span class="sp-brand">my money<span>playground</span></span><span class="sp-sparkle" aria-hidden="true">✳</span></header><h1 class="sp-title">Analytics.</h1><p class="sp-subtitle">Your money, at a glance.</p><section class="sp-chart" data-spending-chart hidden aria-live="polite"></section><button type="button" class="sp-recap-button" data-recap><div>My monthly recap<span>See your month at a glance</span></div><b>↗</b></button>';
+ const analytics=document.createElement('section');analytics.className='sp-page';analytics.hidden=true;analytics.setAttribute('aria-label','Analytics');analytics.innerHTML='<header class="sp-head"><span class="sp-brand">my money<span>playground</span></span><span class="sp-sparkle" aria-hidden="true">✳</span></header><h1 class="sp-title">Analytics.</h1><p class="sp-subtitle">Your money, at a glance.</p><button type="button" class="sp-recap-button" data-recap><div>My monthly recap<span>See your month at a glance</span></div><b>↗</b></button>';
  const nav=document.createElement('nav');nav.className='sp-nav';nav.setAttribute('aria-label','Main navigation');nav.innerHTML='<button type="button" data-tab="spending" aria-current="page"><span class="nav-icon" aria-hidden="true">◉</span> My Spending</button><button type="button" data-tab="limits"><span class="nav-icon" aria-hidden="true">⌁</span> My Limits</button><button type="button" data-tab="analytics"><span class="nav-icon" aria-hidden="true">◔</span> Analytics</button><button type="button" data-tab="bank"><img class="sp-nav-pig" alt=""> My Piggy Bank</button>';
+ page.querySelector('[data-add]').innerHTML='<span>+</span> More details ✳';
  page.querySelector('[data-recap]').hidden=true;
  const keypad=page.querySelector('[data-keypad]'),addKey=keypad.querySelector('[data-key="save"]'),decimalKey=document.createElement('button');decimalKey.className='sp-key';decimalKey.type='button';decimalKey.dataset.key='.';decimalKey.textContent='.';decimalKey.setAttribute('aria-label','Decimal point');keypad.insertBefore(decimalKey,addKey);
  const added=document.createElement('div');added.className='sp-added';added.setAttribute('role','status');added.innerHTML='<span class="sp-added-mark">✓</span><span>Expense added</span>';root.append(added);
@@ -1326,38 +1281,32 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  try{parent.postMessage({type:'money-playground-spending-request'},'*')}catch(_){}
  function renderSpendingPlan(spent,period){
   const panel=q('[data-spending-plan]');
-  if(period!==monthKey(new Date())){panel.innerHTML='<p class="sp-plan-note">The spending plan is available for the current month only.</p>';return}
-  const income=settings.cents(bank.querySelector('#pb-income')),targetText=bank.dataset.savingsTargetCents;
-  if(bank.dataset.incomeEntered==='false'){panel.innerHTML='<div class="sp-plan-empty"><p>Add your income to see your spending plan.</p></div>';return}
-  if(targetText===undefined||targetText===''){panel.innerHTML='<div class="sp-plan-compact"><span>Set a goal to see your available spending</span><button type="button" data-set-target>Set goal ↗</button></div>';return}
-  const target=Number(targetText),allowance=Math.max(0,income-target),remaining=allowance-spent,over=spent>allowance||target>income,amount=over?(target>income?target-income:spent-allowance):remaining;
-  panel.innerHTML='<div class="sp-plan-compact '+(over?'is-over':'')+'"><span>'+((target>income)?'Goal is above income':over?'Over spending plan':'Available to spend')+'</span><strong data-plan-value></strong><button type="button" data-set-target aria-label="Edit savings target">Edit</button></div>';money(q('[data-plan-value]',panel),amount);
+  if(period!==monthKey(new Date())){panel.innerHTML='<p class="sp-plan-note">Daily tracking is available for the current month.</p>';return}
+  if(bank.dataset.incomeEntered==='false'){panel.innerHTML='<div class="sp-plan-empty"><p>Add your income to set a daily limit.</p></div>';return}
+  const income=settings.cents(bank.querySelector('#pb-income')),days=new Date(month.getFullYear(),month.getMonth()+1,0).getDate(),suggested=Math.max(0,Math.round(income/days)),limit=Number.isFinite(Number(state.dailyLimitCents))&&state.dailyLimitCents!==null?Number(state.dailyLimitCents):suggested,todaySpent=state.expenses.filter(e=>e.date===today()).reduce((n,e)=>n+e.amount,0),percentage=limit>0?Math.min(100,Math.round(todaySpent/limit*100)):(todaySpent>0?100:0),over=limit>0&&todaySpent>limit;
+  panel.innerHTML='<div class="sp-plan"><div class="sp-daily '+(over?'is-over':'')+'"><span class="sp-daily-label">Today</span><button class="sp-daily-set" type="button" data-set-daily>Daily limit · <span data-daily-limit></span> ↗</button><span class="sp-daily-value"><strong data-today-spent></strong> spent today</span><span class="sp-daily-value">'+(over?'Over by ':'Left ' )+'<strong data-daily-left></strong></span><div class="sp-progress" role="progressbar" aria-label="Today’s spending against daily limit" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+percentage+'"><span style="width:'+percentage+'%"></span></div></div></div>';
+  money(q('[data-daily-limit]',panel),limit);money(q('[data-today-spent]',panel),todaySpent);money(q('[data-daily-left]',panel),Math.abs(limit-todaySpent));
   }
+ function dailyLimitForm(){const suggested=Math.max(0,Math.round(settings.cents(bank.querySelector('#pb-income'))/new Date(month.getFullYear(),month.getMonth()+1,0).getDate())),old=state.dailyLimitCents===null||state.dailyLimitCents===undefined?suggested:state.dailyLimitCents;open('Daily spending limit','<p>Set the amount you are comfortable spending each day.</p><form data-daily-limit-form><label class="sp-field">Daily limit<input class="sp-input" name="limit" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off" required value="'+(old/100).toFixed(2)+'"></label><p class="sp-error" data-error hidden></p><button class="sp-add" type="submit">Save daily limit</button></form>');const form=q('[data-daily-limit-form]',overlay),input=form.elements.namedItem('limit');form.onsubmit=e=>{e.preventDefault();const raw=input.value.trim().replace(',','.'),n=Number(raw);if(!/^\d+(?:\.\d{1,2})?$/.test(raw)||!Number.isFinite(n)||n<0||n>100000000){const error=q('[data-error]',overlay);error.textContent='Enter an amount with up to two decimal places.';error.hidden=false;input.focus();return}state.dailyLimitCents=Math.round(n*100);pending=true;save();render();close()}}
  function limitSpending(id,period){return state.expenses.filter(item=>item.category===id&&item.date?.slice(0,7)===period).reduce((sum,item)=>sum+Number(item.amount||0),0)}
  function saveLimits(plan,refresh=true){try{localStorage.setItem('money-playground.category-budgets.v1',JSON.stringify(plan))}catch(_){}window.dispatchEvent(new CustomEvent('money-playground-budget-plan',{detail:plan}));window.dispatchEvent(new Event('money-playground-spending-updated'));if(refresh)render()}
- function limitProjection(plan){const period=monthKey(new Date()),target=Number(bank.dataset.savingsTargetCents||0),hasTarget=bank.dataset.savingsTargetCents!==undefined&&bank.dataset.savingsTargetCents!=='',hasIncome=bank.dataset.incomeEntered!=='false',income=hasIncome?settings.cents(bank.querySelector('#pb-income')):0,fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),planned=plan.reduce((sum,item)=>sum+item.limitCents,0),over=plan.reduce((sum,item)=>sum+Math.max(0,limitSpending(item.id,period)-item.limitCents),0),available=income-fixed-planned-over,forecast=hasTarget&&hasIncome?Math.min(target,Math.max(0,available)):0,atRisk=hasTarget&&hasIncome?Math.max(0,target-forecast):over;return{period,target,hasTarget,hasIncome,income,fixed,forecast,atRisk}}
- function goalCopy(projection,plan){return!projection.hasIncome?'Add income in My Piggy Bank to see your forecast.':projection.atRisk?settings.money(projection.atRisk/100)+' is at risk if you keep this spending pace.':plan.length?'Your limits still leave your full goal protected.':'Add limits to protect this amount.'}
- function updateLimitGoal(plan){const projection=limitProjection(plan),goal=limits.querySelector('[data-limits-goal]');if(!goal||!projection.hasTarget)return;goal.classList.toggle('is-at-risk',projection.atRisk>0);q('[data-limits-forecast]',goal).textContent=settings.money(projection.forecast/100);q('[data-limits-goal-copy]',goal).textContent=goalCopy(projection,plan)}
+ function limitProjection(plan){const period=monthKey(new Date()),hasIncome=bank.dataset.incomeEntered!=='false',income=hasIncome?settings.cents(bank.querySelector('#pb-income')):0,fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),planned=plan.reduce((sum,item)=>sum+item.limitCents,0),over=plan.reduce((sum,item)=>sum+Math.max(0,limitSpending(item.id,period)-item.limitCents),0),available=income-fixed-planned-over;return{period,hasIncome,income,fixed,forecast:Math.max(0,available),atRisk:over}}
+ function updateLimitGoal(){}
  function renderLimits(){const panel=q('[data-limits-content]',limits),plan=readLimits(),projection=limitProjection(plan),maximum=Math.max(100,Math.ceil(Math.max(0,projection.income-projection.fixed)/100/10)*10,...plan.map(item=>Math.ceil(item.limitCents/100/10)*10));
-  const goal=projection.hasTarget?'<section class="sp-limits-goal '+(projection.atRisk?'is-at-risk':'')+'" data-limits-goal><span class="sp-limits-kicker">YOUR MONTHLY GOAL</span><div class="sp-limits-goal-row"><strong>'+esc(settings.money(projection.target/100))+'</strong><button type="button" data-limit-target>Edit goal ↗</button></div><div class="sp-limits-projection"><span>Forecast to save</span><strong data-limits-forecast>'+esc(settings.money(projection.forecast/100))+'</strong></div><p class="sp-limits-copy" data-limits-goal-copy>'+esc(goalCopy(projection,plan))+'</p></section>':'<section class="sp-limits-goal"><span class="sp-limits-kicker">YOUR GOAL</span><div class="sp-limits-goal-row"><strong>Not set</strong><button type="button" data-limit-target>Set a goal ↗</button></div><p class="sp-limits-copy">A monthly goal lets us show how each limit supports your saving plan.</p></section>';
   const rows=plan.map(item=>{const category=find(item.id)||{...item,icon:'other',color:'purple',accent:'#c6a5ff'},spent=limitSpending(item.id,projection.period),isOver=spent>item.limitCents,left=Math.max(0,item.limitCents-spent),percent=item.limitCents?Math.min(100,Math.round(spent/item.limitCents*100)):0;return '<article class="sp-limit-card '+(isOver?'is-over':'')+'" data-limit-card="'+esc(item.id)+'"><div class="sp-limit-card-top">'+icon(category)+'<span class="sp-limit-card-name">'+esc(item.name)+'</span><span class="sp-limit-card-amount"><strong>'+esc(settings.money(spent/100))+'</strong> spent</span></div><div class="sp-limit-card-limit"><span>Monthly limit</span><span class="sp-limit-value-action"><strong data-limit-value="'+esc(item.id)+'">'+esc(settings.money(item.limitCents/100))+'</strong><button class="sp-limit-lock is-locked" type="button" data-lock-limit="'+esc(item.id)+'" aria-label="Limit locked" title="Limit locked">✓</button></span></div><input class="sp-limit-inline-range" data-limit-slider="'+esc(item.id)+'" type="range" min="0" max="'+maximum+'" step="10" value="'+(item.limitCents/100)+'" aria-label="Monthly limit for '+esc(item.name)+'"><span class="sp-limit-card-meter"><i style="width:'+percent+'%"></i></span><span class="sp-limit-card-bottom"><span data-limit-status="'+esc(item.id)+'">'+esc(isOver?'Over by '+settings.money((spent-item.limitCents)/100):settings.money(left/100)+' left this month')+'</span></span></article>'}).join('');
-  panel.innerHTML=goal+'<div class="sp-limits-section"><h2>Category limits</h2><button type="button" class="sp-limits-add" data-add-limit>+ Add category</button></div>'+(rows?'<div class="sp-limit-list">'+rows+'</div>':'<div class="sp-limits-empty"><strong>Start with one category.</strong>Give yourself a comfortable monthly limit. You can edit or add more anytime.<button type="button" data-add-limit>Set a category limit →</button></div>');
+  panel.innerHTML='<div class="sp-limits-section"><h2>Category limits</h2><button type="button" class="sp-limits-add" data-add-limit>+ Add category</button></div>'+(rows?'<div class="sp-limit-list">'+rows+'</div>':'<div class="sp-limits-empty"><strong>Start with one category.</strong>Give yourself a comfortable monthly limit. You can edit or add more anytime.<button type="button" data-add-limit>Set a category limit →</button></div>');
  }
  function limitPicker(){const used=new Set(readLimits().map(item=>item.id)),choices=activeCategories().filter(category=>!used.has(category.id));if(!choices.length){open('Category limits','<p>Every available category already has a limit.</p>');return}open('Choose a category','<p>Set a monthly limit for the parts of life you want to keep in view.</p><div class="sp-picker">'+choices.map(category=>'<button class="sp-pick" type="button" data-limit-category="'+esc(category.id)+'">'+icon(category)+'<span class="sp-pick-name">'+esc(category.name)+'</span><span class="sp-check">+</span></button>').join('')+'</div>');q('[data-sheet-content]',overlay).onclick=e=>{const choice=e.target.closest('[data-limit-category]');if(choice)limitForm(choice.dataset.limitCategory)}}
  function limitForm(id){const category=find(id)||readLimits().find(item=>item.id===id)||{id,name:'Category',icon:'other',color:'purple',accent:'#c6a5ff'},existing=readLimits().find(item=>item.id===id),old=existing?existing.limitCents:0,income=bank.dataset.incomeEntered==='false'?0:settings.cents(bank.querySelector('#pb-income')),fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),maximum=Math.max(100,Math.ceil(Math.max(0,income-fixed)/100/10)*10,Math.ceil(old/100/10)*10);open(existing?'Edit '+category.name+' limit':'Set '+category.name+' limit','<p>Move the slider to choose what feels comfortable for this category.</p><form data-limit-form><label class="sp-field">Monthly limit<output class="sp-limit-slider-value" data-limit-value></output><input class="sp-limit-range" data-limit-range type="range" min="0" max="'+maximum+'" step="10" value="'+(old/100)+'" aria-label="Monthly limit for '+esc(category.name)+'"></label><p class="sp-limit-forecast" data-limit-forecast aria-live="polite"></p><button class="sp-add" type="submit">Save limit</button>'+(existing?'<button class="sp-danger" type="button" data-remove-limit>Remove this limit</button>':'')+'</form>');const form=q('[data-limit-form]',overlay),range=q('[data-limit-range]',form),value=q('[data-limit-value]',form),forecast=q('[data-limit-forecast]',form),update=()=>{const limitCents=Math.round(Number(range.value)*100),next=readLimits().filter(item=>item.id!==id);next.push({id,name:category.name,limitCents:limitCents});settings.setMoney(value,limitCents/100);const target=Number(bank.dataset.savingsTargetCents||0),hasTarget=bank.dataset.savingsTargetCents!==undefined&&bank.dataset.savingsTargetCents!=='',hasIncome=bank.dataset.incomeEntered!=='false',planned=next.reduce((sum,item)=>sum+item.limitCents,0),over=next.reduce((sum,item)=>sum+Math.max(0,limitSpending(item.id,monthKey(new Date()))-item.limitCents),0),forecasted=hasTarget&&hasIncome?Math.min(target,Math.max(0,income-fixed-planned-over)):0,atRisk=hasTarget&&hasIncome?Math.max(0,target-forecasted):0;forecast.classList.toggle('is-at-risk',atRisk>0);forecast.innerHTML=!hasTarget?'Set a monthly savings goal in My Piggy Bank to see this limit’s impact.':!hasIncome?'Add income in My Piggy Bank to see your goal forecast.':atRisk?'<strong>'+esc(settings.money(atRisk/100))+'</strong> of your goal would be at risk with this limit.':'Your full monthly goal stays protected with this limit.'};range.addEventListener('input',update);update();form.onsubmit=e=>{e.preventDefault();const next=readLimits().filter(item=>item.id!==id);next.push({id,name:category.name,limitCents:Math.round(Number(range.value)*100)});saveLimits(next);close()};const remove=q('[data-remove-limit]',form);if(remove)remove.onclick=()=>{saveLimits(readLimits().filter(item=>item.id!==id));close()}}
  function renderSpendingPie(items,total){
-  const panel=analytics.querySelector('[data-spending-chart]');
-  if(!items.length){panel.hidden=true;return}
+  const button=q('[data-chart-open]'),panel=q('[data-spending-chart]');
+  if(!items.length){button.hidden=true;panel.hidden=true;return}
   const grouped=new Map();items.forEach(item=>{const category=find(item.category)||{id:item.category,name:'Other',icon:'other',color:'neutral'};const group=grouped.get(category.id)||{...category,amount:0};group.amount+=item.amount;grouped.set(category.id,group)});
   let start=0;
   const slices=[...grouped.values()].sort((a,b)=>b.amount-a.amount).map(category=>{const end=start+(category.amount/total*360),chartColor=accentFor(category),slice=chartColor+' '+start+'deg '+end+'deg';start=end;return {...category,chartColor,slice}});
-  panel.hidden=false;panel.innerHTML='<div class="sp-chart-head"><div><h2>Your spending pie</h2><p>It grows as you add expenses.</p></div></div><div class="sp-pie" role="img" aria-label="Pie chart of this month’s spending" style="background:conic-gradient('+slices.map(slice=>slice.slice).join(',')+')"></div><div class="sp-pie-list">'+slices.map(category=>'<div class="sp-pie-row">'+icon(category)+'<span>'+esc(category.name)+'</span><strong data-pie-total="'+esc(category.id)+'"></strong></div>').join('')+'</div>';
+  button.hidden=false;button.setAttribute('aria-expanded',String(!panel.hidden));
+  panel.innerHTML='<div class="sp-chart-head"><div><h2>Your spending pie</h2><p>It grows as you add expenses.</p></div><button type="button" data-chart-close aria-label="Close spending pie">×</button></div><div class="sp-pie" role="img" aria-label="Pie chart of this month’s spending" style="background:conic-gradient('+slices.map(slice=>slice.slice).join(',')+')"></div><div class="sp-pie-list">'+slices.map(category=>'<div class="sp-pie-row">'+icon(category)+'<span>'+esc(category.name)+'</span><strong data-pie-total="'+esc(category.id)+'"></strong></div>').join('')+'</div>';
   slices.forEach(category=>money(q('[data-pie-total="'+CSS.escape(category.id)+'"]',panel),category.amount));
- }
- function targetForm(){
-  const old=bank.dataset.savingsTargetCents;
-  open('Monthly savings target','<p>How much would you like to set aside each month?</p><form data-target-form><label class="sp-field">Savings target<input class="sp-input" name="target" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off" required value="'+(old!==undefined&&old!==''?(Number(old)/100).toFixed(2):'')+'"></label><p class="sp-error" data-error hidden></p><button class="sp-add" type="submit">Save target</button></form>');
-  const form=q('[data-target-form]',overlay),input=form.elements.namedItem('target');form.onsubmit=e=>{e.preventDefault();const raw=input.value.trim().replace(',','.'),n=Number(raw);if(!/^\d+(?:\.\d{1,2})?$/.test(raw)||!Number.isFinite(n)||n<0||n>100000000){const error=q('[data-error]',overlay);error.textContent='Enter an amount with up to two decimal places.';error.hidden=false;input.focus();return}bank.dataset.savingsTargetCents=String(Math.round(n*100));root.querySelector('.on-savings input').value=String(n);bank.querySelector('#pb-income').dispatchEvent(new Event('input',{bubbles:true}));render();close()};
  }
   // A recap is a live view of this month's recorded entries, with month-specific inputs.
   const recap=document.createElement('div');recap.className='mr-overlay';recap.hidden=true;recap.innerHTML='<div class="mr-page" role="dialog" aria-modal="true" aria-label="Monthly recap"><div class="mr-top"><span class="sp-brand">my money<span>playground</span></span><button type="button" class="mr-close" aria-label="Close monthly recap">×</button></div><div data-recap-content></div></div>';root.append(recap);
@@ -1365,7 +1314,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   const fmt=c=>settings.money(c/100)+(root.querySelector('[data-trigger-code]').textContent==='Piggy Coin'?' Piggy Coin':''), periodTitle=()=>month.toLocaleDateString('en',{month:'long',year:'numeric'});
   function recapInputs(){
    const id=monthKey(month),saved=(state.monthReports||{})[id],current=id===monthKey(new Date());
-   return saved||{income:current&&bank.dataset.incomeEntered!=='false'?settings.cents(bank.querySelector('#pb-income')):null,target:current&&bank.dataset.savingsTargetCents!==undefined&&bank.dataset.savingsTargetCents!==''?Number(bank.dataset.savingsTargetCents):null,planned:current};
+   return saved||{income:current&&bank.dataset.incomeEntered!=='false'?settings.cents(bank.querySelector('#pb-income')):null,target:null,planned:current};
   }
   function recapForm(){
    const v=recapInputs();
@@ -1431,12 +1380,11 @@ https://github.com/nodeca/pako/blob/main/LICENSE
   }
   rc.addEventListener('click',async e=>{if(e.target.closest('[data-recap-edit]')){recapForm();return}const button=e.target.closest('[data-export-pdf],[data-export-excel]');if(!button)return;button.disabled=true;const error=rc.querySelector('.mr-export-error');error.hidden=true;try{if(button.hasAttribute('data-export-pdf'))await exportPDF(report);else await exportExcel(report)}catch(err){console.error(err);error.textContent='Could not create the file. Please try again.';error.hidden=false}finally{button.disabled=false}});
 
- function renderCategoryLimits(period){const panel=q('[data-spending-plan]'),limits=budgetCategories();if(!limits.length||!panel.children.length)return;const rows=limits.map(category=>{const spent=state.expenses.filter(item=>item.category===category.id&&item.date?.slice(0,7)===period).reduce((sum,item)=>sum+item.amount,0),over=spent>category.limitCents,left=Math.max(0,category.limitCents-spent),percent=category.limitCents>0?Math.min(100,Math.round(spent/category.limitCents*100)):0;return '<div class="sp-category-limit '+(over?'is-over':'')+'"><span>'+esc(category.name)+'</span><strong>'+esc((over?'Over by ':'Left ')+settings.money((over?spent-category.limitCents:left)/100))+'</strong><div><i style="width:'+percent+'%"></i></div></div>'}).join('');panel.insertAdjacentHTML('beforeend','<div class="sp-category-limits"><span class="sp-category-limits-title">CATEGORY LIMITS</span>'+rows+'</div>')}
- function renderRecentCategories(){const panel=q('[data-quick-recent]'),usage=new Map();state.expenses.forEach(expense=>{const category=find(expense.category);if(!category)return;const prior=usage.get(category.id)||{category,count:0,last:0};prior.count+=1;prior.last=Math.max(prior.last,Number(expense.created)||Date.parse(expense.date)||0);usage.set(category.id,prior)});const frequent=[...usage.values()].sort((a,b)=>b.count-a.count||b.last-a.last).slice(0,3);panel.hidden=!frequent.length;if(!frequent.length){panel.innerHTML='';return}panel.innerHTML='<span class="sp-quick-recent-title">RECENTLY USED</span><div class="sp-quick-recent-row">'+frequent.map(item=>'<button class="sp-quick-recent-item" type="button" data-quick-category="'+esc(item.category.id)+'" aria-pressed="'+(quickCategory===item.category.id)+'">'+icon(item.category)+'<span>'+esc(item.category.name)+'</span></button>').join('')+'</div>'}
+ function renderCategoryLimits(period){const panel=q('[data-spending-plan]'),limits=budgetCategories();if(!limits.length||!panel.children.length)return;let totalLimit=0,totalSpent=0;const rows=limits.map(category=>{const spent=state.expenses.filter(item=>item.category===category.id&&item.date?.slice(0,7)===period).reduce((sum,item)=>sum+item.amount,0),over=spent>category.limitCents,left=Math.max(0,category.limitCents-spent),percent=category.limitCents>0?Math.min(100,Math.round(spent/category.limitCents*100)):0;totalLimit+=category.limitCents;totalSpent+=spent;return '<div class="sp-category-limit '+(over?'is-over':'')+'"><span>'+esc(category.name)+'</span><strong>'+esc((over?'Over by ':'Left ')+settings.money((over?spent-category.limitCents:left)/100))+'</strong><div><i style="width:'+percent+'%"></i></div></div>'}).join(''),over=totalSpent>totalLimit,remaining=Math.abs(totalLimit-totalSpent);panel.insertAdjacentHTML('beforeend','<details class="sp-category-limits '+(over?'is-over':'')+'"><summary><span>Category limits</span><strong>'+esc((over?'Over by ':'')+settings.money(remaining/100)+(over?'':' left'))+'</strong><i aria-hidden="true">⌄</i></summary><div class="sp-category-limit-list">'+rows+'</div></details>')}
  function render(){
   const period=monthKey(month), items=state.expenses.filter(e=>e.date?.slice(0,7)===period).sort((a,b)=>b.date.localeCompare(a.date)||b.created-a.created);
-  q('[data-month]').textContent=month.toLocaleDateString('en',{month:'long',year:'numeric'});const totalSpent=items.reduce((n,e)=>n+e.amount,0);money(q('[data-total]'),totalSpent);renderSpendingPlan(totalSpent,period);renderCategoryLimits(period);renderLimits();const quickCats=q('[data-quick-categories]'),quickChoices=activeCategories();if(!quickCategory||!find(quickCategory))quickCategory=quickChoices[0]?.id||'';const selectedQuick=find(quickCategory);quickCats.innerHTML=selectedQuick?'<button class="sp-quick-category" type="button" data-quick-category-picker>'+icon(selectedQuick)+'<span>'+esc(selectedQuick.name)+'</span></button>':'<button class="sp-quick-category" type="button" data-quick-category-picker><span>Choose a category</span></button>';money(q('[data-quick-amount]'),Math.round(Number(quickAmount||0)*100));q('[data-quick-hint]').textContent=quickChoices.length?(quickAmount?'Ready to add to '+(find(quickCategory)?.name||'this category')+'.':'Tap the category to choose from all options.'):'No categories available.';
-  renderRecentCategories();
+  q('[data-month]').textContent=month.toLocaleDateString('en',{month:'long',year:'numeric'});const totalSpent=items.reduce((n,e)=>n+e.amount,0);money(q('[data-total]'),totalSpent);const hasIncome=bank.dataset.incomeEntered!=='false',income=hasIncome?settings.cents(bank.querySelector('#pb-income')):0,fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),available=income-fixed-totalSpent,availableEl=q('[data-available-spend]'),hasCurrentPlan=hasIncome&&period===monthKey(new Date());if(hasCurrentPlan){settings.setMoney(availableEl,Math.abs(available)/100,available<0?'−':'');availableEl.closest('.sp-summary-available').classList.toggle('is-over',available<0)}else{availableEl.textContent='—';availableEl.closest('.sp-summary-available').classList.remove('is-over')}renderSpendingPlan(totalSpent,period);renderCategoryLimits(period);renderLimits();
+  const quickCats=q('[data-quick-categories]'),quickChoices=activeCategories();if(!quickCategory||!find(quickCategory))quickCategory=quickChoices[0]?.id||'';quickCats.innerHTML=quickChoices.length?quickChoices.map(c=>'<button class="sp-quick-category" type="button" data-quick-category="'+esc(c.id)+'" aria-pressed="'+(quickCategory===c.id)+'">'+icon(c)+'<span>'+esc(c.name)+'</span></button>').join(''):'<span class="sp-quick-hint">Add a category in More details to start.</span>';money(q('[data-quick-amount]'),Math.round(Number(quickAmount||0)*100));q('[data-quick-hint]').textContent=quickChoices.length?(quickAmount?'Ready to add to '+(find(quickCategory)?.name||'this category')+'.':'Swipe across to choose a category, then enter an amount.'):'Add a category in More details to start.';
   renderSpendingPie(items,totalSpent);
   renderHistory();
  }
@@ -1469,9 +1417,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  function openHistory(){historyFilters={date:'',min:'',max:'',category:''};const filterToggle=history.querySelector('[data-history-filter-toggle]'),filters=history.querySelector('#expense-history-filters');filterToggle.setAttribute('aria-expanded','false');filters.hidden=true;renderHistory();page.hidden=true;nav.hidden=true;history.hidden=false;history.scrollIntoView({block:'start',behavior:'auto'});history.querySelector('[data-history-back]').focus({preventScroll:true})}
  function closeHistory(){history.hidden=true;nav.hidden=false;showTab('spending');q('[data-open-history]').focus({preventScroll:true})}
  nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)showTab(btn.dataset.tab)};limits.onclick=e=>{if(e.target.closest('[data-add-limit]')){limitPicker();return}if(e.target.closest('[data-limit-target]')){targetForm();return}const lock=e.target.closest('[data-lock-limit]');if(!lock)return;const card=lock.closest('[data-limit-card]'),slider=q('[data-limit-slider]',card),id=slider.dataset.limitSlider,plan=readLimits().map(item=>item.id===id?{...item,limitCents:Math.round(Number(slider.value)*100)}:item);saveLimits(plan,false);lock.textContent='✓';lock.setAttribute('aria-label','Limit locked');lock.title='Limit locked';lock.classList.add('is-locked');card.classList.add('is-just-locked');setTimeout(()=>card.classList.remove('is-just-locked'),560)};limits.oninput=e=>{const slider=e.target.closest('[data-limit-slider]');if(!slider)return;const id=slider.dataset.limitSlider,plan=readLimits().map(item=>item.id===id?{...item,limitCents:Math.round(Number(slider.value)*100)}:item),item=plan.find(entry=>entry.id===id),spent=limitSpending(id,monthKey(new Date())),card=slider.closest('[data-limit-card]'),over=spent>item.limitCents,left=Math.max(0,item.limitCents-spent),percent=item.limitCents?Math.min(100,Math.round(spent/item.limitCents*100)):0;card.classList.toggle('is-over',over);q('[data-limit-value="'+CSS.escape(id)+'"]',card).textContent=settings.money(item.limitCents/100);q('[data-limit-status="'+CSS.escape(id)+'"]',card).textContent=over?'Over by '+settings.money((spent-item.limitCents)/100):settings.money(left/100)+' left this month';q('.sp-limit-card-meter i',card).style.width=percent+'%';const lock=q('[data-lock-limit]',card);lock.textContent='Set';lock.setAttribute('aria-label','Set this limit');lock.title='Set this limit';lock.classList.remove('is-locked');updateLimitGoal(plan)};
- function quickCategoryPicker(){const choices=activeCategories();open('Choose a category','<p>Pick the category for this expense.</p><div class="sp-picker">'+choices.map(c=>'<div class="sp-picker-item"><button class="sp-pick" type="button" data-quick-picker-category="'+esc(c.id)+'" aria-pressed="'+(quickCategory===c.id)+'">'+icon(c)+'<span class="sp-pick-name">'+esc(c.name)+'</span><span class="sp-check">'+(quickCategory===c.id?'✓':'')+'</span></button></div>').join('')+'</div>');q('[data-sheet-content]',overlay).onclick=e=>{const choice=e.target.closest('[data-quick-picker-category]');if(!choice)return;quickCategory=choice.dataset.quickPickerCategory;close();render()}}
- page.addEventListener('click',e=>{if(e.target.closest('[data-quick-category-picker]'))quickCategoryPicker()});
- page.onclick=e=>{const quick=e.target.closest('[data-key]'),quickCat=e.target.closest('[data-quick-category]');if(quick){const key=quick.dataset.key;if(key==='save'){addQuickExpense();return}else if(key==='clear')quickAmount=quickAmount.slice(0,-1);else if(quickAmount.length<9)quickAmount+=key;render()}else if(quickCat){quickCategory=quickCat.dataset.quickCategory;render()}else if(e.target.closest('[data-open-history]'))openHistory();else if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-chart-open]')){const panel=q('[data-spending-chart]');panel.hidden=false;q('[data-chart-open]').setAttribute('aria-expanded','true');panel.scrollIntoView({block:'nearest',behavior:'smooth'})}else if(e.target.closest('[data-chart-close]')){q('[data-spending-chart]').hidden=true;q('[data-chart-open]').setAttribute('aria-expanded','false');q('[data-chart-open]').focus()}else if(e.target.closest('[data-set-target]'))targetForm();else if(e.target.closest('[data-add]'))expenseForm();else if(e.target.closest('[data-prev]')){month=new Date(month.getFullYear(),month.getMonth()-1,1);render()}else if(e.target.closest('[data-next-month]')){month=new Date(month.getFullYear(),month.getMonth()+1,1);render()}else if(e.target.closest('[data-expense]'))expenseForm(state.expenses.find(x=>x.id===e.target.closest('[data-expense]').dataset.expense))};analytics.onclick=e=>{if(e.target.closest('[data-recap]'))openRecap()};
+ page.onclick=e=>{const quick=e.target.closest('[data-key]'),quickCat=e.target.closest('[data-quick-category]');if(quick){const key=quick.dataset.key;if(key==='save'){addQuickExpense();return}else if(key==='clear')quickAmount=quickAmount.slice(0,-1);else if(quickAmount.length<9)quickAmount+=key;render()}else if(quickCat){quickCategory=quickCat.dataset.quickCategory;render()}else if(e.target.closest('[data-open-history]'))openHistory();else if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-chart-open]')){const panel=q('[data-spending-chart]');panel.hidden=false;q('[data-chart-open]').setAttribute('aria-expanded','true');panel.scrollIntoView({block:'nearest',behavior:'smooth'})}else if(e.target.closest('[data-chart-close]')){q('[data-spending-chart]').hidden=true;q('[data-chart-open]').setAttribute('aria-expanded','false');q('[data-chart-open]').focus()}else if(e.target.closest('[data-set-daily]'))dailyLimitForm();else if(e.target.closest('[data-set-target]'))targetForm();else if(e.target.closest('[data-add]'))expenseForm();else if(e.target.closest('[data-prev]')){month=new Date(month.getFullYear(),month.getMonth()-1,1);render()}else if(e.target.closest('[data-next-month]')){month=new Date(month.getFullYear(),month.getMonth()+1,1);render()}else if(e.target.closest('[data-expense]'))expenseForm(state.expenses.find(x=>x.id===e.target.closest('[data-expense]').dataset.expense))};analytics.onclick=e=>{if(e.target.closest('[data-recap]'))openRecap()};
  history.addEventListener('input',e=>{const field=e.target;if(field.matches('[data-history-date]'))historyFilters.date=field.value;else if(field.matches('[data-history-min]'))historyFilters.min=field.value;else if(field.matches('[data-history-max]'))historyFilters.max=field.value;else return;renderHistory()});history.addEventListener('change',e=>{if(e.target.matches('[data-history-category]')){historyFilters.category=e.target.value;renderHistory()}});history.addEventListener('click',e=>{if(e.target.closest('[data-history-back]'))closeHistory();else if(e.target.closest('[data-history-filter-toggle]')){const button=history.querySelector('[data-history-filter-toggle]'),filters=history.querySelector('#expense-history-filters'),open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));filters.hidden=open}else if(e.target.closest('[data-history-clear]')){historyFilters={date:'',min:'',max:'',category:''};renderHistory()}else if(e.target.closest('[data-expense]'))expenseForm(state.expenses.find(x=>x.id===e.target.closest('[data-expense]').dataset.expense))});
  render();
 })();
