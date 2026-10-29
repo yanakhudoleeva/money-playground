@@ -744,7 +744,9 @@
   if (editPlanButton) editPlanButton.addEventListener('click', () => { show(2); phone.scrollIntoView({block:'start', behavior:'auto'}); });
   updateIncomeTotal();
   updateExpenseTotal();
-  if (restorePersonalPlan()) createPlan(true); else show(1);
+  // The Piggy Bank script initializes immediately after this onboarding script.
+  // Defer restoration by one frame so returning users can safely reopen their plan.
+  if (restorePersonalPlan()) requestAnimationFrame(() => createPlan(true)); else show(1);
 })();
 </script>
 <script>
@@ -794,8 +796,9 @@
     if(!goalCard)return;
     settings.setMoney(goalCard.querySelector('[data-goal-saved]'),saved/100);
     settings.setMoney(goalCard.querySelector('[data-goal-target]'),target/100);
-    goalCard.querySelector('[data-goal-progress] i').style.width=(progress*100)+'%';
-    goalCard.querySelector('[data-goal-progress]').setAttribute('aria-valuenow',String(Math.round(progress*100)));
+    const progressBar=goalCard.querySelector('.pb-goal-progress');
+    progressBar.querySelector('i').style.width=(progress*100)+'%';
+    progressBar.setAttribute('aria-valuenow',String(Math.round(progress*100)));
     goalCard.querySelector('[data-goal-completed]').textContent=Math.round(progress*100)+'% completed';
     goalCard.querySelector('[data-goal-to-go]').textContent=settings.money(remaining/100)+' to go';
   }
