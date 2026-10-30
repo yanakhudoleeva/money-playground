@@ -758,6 +758,15 @@
   }
   // Keep personal figures only in this browser on this device; nothing is sent to a server.
   const storageKey = 'money-playground.personal-plan.v1';
+  // Existing preview plans used seeded figures. Clear those legacy browser-only values once,
+  // then keep everything the person enters from this clean start.
+  const cleanStartKey = 'money-playground.clean-start.v2';
+  try {
+    if (localStorage.getItem(cleanStartKey) !== 'done') {
+      ['money-playground.personal-plan.v1','money-playground.category-budgets.v1','money-playground-spending-v2'].forEach(key => localStorage.removeItem(key));
+      localStorage.setItem(cleanStartKey, 'done');
+    }
+  } catch (_) {}
   const savedRows = list => [...list.querySelectorAll('.on-expense-row[data-saved="true"]')].map(row => ({name: row.dataset.savedName, amount: row.dataset.savedAmount}));
   function savePersonalPlan() {
     try { const previous=JSON.parse(localStorage.getItem(storageKey)||'{}'); localStorage.setItem(storageKey, JSON.stringify({goal, customGoalName, goalAmount:goalAmount.value, currency:selectedCurrency, income:incomeInput.value, rent:rentInput.value, rentName:savedRentName, incomeRows:savedRows(incomeList), expenseRows:savedRows(expenseList), onboardingLimits:onboardingLimits(), dailyLimit:dailyLimitInput.value, piggyOverrides:previous.piggyOverrides})); } catch (_) {}
