@@ -112,11 +112,8 @@
         </section>
       <div class="pb-plan-editor" data-plan-editor hidden>
       <div class="pb-fixed-details" id="pb-fixed-details" hidden>
-        <div class="pb-money-card pb-housing"><label for="pb-housing"><span class="pb-dot pb-category-icon" style="--pb-category-accent:#f6a3b5"><img src="assets/category-icons/Home_bills.svg" alt=""></span><span>Housing<small>per month</small></span></label><div class="pb-amount"><span>€</span><input id="pb-housing" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="1100" inputmode="decimal" aria-label="Monthly housing expense"></div></div>
-        <div class="pb-expenses">
-          <div class="pb-expense"><span class="pb-dot pb-category-icon" style="--pb-category-accent:#aab6ff"><img src="assets/category-icons/Subscription.svg" alt=""></span><label for="pb-subscriptions">Subscriptions</label><span>€</span><input id="pb-subscriptions" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="50" inputmode="decimal" aria-label="Subscriptions"><button class="pb-remove cursor-interaction" type="button" aria-label="Remove subscriptions">×</button></div>
-          <div class="pb-expense"><span class="pb-dot pb-category-icon" style="--pb-category-accent:#8fe0e8"><img src="assets/category-icons/Transport.svg" alt=""></span><label for="pb-transport">Transport</label><span>€</span><input id="pb-transport" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="150" inputmode="decimal" aria-label="Transport"><button class="pb-remove cursor-interaction" type="button" aria-label="Remove transport">×</button></div>
-        </div>
+        <div class="pb-money-card pb-housing"><label for="pb-housing"><span class="pb-dot pb-category-icon" style="--pb-category-accent:#f6a3b5"><img src="assets/category-icons/Home_bills.svg" alt=""></span><span>Housing<small>per month</small></span></label><div class="pb-amount"><span>€</span><input id="pb-housing" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" value="0" inputmode="decimal" aria-label="Monthly housing expense"></div></div>
+        <div class="pb-expenses"></div>
         <button type="button" class="pb-add-text cursor-interaction" data-open-expense>+ Add an expense</button>
         <div class="pb-add-form" data-expense-form hidden><label><span>Name</span><input data-expense-name type="text" maxlength="28" placeholder="e.g. phone"></label><label><span>Amount, <span data-currency-symbol>€</span></span><input data-expense-amount type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="0"></label><button class="cursor-interaction" type="button" data-add-expense>Add</button></div>
       </div>
@@ -124,7 +121,7 @@
     </section>
 
     <section class="pb-result" aria-live="polite">
-      <div class="pb-result-top"><span data-result-label>AVAILABLE TO SAVE</span><span>✦</span></div><div class="pb-result-value"><strong data-savings>€1 200</strong><span>/ month</span></div><p data-result-note>What is left after your planned expenses.</p>
+      <div class="pb-result-top"><span data-result-label>AVAILABLE TO SAVE</span><span>✦</span></div><div class="pb-result-value"><strong data-savings>€0.00</strong><span>/ month</span></div><p data-result-note>What is left after your planned expenses.</p>
       <button type="button" class="pb-goal-open" data-projection-open>＋ Add a goal amount</button>
       <div class="pb-goal-form" data-projection-form hidden>
         <label>How much do you need for this goal?<input type="text" inputmode="decimal" autocomplete="off" aria-label="Goal amount" placeholder="e.g. 20,000" data-projection-target></label>
