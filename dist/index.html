@@ -695,7 +695,7 @@
     const updateTotal = isIncome ? updateIncomeTotal : updateExpenseTotal;
     const updateAdd = isIncome ? updateAddIncome : updateAddExpense;
     const row = document.createElement('div'); row.className = 'on-expense-row'; row.dataset.editing = 'true';
-    row.innerHTML = '<div class="on-expense-form"><input class="on-expense-name" type="text" maxlength="28" placeholder="Expense name" aria-label="Expense name" autocapitalize="sentences" enterkeyhint="next"><div class="on-expense-input-amount"><span data-currency-symbol></span><input class="on-expense-amount" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" inputmode="decimal" enterkeyhint="done" placeholder="0" aria-label="Expense amount"></div><button class="on-expense-confirm is-ready" type="button" aria-label="Save expense" hidden>Save</button><button class="on-expense-dismiss" type="button" aria-label="Cancel expense">×</button></div><div class="on-expense-actions" hidden><button class="on-expense-remove" type="button" hidden>Remove expense</button></div><p class="on-expense-error" role="alert" hidden></p><div class="on-expense-saved" hidden><span class="on-expense-saved-name"></span><strong class="on-expense-saved-amount"></strong><button class="on-expense-edit" type="button" aria-label="Edit expense"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
+    row.innerHTML = '<div class="on-expense-form"><input class="on-expense-name" type="text" maxlength="28" placeholder="Expense name" aria-label="Expense name" autocapitalize="sentences" enterkeyhint="next"><div class="on-expense-input-amount"><span data-currency-symbol></span><input class="on-expense-amount" type="text" pattern="[0-9]+([.,][0-9]{1,2})?" inputmode="decimal" enterkeyhint="done" placeholder="0" aria-label="Expense amount"></div><button class="on-expense-confirm is-ready" type="button" aria-label="Save expense" hidden>Save</button><button class="on-expense-dismiss" type="button" aria-label="Cancel expense">×</button></div><div class="on-expense-actions" hidden><button class="on-expense-remove" type="button" hidden>Remove expense</button></div><p class="on-expense-error" role="alert" hidden></p><div class="on-expense-saved" hidden><span class="on-expense-saved-name"></span><strong class="on-expense-saved-amount"></strong><button class="on-expense-edit" type="button" aria-label="Edit expense"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 13.8-.5 2.7 2.7-0.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="on-expense-remove-saved" type="button" aria-label="Remove expense">×</button></div>';
     const form = row.querySelector('.on-expense-form');
     const actions = row.querySelector('.on-expense-actions');
     const name = row.querySelector('.on-expense-name');
@@ -703,6 +703,7 @@
     const confirm = row.querySelector('.on-expense-confirm');
     const cancel = row.querySelector('.on-expense-dismiss');
     const remove = row.querySelector('.on-expense-remove');
+    const removeSaved = row.querySelector('.on-expense-remove-saved');
     const saved = row.querySelector('.on-expense-saved');
     const error = row.querySelector('.on-expense-error');
     if (isIncome) {
@@ -710,7 +711,7 @@
       amount.setAttribute('aria-label', 'Income amount');
       confirm.setAttribute('aria-label', 'Save income');
       cancel.setAttribute('aria-label', 'Cancel income');
-      remove.textContent = 'Remove income';
+      remove.textContent = 'Remove income'; removeSaved.setAttribute('aria-label', 'Remove income');
     }
     let advanceOnSave = false;
     setSymbol(row.querySelector('[data-currency-symbol]'));
@@ -751,6 +752,7 @@
     });
     cancel.addEventListener('click', cancelEditing);
     remove.addEventListener('click', () => { row.remove(); updateTotal(); updateAdd(); add.focus(); });
+    removeSaved.addEventListener('click', () => { row.remove(); updateTotal(); updateAdd(); add.focus(); });
     row.querySelector('.on-expense-edit').addEventListener('click', () => {
       if (list.querySelector('.on-expense-row[data-editing="true"]')) return;
       row.dataset.editing = 'true'; form.hidden = false; actions.hidden = false; remove.hidden = false; saved.hidden = true;
@@ -1099,6 +1101,7 @@
   #piggy-onboarding .on-rent small{font-family:Arial,Helvetica,sans-serif}
   #piggy-onboarding .on-expense-saved-amount{display:inline-flex;align-items:center;gap:3px;color:#fff;font:500 19px Arial;white-space:nowrap}
   #piggy-onboarding .on-expense-saved .on-expense-edit,#piggy-onboarding .on-rent .on-rent-edit{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#ffffff0d;color:#c6a5ff;cursor:pointer}
+#piggy-onboarding .on-expense-saved .on-expense-remove-saved{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;padding:0;border:0;border-radius:12px;background:transparent;color:#f6a3b5;font:24px/1 Arial;cursor:pointer}
   #piggy-onboarding .on-expense-edit svg{width:18px;height:18px}
   #piggy-onboarding .on-expense-row button:focus-visible,#piggy-onboarding .on-rent-edit:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
   #piggy-onboarding .on-screen[data-step="3"] .on-rent{min-height:70px;padding:11px 12px 11px 14px;gap:8px}
@@ -1518,6 +1521,7 @@
 #piggy-onboarding .on-screen[data-step="3"] .on-expenses .on-expense-row[data-saved="true"][data-editing="false"]{box-sizing:border-box;height:60px;min-height:60px;padding:8px;border:0;border-radius:18px;background:#343434;box-shadow:none}
 #piggy-onboarding .on-screen[data-step="3"] .on-expense-row[data-saved="true"][data-editing="false"] .on-expense-saved{box-sizing:border-box;height:44px;min-height:44px;padding:0 0 0 13px;gap:8px}
 #piggy-onboarding .on-screen[data-step="3"] .on-expense-saved .on-expense-edit{box-sizing:border-box;flex-basis:40px;width:40px;height:40px;border:0;border-radius:14px;background:#494949;color:#d0d0d0}
+#piggy-onboarding .on-screen[data-step="3"] .on-expense-saved .on-expense-remove-saved{box-sizing:border-box;flex-basis:36px;width:36px;height:40px}
 
 #piggy-onboarding .on-screen[data-step="3"] .on-expenses-details .on-rent{box-sizing:border-box;height:60px;min-height:60px;padding:8px;gap:8px;border:0;border-radius:18px;background:#343434;box-shadow:none}
 #piggy-onboarding .on-screen[data-step="3"] .on-expenses-details .on-rent>label{flex:1;min-width:0}
