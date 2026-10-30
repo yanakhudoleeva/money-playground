@@ -83,7 +83,7 @@
       <div class="on-actions">
         <button type="button" class="on-back" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
         <button type="button" class="on-primary" data-next="3" disabled>Create my piggy bank <span>↗</span></button>
-        <div class="on-action-links"><button type="button" class="on-skip" data-skip-plan><span>Skip for now</span></button></div>
+        <div class="on-action-links"><button type="button" class="on-skip" data-skip-plan><span>Skip for now</span></button><button type="button" class="on-reset-plan" data-reset-all>Reset this plan</button></div>
       </div>
     </section>
   </div>
@@ -136,7 +136,7 @@
         <small data-forecast-note></small>
       </div>
     </section>
-    <button type="button" class="pb-reset" data-reset-all>Start over</button>
+    <button type="button" class="pb-reset" data-reset-all>Reset this plan</button>
 
 
   </div>
@@ -843,12 +843,12 @@
   q('[data-skip-plan]').addEventListener('click', () => createPlan(true));
   const editPlanButton = q('[data-edit-plan]');
   if (editPlanButton) editPlanButton.addEventListener('click', () => { show(3); phone.scrollIntoView({block:'start', behavior:'auto'}); });
-  const resetAllButton = q('[data-reset-all]');
-  if (resetAllButton) resetAllButton.addEventListener('click', () => {
+  const resetAllButtons = [...root.querySelectorAll('[data-reset-all]')];
+  resetAllButtons.forEach(resetAllButton => resetAllButton.addEventListener('click', () => {
     if (!window.confirm('Start over? This clears your plan, limits, and spending history from this browser.')) return;
     ['money-playground.personal-plan.v1','money-playground.category-budgets.v1','money-playground-spending-v2'].forEach(key => localStorage.removeItem(key));
     window.location.reload();
-  });
+  }));
   const hasRestoredPlan = restorePersonalPlan();
   setIncomeEditMode(!hasValidAmount(incomeInput));
   setRentEditMode(!hasValidAmount(rentInput));
@@ -1377,6 +1377,7 @@
 #piggy-onboarding .on-actions .on-primary{margin-top:0;justify-content:center;gap:10px}
 #piggy-onboarding .on-action-links{display:flex;justify-content:center;gap:8px}
 #piggy-onboarding .on-action-links .on-skip{min-width:0;margin:6px 0 0;padding:0 14px}
+#piggy-onboarding .on-action-links .on-reset-plan{min-height:44px;margin:6px 0 0;padding:0 14px;border:0;background:transparent;color:#f6a3b5;font:600 12px 'DM Sans',Arial,sans-serif;cursor:pointer}.on-reset-plan:focus-visible{outline:2px solid #f3759a;outline-offset:3px}
 #piggy-bank-plan .pb-phone{width:min(100%,402px);min-height:calc(100vh - 32px);min-height:calc(100dvh - 32px)}
 #piggy-onboarding .sp-page{width:min(100%,402px);min-height:calc(100vh - 32px);min-height:calc(100dvh - 32px);padding-bottom:180px}
 #piggy-onboarding .sp-page>.sp-add{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));z-index:9;width:min(calc(100vw - 46px),356px);margin:0;transform:translateX(-50%)}
