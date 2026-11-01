@@ -762,7 +762,7 @@
   const storageKey = 'money-playground.personal-plan.v1';
   // Existing preview plans used seeded figures. Clear those legacy browser-only values once,
   // then keep everything the person enters from this clean start.
-  const cleanStartKey = 'money-playground.clean-start.v2';
+  const cleanStartKey = 'money-playground.clean-start.v3';
   try {
     if (localStorage.getItem(cleanStartKey) !== 'done') {
       ['money-playground.personal-plan.v1','money-playground.category-budgets.v1','money-playground-spending-v2'].forEach(key => localStorage.removeItem(key));
@@ -855,7 +855,7 @@
   updateExpenseTotal();
   // The Piggy Bank script initializes immediately after this onboarding script.
   // Defer restoration by one frame so returning users can safely reopen their plan.
-  if (restorePersonalPlan()) requestAnimationFrame(() => createPlan(true)); else show(1);
+  if (hasRestoredPlan) requestAnimationFrame(() => createPlan(true)); else show(1);
 })();
 </script>
 <script>
