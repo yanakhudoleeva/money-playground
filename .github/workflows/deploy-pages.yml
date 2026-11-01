@@ -27,6 +27,9 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Build Pages entry from the canonical HTML
+        run: cp piggy-onboarding.html dist/index.html
+
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v4
         with:
