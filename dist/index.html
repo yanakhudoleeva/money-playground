@@ -283,6 +283,21 @@
       });
     } catch (_) { /* The plan works even when the device cannot play sound. */ }
   }
+  const rewardSounds = {
+    create: new Audio('assets/sounds/04-lucky-pop.wav'),
+    deposit: new Audio('assets/sounds/01-soft-plop.wav')
+  };
+  Object.values(rewardSounds).forEach(audio => { audio.preload = 'auto'; });
+  function playRewardSound(kind) {
+    if (!soundOn) return;
+    const audio = rewardSounds[kind];
+    if (!audio) return;
+    try {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    } catch (_) { /* Audio must never interrupt saving the plan or deposit. */ }
+  }
+  root.playPiggyDepositSound = () => playRewardSound('deposit');
   let selectedCurrency = 'EUR';
   const currencySymbols = {EUR:'€', USD:'$', GBP:'£'};
   const currencySymbol = () => currencySymbols[selectedCurrency] || '';
@@ -840,7 +855,7 @@
     celebrate();
     return true;
   }
-  q('[data-next="3"]').addEventListener('click', () => { if (createPlan()) playChime(); });
+  q('[data-next="3"]').addEventListener('click', () => { if (createPlan()) playRewardSound('create'); });
   q('[data-skip-plan]').addEventListener('click', () => createPlan(true));
   const editPlanButton = q('[data-edit-plan]');
   if (editPlanButton) editPlanButton.addEventListener('click', () => { show(1); phone.scrollIntoView({block:'start', behavior:'auto'}); });
@@ -1995,7 +2010,7 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=readL
  function closeMonthSheet(){
   const period=monthKey(month),income=bank.dataset.incomeEntered==='false'?0:settings.cents(bank.querySelector('#pb-income')),fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),spent=state.expenses.filter(item=>item.date?.slice(0,7)===period).reduce((sum,item)=>sum+Number(item.amount||0),0),available=Math.max(0,income-fixed-spent),title=month.toLocaleDateString('en',{month:'long'}),previous=(Array.isArray(state.piggyTransfers)?state.piggyTransfers:[]).find(transfer=>transfer.period===period),value=previous?previous.amount:available;
   open('Close '+title,'<div class="sp-close-month"><p class="sp-close-month-total"><span>Expenses this month</span><strong>'+esc(fmt(spent))+'</strong></p><p>You have <strong>'+esc(fmt(available))+'</strong> available. Choose how much you want to add to your Piggy Bank.</p><form data-piggy-transfer-form><label class="sp-field">Add to Piggy Bank<input class="sp-input" name="amount" type="text" inputmode="decimal" autocomplete="off" value="'+esc((value/100).toFixed(2))+'"></label><small>This records your decision — it does not move money from your card.</small><p class="sp-error" data-error hidden></p><button class="sp-add" type="submit">Add to Piggy Bank</button></form></div>');
-  const form=q('[data-piggy-transfer-form]',overlay);form.onsubmit=e=>{e.preventDefault();const raw=form.elements.namedItem('amount').value.trim().replace(',','.'),amount=Math.round(Number(raw)*100),error=q('[data-error]',form);if(!/^\d+(?:\.\d{1,2})?$/.test(raw)||!Number.isFinite(amount)||amount<0||amount>available){error.textContent='Choose an amount from €0.00 to '+fmt(available)+'.';error.hidden=false;return}state.piggyTransfers=(Array.isArray(state.piggyTransfers)?state.piggyTransfers:[]).filter(transfer=>transfer.period!==period);state.piggyTransfers.push({period,amount,created:Date.now()});pending=true;save();close();showTab('bank');requestAnimationFrame(()=>window.dispatchEvent(new Event('money-playground-spending-updated')));notify(amount?fmt(amount)+' added to My Saving Goal':'No money added to Piggy Bank yet')};
+  const form=q('[data-piggy-transfer-form]',overlay);form.onsubmit=e=>{e.preventDefault();const raw=form.elements.namedItem('amount').value.trim().replace(',','.'),amount=Math.round(Number(raw)*100),error=q('[data-error]',form);if(!/^\d+(?:\.\d{1,2})?$/.test(raw)||!Number.isFinite(amount)||amount<0||amount>available){error.textContent='Choose an amount from €0.00 to '+fmt(available)+'.';error.hidden=false;return}state.piggyTransfers=(Array.isArray(state.piggyTransfers)?state.piggyTransfers:[]).filter(transfer=>transfer.period!==period);state.piggyTransfers.push({period,amount,created:Date.now()});pending=true;save();if(amount>0)root.playPiggyDepositSound?.();close();showTab('bank');requestAnimationFrame(()=>window.dispatchEvent(new Event('money-playground-spending-updated')));notify(amount?fmt(amount)+' added to My Saving Goal':'No money added to Piggy Bank yet')};
  }
  function renderSpendingPie(items,total){
   const panel=q('[data-spending-chart]',analytics);
