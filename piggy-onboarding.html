@@ -101,6 +101,7 @@
       <div class="pb-goal-amount"><strong data-goal-saved>€0.00</strong><span>/ <span data-goal-target>€0.00</span></span></div>
       <div class="pb-goal-progress" role="progressbar" aria-label="Savings goal progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
       <div class="pb-goal-progress-caption"><span data-goal-completed>0% completed</span><span data-goal-to-go>€0.00 to go</span></div>
+      <div class="pb-savings-actions"><button type="button" class="pb-savings-add" data-savings-action="add"><span aria-hidden="true">＋</span> Add money</button><button type="button" data-savings-action="take"><span aria-hidden="true">−</span> Take out</button></div>
       <small class="pb-goal-transfer" data-goal-transfers hidden></small>
     </section>
 
@@ -198,6 +199,15 @@
   @media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-summary .sp-category-limits summary i{transition:none}}
 #piggy-onboarding .on-limit-picker .sp-icon{width:28px;height:28px;flex-basis:28px;border-radius:10px}#piggy-onboarding .on-limit-row .sp-icon{width:31px;height:31px;flex-basis:31px;border-radius:11px}#piggy-onboarding .on-limit-picker .sp-icon img,#piggy-onboarding .on-limit-row .sp-icon img{width:17px;height:17px}
 
+
+#piggy-bank-plan .pb-savings-actions{display:flex;gap:10px;margin-top:20px}
+#piggy-bank-plan .pb-savings-actions button{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;padding:11px 8px;border:1px solid #ffffff28;border-radius:15px;background:linear-gradient(145deg,#ffffff14,#ffffff05);box-shadow:inset 0 1px #ffffff18,0 3px #1117;color:#fff;font:600 14px 'Google Sans Flex',Arial,sans-serif;cursor:pointer;transition:transform .18s}
+#piggy-bank-plan .pb-savings-actions .pb-savings-add{background:#a8ff22;border-color:#a8ff22;color:#20251a}
+#piggy-bank-plan .pb-savings-actions button:active{transform:scale(.97)}
+#piggy-bank-plan .pb-savings-actions button:focus-visible{outline:2px solid #c6a5ff;outline-offset:4px}
+#piggy-bank-plan .pb-savings-actions button span{font-size:21px;line-height:1}
+#piggy-onboarding .pb-savings-preview{display:flex;justify-content:space-between;gap:14px;margin:14px 0;color:#c5c7c1;font-size:14px}
+#piggy-onboarding .pb-savings-preview strong{color:#fff;text-align:right}
 </style>
 <script>
 (() => {
@@ -913,9 +923,11 @@
   if (root.dataset.pendingProjectionCents !== undefined) { const pending=root.dataset.pendingProjectionCents; delete root.dataset.pendingProjectionCents; root.setProjectionFromOnboarding(pending===''?null:Number(pending)); }
   function monthWord(n){return n===1?'month':'months'}
   function piggyTransferHistory(){try{const state=JSON.parse(localStorage.getItem('money-playground-spending-v2')||'{}'),transfers=Array.isArray(state.piggyTransfers)?state.piggyTransfers:[];return transfers.filter(transfer=>transfer&&typeof transfer.period==='string'&&Number.isFinite(Number(transfer.amount))).map(transfer=>({period:transfer.period,amount:Math.max(0,Number(transfer.amount)||0)}))}catch(_){return[]}}
-  function savedFromHistory(){return piggyTransferHistory().reduce((total,transfer)=>total+transfer.amount,0)}
+  function manualSavingsTotal(){try{const state=JSON.parse(localStorage.getItem('money-playground-spending-v2')||'{}');return (Array.isArray(state.piggyAdjustments)?state.piggyAdjustments:[]).reduce((sum,item)=>sum+(Number.isSafeInteger(item?.amount)?item.amount:0),0)}catch(_){return 0}}
+  function savedFromHistory(){return piggyTransferHistory().reduce((total,transfer)=>total+transfer.amount,0)+manualSavingsTotal()}
+  root.getPiggyBalanceCents=()=>Math.max(0,projectionSaved+savedFromHistory());
   function updateGoalProgress(){
-    const target=Math.max(0,Number(projectionTarget)||0),history=piggyTransferHistory(),historySaved=history.reduce((total,transfer)=>total+transfer.amount,0),saved=target?Math.max(0,projectionSaved+historySaved):0,progress=target?Math.min(1,saved/target):0,remaining=Math.max(0,target-saved),goalCard=root.querySelector('.pb-goal');
+    const target=Math.max(0,Number(projectionTarget)||0),history=piggyTransferHistory(),historySaved=history.reduce((total,transfer)=>total+transfer.amount,0),saved=Math.max(0,projectionSaved+historySaved+manualSavingsTotal()),progress=target?Math.min(1,saved/target):0,remaining=Math.max(0,target-saved),goalCard=root.querySelector('.pb-goal');
     if(!goalCard)return;
     settings.setMoney(goalCard.querySelector('[data-goal-saved]'),saved/100);
     settings.setMoney(goalCard.querySelector('[data-goal-target]'),target/100);
@@ -2007,10 +2019,20 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=readL
   panel.classList.toggle('is-near-end',nearEnd);panel.innerHTML='<div><span class="sp-analytics-kicker">'+esc(title.toUpperCase())+' · '+esc(daysLeft===1?'1 DAY LEFT':daysLeft+' DAYS LEFT')+'</span><h2>'+esc(nearEnd?title+' is almost complete.':title+' is in progress.')+'</h2><p>'+(nearEnd?'A little look before you close the month.':'Your spending, one day at a time.')+'</p>'+(hasCurrentPlan?'<button type="button" class="sp-analytics-action" data-close-month>Review &amp; add to Piggy Bank <b>↗</b></button>':'')+'</div><div class="sp-analytics-status-amount">'+remaining+'</div>';
   const amount=q('[data-analytics-remaining]',panel);if(amount)money(amount,Math.max(0,available));
  }
+ function savingsSheet(mode){
+  const taking=mode==='take',balance=bank.getPiggyBalanceCents(),target=Math.max(0,Number(bank.dataset.savingsTargetCents)||0);
+  open(taking?'Take out of Piggy Bank':'Add to Piggy Bank','<form data-savings-form><p>You have <strong>'+esc(fmt(balance))+'</strong> in your Piggy Bank.</p><label class="sp-field">Amount<input class="sp-input" name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" required></label><div class="pb-savings-preview"><span>In Piggy Bank after</span><strong data-savings-after></strong></div><div class="pb-savings-preview"><span>Left to reach your goal</span><strong data-savings-remaining></strong></div><small>This updates your savings record. It does not move money between bank accounts.</small><p class="sp-error" data-error hidden></p><button class="sp-add" type="submit">'+(taking?'Take out':'Add to Piggy Bank')+'</button></form>');
+  const form=q('[data-savings-form]',overlay),input=form.elements.namedItem('amount'),error=q('[data-error]',form),submit=q('[type="submit"]',form);
+  const amount=()=>{const raw=input.value.trim().replace(',','.');if(!/^\d+(?:\.\d{1,2})?$/.test(raw))return null;const cents=Math.round(Number(raw)*100);return Number.isSafeInteger(cents)&&cents>0&&cents<=10000000000?cents:null};
+  function preview(){const cents=amount(),current=bank.getPiggyBalanceCents(),tooMuch=taking&&cents!==null&&cents>current,after=current+(cents===null||tooMuch?0:taking?-cents:cents);q('[data-savings-after]',form).textContent=fmt(after);q('[data-savings-remaining]',form).textContent=fmt(Math.max(0,target-after));error.hidden=!tooMuch;error.textContent=tooMuch?'You can take out up to '+fmt(current)+'.':'';submit.disabled=cents===null||tooMuch}
+  input.addEventListener('input',preview);preview();
+  form.onsubmit=e=>{e.preventDefault();const cents=amount();if(cents===null||(taking&&cents>bank.getPiggyBalanceCents())){preview();return}const previous=state.piggyAdjustments;state.piggyAdjustments=[...(Array.isArray(previous)?previous:[]),{id:crypto.randomUUID(),amount:taking?-cents:cents,created:Date.now()}];try{localStorage.setItem(key,JSON.stringify(state))}catch(_){state.piggyAdjustments=previous;error.hidden=false;error.textContent='Could not save your change. Please try again.';return}pending=true;save();if(!taking)root.playPiggyDepositSound?.();close();notify(taking?fmt(cents)+' taken out of Piggy Bank':fmt(cents)+' added to Piggy Bank')};
+ }
+ bank.querySelectorAll('[data-savings-action]').forEach(button=>button.addEventListener('click',()=>savingsSheet(button.dataset.savingsAction)));
  function closeMonthSheet(){
   const period=monthKey(month),income=bank.dataset.incomeEntered==='false'?0:settings.cents(bank.querySelector('#pb-income')),fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),spent=state.expenses.filter(item=>item.date?.slice(0,7)===period).reduce((sum,item)=>sum+Number(item.amount||0),0),available=Math.max(0,income-fixed-spent),title=month.toLocaleDateString('en',{month:'long'}),previous=(Array.isArray(state.piggyTransfers)?state.piggyTransfers:[]).find(transfer=>transfer.period===period),value=previous?previous.amount:available;
   open('Close '+title,'<div class="sp-close-month"><p class="sp-close-month-total"><span>Expenses this month</span><strong>'+esc(fmt(spent))+'</strong></p><p>You have <strong>'+esc(fmt(available))+'</strong> available. Choose how much you want to add to your Piggy Bank.</p><form data-piggy-transfer-form><label class="sp-field">Add to Piggy Bank<input class="sp-input" name="amount" type="text" inputmode="decimal" autocomplete="off" value="'+esc((value/100).toFixed(2))+'"></label><small>This records your decision — it does not move money from your card.</small><p class="sp-error" data-error hidden></p><button class="sp-add" type="submit">Add to Piggy Bank</button></form></div>');
-  const form=q('[data-piggy-transfer-form]',overlay);form.onsubmit=e=>{e.preventDefault();const raw=form.elements.namedItem('amount').value.trim().replace(',','.'),amount=Math.round(Number(raw)*100),error=q('[data-error]',form);if(!/^\d+(?:\.\d{1,2})?$/.test(raw)||!Number.isFinite(amount)||amount<0||amount>available){error.textContent='Choose an amount from €0.00 to '+fmt(available)+'.';error.hidden=false;return}state.piggyTransfers=(Array.isArray(state.piggyTransfers)?state.piggyTransfers:[]).filter(transfer=>transfer.period!==period);state.piggyTransfers.push({period,amount,created:Date.now()});pending=true;save();if(amount>0)root.playPiggyDepositSound?.();close();showTab('bank');requestAnimationFrame(()=>window.dispatchEvent(new Event('money-playground-spending-updated')));notify(amount?fmt(amount)+' added to My Saving Goal':'No money added to Piggy Bank yet')};
+  const form=q('[data-piggy-transfer-form]',overlay);form.onsubmit=e=>{e.preventDefault();const raw=form.elements.namedItem('amount').value.trim().replace(',','.'),amount=Math.round(Number(raw)*100),error=q('[data-error]',form);if(!/^\d+(?:\.\d{1,2})?$/.test(raw)||!Number.isFinite(amount)||amount<0||amount>available){error.textContent='Choose an amount from €0.00 to '+fmt(available)+'.';error.hidden=false;return}if(bank.getPiggyBalanceCents()+amount-(previous?.amount||0)<0){error.textContent='Some of these savings have already been taken out. Keep at least '+fmt((previous?.amount||0)-bank.getPiggyBalanceCents())+' allocated to this month.';error.hidden=false;return}state.piggyTransfers=(Array.isArray(state.piggyTransfers)?state.piggyTransfers:[]).filter(transfer=>transfer.period!==period);state.piggyTransfers.push({period,amount,created:Date.now()});pending=true;save();if(amount>0)root.playPiggyDepositSound?.();close();showTab('bank');requestAnimationFrame(()=>window.dispatchEvent(new Event('money-playground-spending-updated')));notify(amount?fmt(amount)+' added to My Saving Goal':'No money added to Piggy Bank yet')};
  }
  function renderSpendingPie(items,total){
   const panel=q('[data-spending-chart]',analytics);
