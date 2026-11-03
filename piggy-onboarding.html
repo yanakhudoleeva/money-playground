@@ -102,7 +102,6 @@
       <div class="pb-goal-progress" role="progressbar" aria-label="Savings goal progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
       <div class="pb-goal-progress-caption"><span data-goal-completed>0% completed</span><span data-goal-to-go>€0.00 to go</span></div>
       <div class="pb-savings-actions"><button type="button" class="pb-savings-add" data-savings-action="add"><span aria-hidden="true">＋</span> Add money</button><button type="button" data-savings-action="take"><span aria-hidden="true">−</span> Take out</button></div>
-      <small class="pb-goal-transfer" data-goal-transfers hidden></small>
     </section>
 
     <section class="pb-plan" aria-label="Monthly income and expenses">
@@ -936,7 +935,6 @@
     progressBar.setAttribute('aria-valuenow',String(Math.round(progress*100)));
     goalCard.querySelector('[data-goal-completed]').textContent=Math.round(progress*100)+'% completed';
     goalCard.querySelector('[data-goal-to-go]').textContent=settings.money(remaining/100)+' to go';
-    const transfers=goalCard.querySelector('[data-goal-transfers]');if(history.length){const source=history.length===1?new Date(history[0].period+'-01T12:00:00').toLocaleDateString('en',{month:'long'}):history.length+' closed months';transfers.hidden=false;transfers.textContent=settings.money(historySaved/100)+' added from '+source}else transfers.hidden=true;
   }
   function openProjection(){
     projectionTargetInput.value=projectionTarget===null?'':String(projectionTarget/100);
@@ -1236,7 +1234,6 @@
   #piggy-bank-plan .pb-goal-progress-caption{display:flex;justify-content:space-between;gap:10px;margin-top:8px;color:#cfcfcf;font:500 12px/1.2 'DM Sans',Arial,sans-serif}
   #piggy-bank-plan .pb-goal-progress-caption span:last-child{text-align:right}
   #piggy-bank-plan .pb-goal-footnote{margin-top:10px;color:#d0c8d4;font:500 11px/1.4 'DM Sans',Arial,sans-serif}
-#piggy-bank-plan .pb-goal-transfer{display:block;margin-top:10px;color:#cfc5da;font:500 11px/1.35 'Google Sans Flex',Arial,sans-serif}
   #piggy-bank-plan .pb-plan{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   #piggy-bank-plan .pb-plan>.pb-fixed-widget{display:flex;flex-direction:column;align-items:flex-start;gap:0;min-width:0;margin:0;padding:13px;border-radius:16px;background:#292929}
   #piggy-bank-plan .pb-fixed-widget-icon{width:36px;height:36px;flex:0 0 36px}
