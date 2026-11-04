@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=DM+Sans:wght@800&family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
 <div id="piggy-onboarding" class="viz-dotted-background" aria-label="Знакомство с My Money Playground">
   <div class="on-phone">
     <section class="on-screen" data-step="1">
@@ -2514,3 +2514,15 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)showTab(btn.data
 #piggy-onboarding .sp-overlay .sp-period-field input[type=checkbox]:checked::after{transform:translateY(-1px) rotate(-45deg) scale(1)}
 #piggy-onboarding .sp-overlay .sp-period-field input[type=checkbox]:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
 </style><style>.sp-savings-note{grid-column:1/-1!important;margin:0!important;max-width:none!important}#piggy-onboarding .sp-summary .sp-savings-note{font-size:11px;line-height:1.4}#piggy-onboarding .sp-summary:has(.sp-savings-note:not([hidden])) [data-spending-plan]{margin-top:4px}</style>
+
+<style id="shared-delete-button-style">
+/* Shared destructive action style. Use sp-delete-button for future delete actions. */
+#piggy-onboarding{--delete-fill:rgba(244,100,112,.14);--delete-border:rgba(244,100,112,.23);--delete-text:#ff919b;--delete-shadow:#452c30}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-page[aria-label="My Limits"] .sp-limit-swipe-remove,.sp-history-row-actions [data-history-delete],.sp-remove-category){background:var(--delete-fill);border:1px solid var(--delete-border);color:var(--delete-text);font-family:'DM Sans',Arial,sans-serif!important;font-weight:800;box-shadow:0 3px 0 var(--delete-shadow);transition:filter .15s}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger){border-radius:19px;min-height:52px;font-size:17px}
+#piggy-onboarding .sp-danger{width:100%;padding:12px 16px}
+@media(hover:hover){#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category):hover{filter:brightness(1.13)}}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-page[aria-label="My Limits"] .sp-limit-swipe-remove,.sp-history-row-actions [data-history-delete],.sp-remove-category):focus-visible{outline:2px solid var(--delete-text);outline-offset:3px}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category):active{filter:brightness(.94)}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category){transition:none}}
+</style>
