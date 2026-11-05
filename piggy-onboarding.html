@@ -460,7 +460,7 @@
   const dailyLimitToggle = q('[aria-controls="on-daily-limit-details"]');
   const dailyLimitInput = q('[data-on-daily-limit]');
   const limitPicker = q('[data-on-limit-picker]'), limitList = q('[data-on-limit-list]'), customLimitInput=q('[data-on-custom-limit]');
-  const limitAccents={home:'#F3759A',groceries:'#A7FF27',eating:'#FFAD53',transport:'#55D7DF',fun:'#C6A5FF',travel:'#88A9FF',shopping:'#F08AC2',care:'#FF956B',health:'#6BD98A',subscriptions:'#9DABFF',gifts:'#FFD84D',education:'#73C8F2',pets:'#D38BE8',family:'#58D7BD',debt:'#FF8172',other:'#B4BBC6'};
+  const limitAccents={home:'#FF4D8D',groceries:'#A7FF27',eating:'#FFB000',transport:'#28E7F0',fun:'#B58CFF',travel:'#6793FF',shopping:'#FF6FC5',care:'#FF7C57',health:'#42E889',subscriptions:'#9B9DFF',gifts:'#FFE14B',education:'#54C9FF',pets:'#D279FF',family:'#47E7C2',debt:'#FF6E61',other:'#D4DDF0'};
   const limitCatalog=[['home','Home & Bills','Home_bills.svg','pink'],['groceries','Groceries','Groceries.svg','green'],['eating','Eating Out','Eating_out.svg','pink'],['transport','Transport','Transport.svg','green'],['fun','Fun & Entertainment','Fun.svg','purple'],['travel','Travel','Travel.svg','green'],['shopping','Shopping','Shopping.svg','pink'],['care','Personal Care','Personal_care.svg','pink'],['health','Health & Wellness','Health_wellness.svg','green'],['subscriptions','Subscriptions','Subscription.svg','purple'],['gifts','Gifts & Giving','Gifts.svg','green'],['education','Education & Work','Education_work.svg','pink'],['pets','Pets','Pets.svg','purple'],['family','Family & Kids','Family_kids.svg','green'],['debt','Debt & Fees','Debt_fees.svg','pink'],['other','Other','Other.svg','neutral']].map(([id,name,file,color])=>({id,name,file,color,accent:limitAccents[id]}));
   let limitChoices=[], onboardingCustom=[], dailyLocked=false;
   const expenseList = expenseDetails.querySelector('.on-expense-list');
@@ -1977,7 +1977,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 (() => {
  const root=document.getElementById('piggy-onboarding'), result=root.querySelector('.on-result'), bank=root.querySelector('#piggy-bank-plan');
  const settings=root.moneySettings, key='money-playground-spending-v2';
- const categoryAccents={home:'#F3759A',groceries:'#A7FF27',eating:'#FFAD53',transport:'#55D7DF',fun:'#C6A5FF',travel:'#88A9FF',shopping:'#F08AC2',care:'#FF956B',health:'#6BD98A',subscriptions:'#9DABFF',gifts:'#FFD84D',education:'#73C8F2',pets:'#D38BE8',family:'#58D7BD',debt:'#FF8172',other:'#B4BBC6'};
+ const categoryAccents={home:'#FF4D8D',groceries:'#A7FF27',eating:'#FFB000',transport:'#28E7F0',fun:'#B58CFF',travel:'#6793FF',shopping:'#FF6FC5',care:'#FF7C57',health:'#42E889',subscriptions:'#9B9DFF',gifts:'#FFE14B',education:'#54C9FF',pets:'#D279FF',family:'#47E7C2',debt:'#FF6E61',other:'#D4DDF0'};
  const catalog=[['home','Home & Bills','home','purple'],['groceries','Groceries','groceries','green'],['eating','Eating Out','eating','pink'],['transport','Transport','transport','green'],['fun','Fun & Entertainment','fun','purple'],['travel','Travel','travel','green'],['shopping','Shopping','shopping','pink'],['care','Personal Care','care','pink'],['health','Health & Wellness','health','green'],['subscriptions','Subscriptions','subscriptions','purple'],['gifts','Gifts & Giving','gifts','green'],['education','Education & Work','education','pink'],['pets','Pets','pets','purple'],['family','Family & Kids','family','green'],['debt','Debt & Fees','debt','pink'],['other','Other','other','neutral']].map(([id,name,icon,color])=>({id,name,icon,color,accent:categoryAccents[id]}));
 let state={selected:[],custom:[],expenses:[],dailyLimitCents:null,recentQuickCategories:[]}, month=new Date();month.setDate(1);let pending=false,quickAmount='',quickCategory='',quickDate='',activeTab='spending';let historyFilters={dateFrom:'',dateTo:'',min:'',max:'',category:''};
  const page=document.createElement('section');page.className='sp-page';page.hidden=false;page.setAttribute('aria-label','My Spending');
@@ -2559,4 +2559,18 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)showTab(btn.data
 #piggy-onboarding .sp-breakdown-row strong{font-size:14px;white-space:nowrap}
 #piggy-onboarding .sp-breakdown-row small{color:#aaa;font:500 13px 'DM Sans',Arial,sans-serif;text-align:right;white-space:nowrap}
 @media(max-width:360px){#piggy-onboarding .sp-breakdown-total strong{font-size:29px}#piggy-onboarding .sp-breakdown-row{grid-template-columns:11px minmax(0,1fr) auto 30px;gap:7px;font-size:12px}#piggy-onboarding .sp-breakdown-row strong{font-size:12px}#piggy-onboarding .sp-breakdown-row small{font-size:11px}}
+</style>
+<style>
+/* Bright category system: every category uses its own solid neon accent. */
+#piggy-onboarding .sp-icon{
+  background:var(--sp-accent,#a7ff27)!important;
+  border:0;
+  box-shadow:0 3px 0 color-mix(in srgb,var(--sp-accent,#a7ff27) 43%,#101010),0 0 13px color-mix(in srgb,var(--sp-accent,#a7ff27) 26%,transparent);
+}
+#piggy-onboarding .sp-icon img{filter:none}
+#piggy-onboarding .on-icon.green,#piggy-bank-plan .pb-dot.green{background:#a7ff27;color:#26310d}
+#piggy-onboarding .on-icon.pink,#piggy-bank-plan .pb-dot.pink{background:#ff4d8d;color:#351020}
+#piggy-onboarding .on-icon.purple,#piggy-bank-plan .pb-dot.purple{background:#b58cff;color:#2f1f4b}
+#piggy-bank-plan .pb-slider[data-color=purple] .pb-range{accent-color:#b58cff}
+#piggy-bank-plan .pb-slider[data-color=pink] .pb-range{accent-color:#ff4d8d}
 </style>
