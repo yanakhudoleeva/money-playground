@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=DM+Sans:wght@800&family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
 <div id="piggy-onboarding" class="viz-dotted-background" aria-label="Знакомство с My Money Playground">
   <div class="on-phone">
     <section class="on-screen" data-step="1">
@@ -1892,9 +1892,10 @@
 #piggy-onboarding .sp-page[aria-label="My Spending"] .sp-period-select .sp-category-option{justify-content:space-between;white-space:nowrap}
 #piggy-onboarding .sp-page[aria-label="My Spending"] .sp-period-select .sp-category-option[aria-pressed="true"]{background:#ffffff12}
 #piggy-onboarding .sp-page[aria-label="My Spending"] .sp-period-select .sp-selected-check{margin-left:auto}
-#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-metrics{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 #piggy-onboarding .sp-page[aria-label="My Spending"] .sp-total-label,#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available>span{color:#b9beb4;font:600 10px/1.3 'DM Sans',Arial,sans-serif;letter-spacing:0;text-transform:none}
-#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-total,#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available strong{font:700 clamp(24px,9.5cqi,32px)/1.1 'DM Sans',Arial,sans-serif;letter-spacing:-1.2px;font-variant-numeric:tabular-nums}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-spent{min-width:0}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-total,#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available strong{display:block;max-width:100%;font:700 clamp(24px,9.5cqi,32px)/1.1 'DM Sans',Arial,sans-serif;letter-spacing:-1.2px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow-wrap:normal;word-break:normal}
 #piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available{gap:7px;padding-bottom:0}
 
 #piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-label{color:#edf0e7;font:600 12px/1.3 'DM Sans',Arial,sans-serif}
@@ -1990,6 +1991,18 @@ let state={selected:[],custom:[],expenses:[],dailyLimitCents:null,recentQuickCat
  nav.querySelector('.sp-nav-pig').src='assets/category-icons/Just_saving.svg';bank.hidden=true;result.append(page,limits,analytics,history,bank,nav);
  const overlay=document.createElement('dialog');overlay.className='sp-overlay';overlay.innerHTML='<div class="sp-scrim" aria-hidden="true"></div><div class="sp-sheet" role="document"><div class="sp-sheet-head"><h2></h2><button class="sp-close" type="button" aria-label="Close">×</button></div><div data-sheet-content></div></div>';root.append(overlay);
 const q=(s,base=page)=>base.querySelector(s), accentFor=c=>c.accent||categoryAccents[c.id]||['#a7ff27','#f3759a','#c6a5ff','#55d7df','#ffad53'][[...String(c.id)].reduce((n,char)=>n+char.charCodeAt(0),0)%5], normalizeLimits=saved=>(Array.isArray(saved)?saved:[]).filter(item=>item&&typeof item.id==='string'&&typeof item.name==='string'&&Number.isFinite(Number(item.limitCents))).map(item=>({id:item.id,name:item.name,limitCents:Math.max(0,Number(item.limitCents)),locked:item.locked===true})), readLimits=()=>{try{const raw=localStorage.getItem('money-playground.category-budgets.v1');if(raw!==null)return normalizeLimits(JSON.parse(raw));const personalPlan=JSON.parse(localStorage.getItem('money-playground.personal-plan.v1')||'{}'),restored=normalizeLimits(personalPlan.onboardingLimits);if(restored.length)localStorage.setItem('money-playground.category-budgets.v1',JSON.stringify(restored));return restored}catch(_){return[]}}, budgetCategories=()=>readLimits().map(item=>({...item,icon:'other',color:'pink',accent:'#f3759a'})), activeCategories=()=>{const list=catalog.concat(state.custom.map(c=>({...c,accent:accentFor(c)}))).concat(budgetCategories());return list.filter((item,index)=>list.findIndex(candidate=>candidate.id===item.id)===index)}, allCategories=()=>activeCategories().concat((state.archived||[]).map(c=>({...c,accent:accentFor(c)}))), find=id=>allCategories().find(c=>c.id===id);
+ const summaryNumbers=[q('[data-total]'),q('[data-available-spend]')];
+ const fitSummaryNumbers=()=>summaryNumbers.forEach(element=>{
+   element.style.fontSize='';
+   const defaultSize=parseFloat(getComputedStyle(element).fontSize), available=element.parentElement.clientWidth;
+   if(!available||!defaultSize)return;
+   const required=element.scrollWidth, fitted=Math.min(defaultSize,defaultSize*available/required);
+   element.style.fontSize=Math.max(12,fitted).toFixed(2)+'px';
+ });
+ const scheduleSummaryFit=()=>requestAnimationFrame(fitSummaryNumbers);
+ summaryNumbers.forEach(element=>new MutationObserver(scheduleSummaryFit).observe(element,{childList:true,characterData:true,subtree:true}));
+ new ResizeObserver(scheduleSummaryFit).observe(q('.sp-summary-metrics'));
+ scheduleSummaryFit();
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const iconFiles={home:'Home_bills.svg',groceries:'Groceries.svg',eating:'Eating_out.svg',transport:'Transport.svg',fun:'Fun.svg',travel:'Travel.svg',shopping:'Shopping.svg',care:'Personal_care.svg',health:'Health_wellness.svg',subscriptions:'Subscription.svg',gifts:'Gifts.svg',education:'Education_work.svg',pets:'Pets.svg',family:'Family_kids.svg',debt:'Debt_fees.svg',other:'Other.svg'};
  const icon=c=>'<span class="sp-icon '+esc(c.color)+'" style="--sp-accent:'+esc(accentFor(c))+'" aria-hidden="true"><img src="assets/category-icons/'+(c.id.startsWith("custom-")?"Custom.svg":(iconFiles[c.icon]||iconFiles.other))+'" alt=""></span>';
@@ -2113,9 +2126,10 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   const panel=q('[data-spending-chart]',analytics);
   if(!items.length){panel.innerHTML='<div class="sp-chart-head"><div><h2>Spending overview.</h2><p>Add an expense to see your categories grow.</p></div></div><div class="sp-pie sp-pie-empty" role="img" aria-label="No expenses yet" style="background:conic-gradient(#3a3a3a 0 100%)"><span>No spending<br>yet</span></div>';return}
   const grouped=new Map();items.forEach(item=>{const category=find(item.category)||{id:item.category,name:'Other',icon:'other',color:'neutral'};const group=grouped.get(category.id)||{...category,amount:0};group.amount+=item.amount;grouped.set(category.id,group)});
-  let start=0;
-  const slices=[...grouped.values()].sort((a,b)=>b.amount-a.amount).map(category=>{const end=start+(category.amount/total*360),chartColor=accentFor(category),slice=chartColor+' '+start+'deg '+end+'deg';start=end;return {...category,chartColor,slice}});
-  panel.innerHTML='<div class="sp-chart-head"><div><h2>Spending overview.</h2><p>A little look at your stats.</p></div></div><div class="sp-pie-overview"><div class="sp-pie" role="img" aria-label="Pie chart of this month’s spending" style="background:conic-gradient('+slices.map(slice=>slice.slice).join(',')+')"><span><strong data-pie-spent></strong><small>spent</small></span></div><div class="sp-pie-list">'+slices.slice(0,3).map(category=>'<div class="sp-pie-row">'+icon(category)+'<span>'+esc(category.name)+'</span><strong data-pie-total="'+esc(category.id)+'"></strong></div>').join('')+'</div></div>';
+  const slices=[...grouped.values()].sort((a,b)=>b.amount-a.amount).map(category=>({...category,chartColor:accentFor(category),percent:Math.max(0,Math.min(1,category.amount/total))}));
+  let start=0;const segments=slices.map(category=>{const end=start+category.percent*100,segment=category.chartColor+' '+start+'% '+end+'%';start=end;return segment});
+  const periodLabel=month.toLocaleDateString('en',{month:'long'});
+  panel.innerHTML='<div class="sp-chart-head sp-breakdown-head"><div><h2>Spending overview.</h2><p>'+esc(periodLabel)+' · '+slices.length+' categor'+(slices.length===1?'y':'ies')+'</p></div></div><div class="sp-breakdown-total"><strong data-pie-spent></strong><span>Total spent</span></div><div class="sp-category-bar" role="img" aria-label="Spending split by category" style="background:linear-gradient(90deg,'+segments.join(',')+')"></div><div class="sp-breakdown-list">'+slices.map(category=>'<div class="sp-breakdown-row"><i style="--category-color:'+esc(category.chartColor)+'"></i><span>'+esc(category.name)+'</span><strong data-pie-total="'+esc(category.id)+'"></strong><small>'+Math.round(category.percent*100)+'%</small></div>').join('')+'</div>';
   money(q('[data-pie-spent]',panel),total);
   slices.forEach(category=>money(q('[data-pie-total="'+CSS.escape(category.id)+'"]',panel),category.amount));
  }
@@ -2515,3 +2529,32 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)showTab(btn.data
 #piggy-onboarding .sp-overlay .sp-period-field input[type=checkbox]:checked::after{transform:translateY(-1px) rotate(-45deg) scale(1)}
 #piggy-onboarding .sp-overlay .sp-period-field input[type=checkbox]:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
 </style><style>.sp-savings-note{grid-column:1/-1!important;margin:0!important;max-width:none!important}#piggy-onboarding .sp-summary .sp-savings-note{font-size:11px;line-height:1.4}#piggy-onboarding .sp-summary:has(.sp-savings-note:not([hidden])) [data-spending-plan]{margin-top:4px}</style>
+
+<style id="shared-delete-button-style">
+/* Shared destructive action style. Use sp-delete-button for future delete actions. */
+#piggy-onboarding{--delete-fill:rgba(244,100,112,.14);--delete-border:rgba(244,100,112,.23);--delete-text:#ff919b;--delete-shadow:#452c30}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-page[aria-label="My Limits"] .sp-limit-swipe-remove,.sp-history-row-actions [data-history-delete],.sp-remove-category){background:var(--delete-fill);border:1px solid var(--delete-border);color:var(--delete-text);font-family:'DM Sans',Arial,sans-serif!important;font-weight:800;box-shadow:0 3px 0 var(--delete-shadow);transition:filter .15s}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger){border-radius:19px;min-height:52px;font-size:17px}
+#piggy-onboarding .sp-danger{width:100%;padding:12px 16px}
+@media(hover:hover){#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category):hover{filter:brightness(1.13)}}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-page[aria-label="My Limits"] .sp-limit-swipe-remove,.sp-history-row-actions [data-history-delete],.sp-remove-category):focus-visible{outline:2px solid var(--delete-text);outline-offset:3px}
+#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category):active{filter:brightness(.94)}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category){transition:none}}
+</style>
+<style id="spending-category-breakdown">
+#piggy-onboarding .sp-chart:has(.sp-category-bar){padding:18px 17px 17px}
+#piggy-onboarding .sp-breakdown-head h2{font-size:20px;letter-spacing:-.6px}
+#piggy-onboarding .sp-breakdown-head p{margin-top:6px;font-size:12px}
+#piggy-onboarding .sp-breakdown-total{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:20px 0 17px}
+#piggy-onboarding .sp-breakdown-total strong{color:#fff;font:700 clamp(29px,9vw,42px)/1 'DM Sans',Arial,sans-serif;letter-spacing:-1.9px;white-space:nowrap}
+#piggy-onboarding .sp-breakdown-total span{color:#aaa;font:600 13px/1.2 'DM Sans',Arial,sans-serif;white-space:nowrap}
+#piggy-onboarding .sp-category-bar{height:40px;border-radius:14px;box-shadow:inset 0 1px rgba(255,255,255,.16),0 3px 0 #161616}
+#piggy-onboarding .sp-breakdown-list{display:grid;margin-top:20px}
+#piggy-onboarding .sp-breakdown-row{display:grid;grid-template-columns:13px minmax(0,1fr) auto 34px;align-items:center;gap:9px;min-height:52px;border-bottom:1px solid #ffffff0d;color:#f1f1f1;font:600 14px 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-breakdown-row:first-child{border-top:1px solid #ffffff0d}
+#piggy-onboarding .sp-breakdown-row i{width:11px;height:11px;border-radius:50%;background:var(--category-color)}
+#piggy-onboarding .sp-breakdown-row span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#piggy-onboarding .sp-breakdown-row strong{font-size:14px;white-space:nowrap}
+#piggy-onboarding .sp-breakdown-row small{color:#aaa;font:500 13px 'DM Sans',Arial,sans-serif;text-align:right;white-space:nowrap}
+@media(max-width:360px){#piggy-onboarding .sp-breakdown-total strong{font-size:29px}#piggy-onboarding .sp-breakdown-row{grid-template-columns:11px minmax(0,1fr) auto 30px;gap:7px;font-size:12px}#piggy-onboarding .sp-breakdown-row strong{font-size:12px}#piggy-onboarding .sp-breakdown-row small{font-size:11px}}
+</style>
