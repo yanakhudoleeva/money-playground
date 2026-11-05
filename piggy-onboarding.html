@@ -28,7 +28,7 @@
       <header class="on-head"><img class="on-brand brand-logo" src="assets/onboarding-logo.svg?v=9" alt="My Money Playground"></header>
       <div class="on-target-welcome"><h1>How much do you need in total?</h1><p class="on-description">Set a total target for your savings goal</p></div>
       <div class="on-goal-amount" data-goal-amount-wrap>
-        <div class="on-goal-amount-entry"><span aria-hidden="true">✦</span><input id="on-goal-amount" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="e.g. 20000" aria-label="Goal amount"><div class="on-goal-currency"></div></div>
+        <div class="on-goal-amount-entry"><span aria-hidden="true"><img src="assets/category-icons/Wallet.svg" alt=""></span><input id="on-goal-amount" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="e.g. 20000" aria-label="Goal amount"><div class="on-goal-currency"></div></div>
       </div>
       <p class="on-error" role="alert" hidden></p>
       <div class="on-actions">
@@ -1139,7 +1139,8 @@
   #piggy-onboarding .on-goal-amount label{display:block;color:#fff;font:600 13px 'DM Sans',Arial,sans-serif}
   #piggy-onboarding .on-goal-amount label span{color:#aaa;font-weight:500;font-size:11px}
   #piggy-onboarding .on-goal-amount-entry{display:flex;align-items:center;gap:10px;margin-top:6px}
-  #piggy-onboarding .on-goal-amount-entry>span{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:10px;background:#a7ff27;color:#26310d;font-size:15px}
+  #piggy-onboarding .on-goal-amount-entry>span{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:10px;background:#a7ff27;color:#26310d;font-size:15px;box-shadow:0 3px 0 color-mix(in srgb,#a7ff27 43%,#101010),0 0 13px color-mix(in srgb,#a7ff27 26%,transparent)}
+  #piggy-onboarding .on-goal-amount-entry>span img{width:18px;height:18px;object-fit:contain}
   #piggy-onboarding .on-goal-amount input{width:100%;min-width:0;padding:8px 0;border:0;background:transparent;color:#fff;font:600 18px 'DM Sans',Arial,sans-serif}
   #piggy-onboarding .on-goal-amount input::placeholder{color:#777}
   #piggy-onboarding .on-goal-amount input:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px;border-radius:5px}
