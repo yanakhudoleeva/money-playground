@@ -2576,14 +2576,16 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 @media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-recap-button{transition:none}}
 #piggy-onboarding .on-result .mr-overlay{position:absolute;inset:0;z-index:15;width:100%;height:100%;overflow:hidden;border-radius:inherit}
 #piggy-onboarding .on-result .mr-page{box-sizing:border-box;width:100%;height:100%;min-height:0;margin:0;padding:max(64px,calc(env(safe-area-inset-top,0px) + 12px)) 23px calc(96px + env(safe-area-inset-bottom));overflow-x:hidden;overflow-y:auto;background:#171717}
-#piggy-onboarding .on-result .mr-actions{position:absolute;z-index:10;left:23px;right:23px;bottom:max(20px,calc(env(safe-area-inset-bottom,0px) + 12px));display:flex;gap:8px;padding:0;background:none;filter:drop-shadow(0 5px 12px #0009)}
+#piggy-onboarding .on-result .mr-actions{position:absolute;z-index:10;left:23px;right:23px;bottom:max(24px,calc(env(safe-area-inset-bottom,0px) + 12px));display:flex;gap:8px;padding:0;background:none;filter:drop-shadow(0 5px 12px #0009)}
 #piggy-onboarding .on-result .mr-lead{font-size:13px;line-height:1.5}
 #piggy-onboarding .on-result .mr-hero h1{font-size:35px}
 @media(max-width:390px){#piggy-onboarding .on-result .mr-hero h1{font-size:32px}}
 
 #piggy-onboarding .on-result .mr-edit{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;margin-top:12px;padding:0 15px;border:1px solid #555;border-radius:14px;background:#303030;box-shadow:inset 0 1px #ffffff12,0 3px 0 #151515;color:#f1f1f1;font:600 12px 'DM Sans',Arial;cursor:pointer}
 #piggy-onboarding .on-result .mr-edit svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-#piggy-onboarding .on-result .mr-actions button{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:50px;font-size:clamp(11px,3.2vw,13px)}
+#piggy-onboarding .on-result .mr-actions button{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:50px;border:1px solid #caff70;box-shadow:inset 0 1px #ffffff70,0 4px 0 #608d15;font-size:clamp(11px,3.2vw,13px);transition:transform .16s ease,box-shadow .16s ease}
+#piggy-onboarding .on-result .mr-actions button:active{transform:translateY(2px);box-shadow:inset 0 1px #ffffff55,0 2px 0 #608d15}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .on-result .mr-actions button{transition:none}}
 #piggy-onboarding .on-result .mr-actions button svg{display:block;flex:0 0 18px;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 
 #piggy-onboarding .on-result .mr-categories,#piggy-onboarding .on-result .mr-entries{display:grid;gap:0;overflow:hidden;border:1px solid #3d3d3d;border-radius:18px;background:#242424}
