@@ -2692,7 +2692,7 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
  function confirmDeleteLimit(id,returnTarget){
   const limit=readLimits().find(item=>item.id===id);if(!limit)return;
   const category=find(id)||{id,name:limit.name,icon:'other',color:'neutral'};
-  open('Delete limit?','<p class="sp-delete-confirm-copy">Are you sure you want to delete this limit?</p><div class="sp-delete-expense-preview">'+icon(category)+'<span class="sp-history-row-text"><strong>'+esc(limit.name)+'</strong><small>Monthly limit</small></span><span class="sp-history-row-amount">'+esc(settings.money(limit.limitCents/100))+'</span></div><div class="sp-delete-confirm-actions"><button type="button" data-confirm-delete>Delete limit</button><button type="button" data-cancel-delete>Keep limit</button></div>');
+  open('Delete limit?','<p class="sp-delete-confirm-copy">Are you sure you want to delete this limit?</p><div class="sp-delete-expense-preview">'+icon(category)+'<span class="sp-history-row-text"><strong>'+esc(limit.name)+'</strong><small>Monthly limit</small></span><span class="sp-history-row-amount">'+esc(settings.money(limit.limitCents/100))+'</span></div><div class="sp-delete-confirm-actions sp-delete-limit-confirm-actions"><button type="button" data-confirm-delete>Delete limit</button><button type="button" data-cancel-delete>Keep limit</button></div>');
   q('[data-confirm-delete]',overlay).onclick=()=>{if(!saveLimits(readLimits().filter(item=>item.id!==id)))return;limitDrafts.delete(id);notify('Limit deleted','neutral');close({focusTarget:q('[data-add-limit]',limits)})};
   q('[data-cancel-delete]',overlay).onclick=()=>close({focusTarget:returnTarget});
  }
@@ -2700,7 +2700,7 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
   const expense=state.expenses.find(item=>item.id===id);if(!expense)return;
   const category=find(expense.category)||{id:'other',name:'Other',icon:'other',color:'neutral'};
   const date=new Date(expense.date+'T12:00:00'),dateLabel=Number.isNaN(date.getTime())?expense.date:date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-  open('Delete expense?','<p class="sp-delete-confirm-copy">Are you sure you want to delete this expense?</p><div class="sp-delete-expense-preview">'+icon(category)+'<span class="sp-history-row-text"><strong>'+esc(category.name)+'</strong><small>'+esc(dateLabel)+'</small></span><span class="sp-history-row-amount">−'+esc(fmt(expense.amount))+'</span></div><div class="sp-delete-confirm-actions"><button type="button" data-confirm-delete>Delete expense</button><button type="button" data-cancel-delete>Keep expense</button></div>');
+  open('Delete expense?','<p class="sp-delete-confirm-copy">Are you sure you want to delete this expense?</p><div class="sp-delete-expense-preview">'+icon(category)+'<span class="sp-history-row-text"><strong>'+esc(category.name)+'</strong><small>'+esc(dateLabel)+'</small></span><span class="sp-history-row-amount">−'+esc(fmt(expense.amount))+'</span></div><div class="sp-delete-confirm-actions sp-delete-expense-confirm-actions"><button type="button" data-confirm-delete>Delete expense</button><button type="button" data-cancel-delete>Keep expense</button></div>');
   q('[data-confirm-delete]',overlay).onclick=()=>{state.expenses=state.expenses.filter(item=>item.id!==id);pending=true;save();render();notify('Expense deleted','neutral');close({focusTarget:q('[data-history-filter-open]',history)})};
   q('[data-cancel-delete]',overlay).onclick=()=>close({focusTarget:returnTarget});
  }
@@ -2759,6 +2759,10 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 #piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-page[aria-label="My Limits"] .sp-limit-swipe-remove,.sp-history-row-actions [data-history-delete],.sp-remove-category){background:var(--delete-fill);border:1px solid var(--delete-border);color:var(--delete-text);font-family:'DM Sans',Arial,sans-serif!important;font-weight:800;box-shadow:0 3px 0 var(--delete-shadow);transition:filter .15s}
 #piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger){border-radius:19px;min-height:52px;font-size:17px}
 #piggy-onboarding .sp-danger{width:100%;padding:12px 16px}
+#piggy-onboarding .sp-history-page .sp-history-row-actions [data-history-delete]{box-shadow:none}
+#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-swipe-remove{box-shadow:none}
+#piggy-onboarding .sp-overlay :is(.sp-delete-expense-confirm-actions,.sp-delete-limit-confirm-actions) [data-confirm-delete]{background:#FF4D8D;border:0;color:#32151f;box-shadow:0 4px 0 #913e58}
+
 @media(hover:hover){#piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category):hover{filter:brightness(1.13)}}
 #piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-page[aria-label="My Limits"] .sp-limit-swipe-remove,.sp-history-row-actions [data-history-delete],.sp-remove-category):focus-visible{outline:2px solid var(--delete-text);outline-offset:3px}
 #piggy-onboarding :is(.sp-delete-button,.sp-delete-confirm-actions [data-confirm-delete],.sp-danger,.sp-limit-swipe-remove,[data-history-delete],.sp-remove-category):active{filter:brightness(.94)}
