@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Состояния накоплений · My Money Playground</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap">
+  <style>
+    :root{color-scheme:dark;--green:#a7ff27;--green-ink:#26310d;--green-shadow:#608d15;--pink-ink:#501c31;--pink-text:#76374d;--purple:#c6a5ff}
+    *{box-sizing:border-box}
+    body{margin:0;background:#171717;color:#f7f7f5;font:400 14px/1.5 'DM Sans',Arial,sans-serif}
+    main{width:min(100%,1060px);margin:0 auto;padding:clamp(24px,6vw,64px) clamp(18px,4vw,40px) 70px}
+    .back{display:inline-flex;align-items:center;gap:7px;margin:0 0 24px;color:#c9c9c9;text-decoration:none;font-size:12px;font-weight:600}
+    .eyebrow{margin:0 0 7px;color:var(--purple);font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(30px,6vw,44px);line-height:1.05;letter-spacing:-1.8px}
+    .intro{max-width:720px;margin:12px 0 28px;color:#c0c0c0;font-size:15px;line-height:1.55}
+    .legend{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+    .legend span{padding:6px 10px;border:1px solid #ffffff20;border-radius:999px;background:#ffffff08;color:#d0d0d0;font-size:11px;font-weight:600}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+    article{min-width:0;padding:16px;border:1px solid #ffffff13;border-radius:22px;background:#202020;box-shadow:inset 0 1px #ffffff08,0 5px 16px #0003}
+    .state-head{margin:0 2px 12px}
+    .state-head h2{margin:0;color:#d2d2d2;font-size:11px;line-height:1.4;font-weight:700;letter-spacing:.75px}
+    .state-head p{margin:6px 0 0;color:#c0c0c0;font-size:13px;line-height:1.5}
+    .result{margin:0;padding:19px;border-radius:24px;background:linear-gradient(135deg,#eaff86,#a7ff27);color:#1f2c0d;box-shadow:0 5px 0 #608d15}
+    .result.negative{background:linear-gradient(120deg,#fac3d2,#f39ab7);color:var(--pink-ink);box-shadow:0 5px 0 #b14f72}
+    .top{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:700;letter-spacing:1.1px}
+    .spark{font-size:20px;line-height:1}
+    .amount{display:flex;align-items:baseline;gap:7px;margin-top:9px;min-width:0}
+    .amount strong{min-width:0;font-size:32px;line-height:1.1;font-weight:700;letter-spacing:-1px;overflow-wrap:anywhere}
+    .amount span{flex:none;font-size:12px;font-weight:400}
+    .copy{margin:10px 0 14px;color:#3d4e1b;font-size:13px;line-height:1.5;font-weight:500}
+    .negative .copy{color:var(--pink-text)}
+    .goal{margin-top:14px;padding-top:14px;border-top:1px solid #627f3355}
+    .negative .goal{border-color:#76374d38}
+    .goal-label{color:#51613a;font-size:10px;font-weight:700;letter-spacing:1px}
+    .negative .goal-label{color:var(--pink-text)}
+    .goal-row{display:flex;align-items:center;gap:0;margin-top:4px}
+    .goal-amount{min-width:0;font-size:32px;line-height:1.1;font-weight:700;letter-spacing:-1px;overflow-wrap:anywhere}
+    .edit-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;color:inherit}
+    .edit-icon svg{display:block;width:22px;height:22px;transform:translate(1px,-1px);fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .goal-note{margin:12px 0 0;color:#3d4e1b;font-size:13px;line-height:1.5;font-weight:500}
+    .negative .goal-note{color:var(--pink-text)}
+    .forecast{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;padding-top:13px;border-top:1px solid #627f3355}
+    .forecast span{display:block;font-size:10px;font-weight:700;letter-spacing:.8px}
+    .forecast strong{display:block;margin-top:5px;font-size:19px;font-weight:700;letter-spacing:-.4px}
+    .action{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;margin-top:12px;padding:10px 14px;border:0;border-radius:13px;background:#20300e;color:#eaffae;text-align:center;font:600 14px/1.25 'DM Sans',Arial,sans-serif;box-shadow:inset 0 1px #ffffff12,0 3px 0 #101a08}
+    .action.secondary{min-height:42px;border:0;border-radius:12px;background:#20300e;color:#eaffae;font-size:14px;box-shadow:inset 0 1px #ffffff12,0 3px 0 #101a08}
+    .negative .action.primary{background:#a83b5f;color:#fff0f4;box-shadow:inset 0 1px #ffffff18,0 3px 0 #7e2d48}
+    .explanation{margin:14px 2px 0;padding:10px 0 2px 13px;border-left:2px solid #c6a5ff;color:#dedede;font-size:14px;line-height:1.55}
+    .explanation strong{color:#fff;font-weight:700}
+    .pending{display:flex;align-items:center;gap:10px;width:100%;margin:15px 0 0;padding:12px 14px;border-radius:15px;background:#20300e;color:#efffcf;font-size:14px;line-height:1.2;font-weight:700}
+    .pending .forecast-spark{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:12px;background:#a7ff27;color:#26310d;font-size:20px;line-height:1}
+    .negative .pending{color:var(--pink-text)}
+    .success{display:flex;align-items:center;gap:10px;margin-top:15px;padding:12px 14px;border:0;border-radius:15px;background:#20300e;color:#efffcf}
+    .success-icon{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:12px;background:var(--green);color:var(--green-ink)}
+    .success-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+    .success-copy{display:grid;gap:3px;flex:1;min-width:0}
+    .success-copy strong{color:inherit;font:700 14px/1.2 'DM Sans',Arial,sans-serif}
+    .success-copy small{display:block;margin:0;color:inherit;opacity:.8;font:500 11px/1.35 'DM Sans',Arial,sans-serif}
+    .confetti{color:#a7ff27;font-size:20px;line-height:1}
+    @media(max-width:650px){main{padding-top:28px}.grid{grid-template-columns:1fr;gap:14px}.intro{margin-bottom:22px}}
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="piggy-onboarding.html?onboarding=1">← Назад в My Piggy Bank</a>
+  <p class="eyebrow">My Piggy Bank · Галерея состояний</p>
+  <h1>Состояния накоплений</h1>
+  <p class="intro">Здесь собраны варианты карточки My Piggy Bank. Текст под каждой карточкой простыми словами объясняет, когда она появляется и что откроет действие. Кнопки на этой странице — примеры внешнего вида, они не нажимаются. На основном экране остаётся только результат текущего плана.</p>
+  <div class="legend" aria-label="Группы состояний"><span>Баланс месяца</span><span>Цель накоплений</span><span>Не хватает данных</span></div>
+  <div class="grid">
+    <article>
+      <header class="state-head"><h2>ЕСТЬ СВОБОДНЫЕ ДЕНЬГИ · ЦЕЛЬ НЕ ЗАДАНА</h2><p>Доход покрывает план, и после расходов и записанных трат остаётся сумма для накоплений.</p></header>
+      <section class="result"><div class="top"><span>AVAILABLE TO SAVE</span><span class="spark">✦</span></div><div class="amount"><strong>€ 350.00</strong><span>/ month</span></div><p class="copy">After monthly expenses and recorded spending</p><div class="action primary">＋ Set a savings goal</div></section>
+      <div class="explanation"><strong>Кнопка:</strong> откроет нижнее окно, где можно задать цель и указать, сколько уже накоплено.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>НУЛЬ ДОСТУПНО ДЛЯ НАКОПЛЕНИЙ · ЦЕЛЬ НЕ ЗАДАНА</h2><p>После расходов в плане не остаётся свободных денег.</p></header>
+      <section class="result"><div class="top"><span>AVAILABLE TO SAVE</span><span class="spark">✦</span></div><div class="amount"><strong>€ 0.00</strong><span>/ month</span></div><p class="copy">Review your monthly expenses to find room for savings</p><div class="action secondary">Adjust monthly expenses</div></section>
+      <div class="explanation"><strong>Кнопка:</strong> откроет поле общей суммы расходов. Если уменьшить расходы в плане, может появиться сумма для накоплений.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>НУЛЬ ДОСТУПНО ДЛЯ НАКОПЛЕНИЙ · ЦЕЛЬ ЗАДАНА</h2><p>Цель уже есть, но в этом месяце свободная сумма равна нулю, поэтому срок достижения не рассчитывается.</p></header>
+      <section class="result"><div class="top"><span>AVAILABLE TO SAVE</span><span class="spark">✦</span></div><div class="amount"><strong>€ 0.00</strong><span>/ month</span></div><p class="copy">Review your monthly expenses to find room for savings</p><div class="action secondary">Adjust monthly expenses</div><div class="goal"><div class="goal-label">MY GOAL</div><div class="goal-row"><div class="goal-amount">€ 20,000.00</div><span class="edit-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2"/></svg></span></div><p class="goal-note">No savings available this month. Your goal date will appear when you can save.</p></div></section>
+      <div class="explanation"><strong>Кнопка расходов:</strong> откроет поле расходов. <strong>Карандаш у MY GOAL:</strong> откроет нижнее окно изменения цели.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>РАСХОДЫ ВЫШЕ ДОХОДА · ЦЕЛЬ НЕ ЗАДАНА</h2><p>Плановые расходы выше дохода. Цель сама по себе не уберёт дефицит.</p></header>
+      <section class="result negative"><div class="top"><span>EXPENSES OVER INCOME</span><span class="spark">✦</span></div><div class="amount"><strong>€ 350.00</strong><span>/ month</span></div><p class="copy">Your expenses are higher than your income. Try adjusting your plan</p><div class="action primary">＋ Set a savings goal</div></section>
+      <div class="explanation"><strong>Кнопка:</strong> откроет нижнее окно создания цели. Оно сохранит сумму цели, но не перенесёт деньги и не исправит дефицит. Расходы можно изменить в блоке Monthly Expenses.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>РАСХОДЫ ВЫШЕ ДОХОДА · ЦЕЛЬ ЗАДАНА</h2><p>Целевая сумма сохранена, но план в дефиците, поэтому срок накопления пока неизвестен.</p></header>
+      <section class="result negative"><div class="top"><span>EXPENSES OVER INCOME</span><span class="spark">✦</span></div><div class="amount"><strong>€ 350.00</strong><span>/ month</span></div><p class="copy">Your expenses are higher than your income. Try adjusting your plan</p><div class="goal"><div class="goal-label">MY GOAL</div><div class="goal-row"><div class="goal-amount">€ 20,000.00</div><span class="edit-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2"/></svg></span></div><p class="goal-note">No savings available this month. Your goal date will appear when you can save.</p></div></section>
+      <div class="explanation"><strong>Карандаш у MY GOAL:</strong> откроет нижнее окно изменения целевой суммы. Чтобы убрать дефицит, меняют расходы в блоке Monthly Expenses.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>ДОХОД НЕ УКАЗАН</h2><p>Без дохода приложение не может посчитать остаток и прогноз накоплений.</p></header>
+      <section class="result"><div class="top"><span>ADD INCOME TO CALCULATE</span><span class="spark">✦</span></div><div class="amount"><strong>—</strong><span>/ month</span></div><p class="copy">Add income and expenses whenever you are ready</p><div class="action secondary">Add income</div></section>
+      <div class="explanation"><strong>Кнопка:</strong> откроет поле Monthly Income. Расходы можно отдельно изменить в блоке Monthly Expenses; здесь оставили одно главное действие, потому что сначала нужен доход для расчёта.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>ПРОГНОЗ ПО ЦЕЛИ</h2><p>Цель задана и каждый месяц остаётся свободная сумма. Прогноз предполагает, что она будет откладываться каждый месяц.</p></header>
+      <section class="result"><div class="top"><span>AVAILABLE TO SAVE</span><span class="spark">✦</span></div><div class="amount"><strong>€ 350.00</strong><span>/ month</span></div><p class="copy">After monthly expenses and recorded spending</p><div class="goal"><div class="goal-label">MY GOAL</div><div class="goal-row"><div class="goal-amount">€ 20,000.00</div><span class="edit-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2"/></svg></span></div><p class="goal-note">Already saved: € 2,500.00</p><div class="pending"><span class="forecast-spark" aria-hidden="true">✦</span><span class="success-copy"><strong>Goal in about 50 months</strong><small>Every month brings you closer</small></span></div><div class="forecast"><div><span>IN 6 MONTHS</span><strong>€ 4,600.00</strong></div><div><span>IN A YEAR</span><strong>€ 6,700.00</strong></div></div></div></section>
+      <div class="explanation"><strong>Карандаш у MY GOAL:</strong> откроет нижнее окно, где можно изменить цель или уже накопленную на неё сумму.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>ЦЕЛЬ ДОСТИГНУТА</h2><p>Накоплено не меньше целевой суммы. Вместо срока появляется сообщение о завершённой цели.</p></header>
+      <section class="result"><div class="top"><span>AVAILABLE TO SAVE</span><span class="spark">✦</span></div><div class="amount"><strong>€ 350.00</strong><span>/ month</span></div><p class="copy">After monthly expenses and recorded spending</p><div class="goal"><div class="goal-label">MY GOAL</div><div class="goal-row"><div class="goal-amount">€ 20,000.00</div><span class="edit-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2"/></svg></span></div><p class="goal-note">Already saved: € 20,000.00</p><div class="success"><span class="success-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></svg></span><span class="success-copy"><strong>Goal reached!</strong><small>You’ve saved your full target</small></span><span class="confetti" aria-hidden="true">✦</span></div></div></section>
+      <div class="explanation"><strong>Карандаш у MY GOAL:</strong> откроет нижнее окно изменения целевой суммы.</div>
+    </article>
+    <article>
+      <header class="state-head"><h2>ЦЕЛЬ ЗАДАНА · ДОХОД НЕ УКАЗАН</h2><p>Цель сохранена, но без дохода нельзя вычислить, когда получится её достичь.</p></header>
+      <section class="result"><div class="top"><span>ADD INCOME TO CALCULATE</span><span class="spark">✦</span></div><div class="amount"><strong>—</strong><span>/ month</span></div><p class="copy">Add income and expenses whenever you are ready</p><div class="action secondary">Add income</div><div class="goal"><div class="goal-label">MY GOAL</div><div class="goal-row"><div class="goal-amount">€ 20,000.00</div><span class="edit-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="m4 13.8-.5 2.7 2.7-.5 8.7-8.7-2.2-2.2L4 13.8Zm7.7-7.7 2.2 2.2"/></svg></span></div></div></section>
+      <div class="explanation"><strong>Add income:</strong> откроет поле Monthly Income. <strong>Карандаш у MY GOAL:</strong> откроет редактирование цели. Для расходов есть отдельный редактор в плане.</div>
+    </article>
+  </div>
+</main>
+</body>
+</html>
