@@ -1087,7 +1087,7 @@
   #piggy-onboarding .on-currency-heading span{color:#c6a5ff}
   #piggy-onboarding .on-currency-option{width:100%;min-height:55px;display:flex;align-items:center;gap:11px;text-align:left;padding:7px;border:1px solid transparent;border-radius:14px;background:transparent;color:#fff;font:600 14px Arial;cursor:pointer;touch-action:manipulation}
   #piggy-onboarding .on-currency-option[aria-pressed="true"]{background:#a7ff2720;border-color:#a7ff2777}
-  #piggy-onboarding .on-currency-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:#ffffff12;color:#eee;font-size:21px;font-weight:400}
+  #piggy-onboarding .on-currency-icon{display:grid;place-items:center;flex:0 0 38px;width:40px;height:40px;border-radius:13px;background:#ffffff12;color:#eee;font-size:21px;font-weight:400}
   #piggy-onboarding .on-currency-option[aria-pressed="true"] .on-currency-icon{background:#a7ff27;color:#26310d}
   #piggy-onboarding .on-currency-copy{flex:1}.on-currency-copy small{display:block;color:#aaa;font:11px Arial;margin-top:3px}.on-currency-check{visibility:hidden;color:#a7ff27;font-size:17px;margin-right:6px}.on-currency-option[aria-pressed="true"] .on-currency-check{visibility:visible}
   #piggy-onboarding .on-currency-note{margin:10px 7px 2px;color:#aaa;font:11px/1.4 Arial}
@@ -2013,7 +2013,7 @@
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-caption{color:#624b7b;font:500 12px/1.35 'DM Sans',Arial,sans-serif;letter-spacing:0}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-name{margin-top:3px;color:#30213d;font:700 23px/1.15 'DM Sans',Arial,sans-serif;letter-spacing:-.5px}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-icon{flex:0 0 42px;width:42px;height:42px;border-radius:14px;background:var(--on-accent,#ffe14b);color:var(--on-ink,#45380b);box-shadow:0 3px 0 color-mix(in srgb,var(--on-accent,#ffe14b) 43%,#101010),0 0 13px color-mix(in srgb,var(--on-accent,#ffe14b) 26%,transparent)}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-icon img{width:23px;height:23px}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-icon img{width:20px;height:20px}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-amount{flex-wrap:wrap;column-gap:8px;row-gap:6px;margin-top:24px;color:#624b7b;font-size:14px;line-height:1.35;font-variant-numeric:tabular-nums}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-amount strong{max-width:100%;color:#30213d;font:700 32px/1.05 'DM Sans',Arial,sans-serif;letter-spacing:-1px;overflow-wrap:anywhere}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-amount>span{min-width:0;overflow-wrap:anywhere}
@@ -2113,6 +2113,7 @@
 #piggy-onboarding .sp-quick-categories-wrap.has-right-fade{--edge-right:24px}
 #piggy-onboarding .sp-quick-categories-wrap::before,#piggy-onboarding .sp-quick-categories-wrap::after{display:none}
 #piggy-onboarding .sp-quick-categories{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 var(--edge-left),#000 calc(100% - var(--edge-right)),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 var(--edge-left),#000 calc(100% - var(--edge-right)),transparent 100%)}
+#piggy-onboarding .sp-quick-category:disabled{cursor:default;opacity:.46}
 #piggy-onboarding .sp-limits-back:not([hidden]){display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 10px 0 0;border:0;border-radius:10px;background:transparent;color:#c5c9bf;font:600 13px/1.2 'DM Sans',Arial,sans-serif;cursor:pointer}
 #piggy-onboarding .sp-limits-back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #piggy-onboarding .sp-limits-back:hover{color:#fff}
@@ -2161,13 +2162,14 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  const catalog=[['home','Home & Bills','home','purple'],['groceries','Groceries','groceries','green'],['eating','Eating Out','eating','pink'],['transport','Transport','transport','green'],['fun','Fun & Entertainment','fun','purple'],['travel','Travel','travel','green'],['shopping','Shopping','shopping','pink'],['care','Personal Care','care','pink'],['health','Health & Wellness','health','green'],['subscriptions','Subscriptions','subscriptions','purple'],['gifts','Gifts & Giving','gifts','green'],['education','Education & Work','education','pink'],['pets','Pets','pets','purple'],['family','Family & Kids','family','green'],['debt','Debt & Fees','debt','pink'],['other','Other','other','neutral']].map(([id,name,icon,color])=>({id,name,icon,color,accent:categoryAccents[id]}));
 let state={selected:[],custom:[],expenses:[],dailyLimitCents:null,recentQuickCategories:[]}, month=new Date();month.setDate(1);let pending=false,quickAmount='',quickCategory='',quickDate='',activeTab='spending';let historyFilters={dateFrom:'',dateTo:'',min:'',max:'',category:''};
  const page=document.createElement('section');page.className='sp-page';page.hidden=false;page.setAttribute('aria-label','My Spending');
- page.innerHTML='<header class="sp-head"><img class="sp-brand brand-logo" src="assets/logo-transparent.svg" alt="My Money Playground"><span class="sp-sparkle" aria-hidden="true">✳</span></header><button class="sp-history-open" type="button" data-open-history aria-label="Open expense history"><span aria-hidden="true">⌁</span> History</button><h1 class="sp-title">My Spending.</h1><p class="sp-subtitle">A little look at where your money goes.</p><div class="sp-summary"><div class="sp-month"><button type="button" data-prev aria-label="Previous month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span data-month></span><button type="button" data-next-month aria-label="Next month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="sp-summary-metrics"><div class="sp-summary-spent"><div class="sp-total-label">Total spent</div><div class="sp-total" data-total>€ 0.00</div></div><div class="sp-summary-available"><span>My Balance</span><strong data-available-spend>€ 0.00</strong></div></div><div data-spending-plan aria-live="polite"></div></div><section class="sp-quick" aria-label="Quick expense"><div class="sp-quick-head"><h2>Quick add</h2><button class="sp-quick-date" type="button" data-quick-date aria-label="Choose expense date">Today</button></div><div class="sp-quick-amount" data-quick-amount>€ 0.00</div><div class="sp-quick-categories-wrap" data-quick-categories-wrap><div class="sp-quick-categories" data-quick-categories></div></div><div class="sp-keypad" data-keypad><button class="sp-key" type="button" data-key="1">1</button><button class="sp-key" type="button" data-key="2">2</button><button class="sp-key" type="button" data-key="3">3</button><button class="sp-key" type="button" data-key="4">4</button><button class="sp-key" type="button" data-key="5">5</button><button class="sp-key" type="button" data-key="6">6</button><button class="sp-key" type="button" data-key="7">7</button><button class="sp-key" type="button" data-key="8">8</button><button class="sp-key" type="button" data-key="9">9</button><button class="sp-key is-action" type="button" data-key="clear" aria-label="Clear amount">⌫</button><button class="sp-key" type="button" data-key="0">0</button><button class="sp-key is-save" type="button" data-key="save">Add</button></div><p class="sp-quick-hint" data-quick-hint>Choose a category, then enter an amount.</p></section><button type="button" class="sp-recap-button" data-recap><div>My monthly recap<span>See your month at a glance</span></div><b>↗</b></button>';
+ page.innerHTML='<header class="sp-head"><img class="sp-brand brand-logo" src="assets/logo-transparent.svg" alt="My Money Playground"><span class="sp-sparkle" aria-hidden="true">✳</span></header><button class="sp-history-open" type="button" data-open-history aria-label="Open expense history"><span aria-hidden="true">⌁</span> History</button><h1 class="sp-title">My Spending.</h1><p class="sp-subtitle">A little look at where your money goes.</p><div class="sp-summary"><div class="sp-month"><button type="button" data-prev aria-label="Previous month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><span data-month></span><button type="button" data-next-month aria-label="Next month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="sp-summary-metrics"><div class="sp-summary-spent"><div class="sp-total-label">Total spent</div><div class="sp-total" data-total>€ 0.00</div></div><div class="sp-summary-available"><span>My Balance</span><strong data-available-spend>€ 0.00</strong></div></div><div data-spending-plan aria-live="polite"></div></div><section class="sp-quick" aria-label="Quick expense"><div class="sp-keypad-panel"><div class="sp-quick-amount-row"><span class="sp-quick-amount-label" id="sp-quick-amount-label">Expense amount</span><div class="sp-quick-amount" data-quick-amount aria-labelledby="sp-quick-amount-label">€ 0.00</div></div><div class="sp-quick-controls"><div class="sp-quick-categories-wrap" data-quick-categories-wrap><div class="sp-quick-categories" data-quick-categories></div></div><button class="sp-quick-date" type="button" data-quick-date aria-label="Choose expense date"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M7.5 3v4M16.5 3v4M3.5 10h17"/></svg><span data-quick-date-label>Today</span><svg class="sp-quick-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div><div class="sp-keypad" data-keypad><button class="sp-key" type="button" data-key="1">1</button><button class="sp-key" type="button" data-key="2">2</button><button class="sp-key" type="button" data-key="3">3</button><button class="sp-key" type="button" data-key="4">4</button><button class="sp-key" type="button" data-key="5">5</button><button class="sp-key" type="button" data-key="6">6</button><button class="sp-key" type="button" data-key="7">7</button><button class="sp-key" type="button" data-key="8">8</button><button class="sp-key" type="button" data-key="9">9</button><button class="sp-key is-action" type="button" data-key="clear" aria-label="Delete last digit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/><path d="m12 9 6 6"/><path d="m18 9-6 6"/></svg></button><button class="sp-key" type="button" data-key="0">0</button><button class="sp-key is-save" type="button" data-key="save">Add</button></div><button class="sp-quick-submit" type="button" data-quick-submit>Add expense</button></div></section><button type="button" class="sp-recap-button" data-recap><div>My monthly recap<span>See your month at a glance</span></div><b>↗</b></button>';
  const limits=document.createElement('section');limits.className='sp-page';limits.hidden=true;limits.setAttribute('aria-label','My Limits');limits.innerHTML='<header class="sp-head"><button class="sp-limits-back" type="button" data-limits-back aria-label="Back to My Spending" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg><span>Back</span></button></header><div class="sp-limits-title-row"><h1 class="sp-title">My Limits.</h1><button type="button" class="sp-limits-fab" data-add-limit aria-label="Add limit" title="Add limit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div><div data-limits-content aria-live="polite"></div>';
  const analytics=document.createElement('section');analytics.className='sp-page';analytics.hidden=true;analytics.setAttribute('aria-label','Analytics');analytics.innerHTML='<header class="sp-head"><img class="sp-brand brand-logo" src="assets/logo-transparent.svg" alt="My Money Playground"><span class="sp-sparkle" aria-hidden="true">✳</span></header><div class="sp-analytics-title-row"><h1 class="sp-title">Analytics.</h1></div><p class="sp-subtitle">Your money, at a glance.</p><section class="sp-chart" data-spending-chart aria-live="polite"></section><section class="sp-daily-chart" data-daily-chart aria-live="polite"></section><div class="sp-recap-banner"><button type="button" class="sp-recap-button" data-recap><span class="sp-recap-mark" aria-hidden="true"><img src="assets/pig-hugging-coin-mobile.png" alt=""></span><div class="sp-recap-copy"><strong>Monthly recap</strong><span>See how your month is going</span></div><b aria-hidden="true">↗</b></button></div>';
- const spendingTitle=page.querySelector('.sp-title'),historyButton=page.querySelector('.sp-history-open'),titleRow=document.createElement('div');titleRow.className='sp-title-row';historyButton.innerHTML='<img src="assets/History.svg" alt="" aria-hidden="true">';historyButton.querySelector('img').style.cssText='display:block;width:22px;height:22px;object-fit:contain';historyButton.style.cssText='display:flex;align-items:center;justify-content:center;width:52px;height:52px;min-height:52px;padding:0;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010;color:#fff';spendingTitle.before(titleRow);titleRow.append(spendingTitle,historyButton);[page,analytics].forEach(tab=>tab.querySelector('.sp-subtitle')?.remove());
+ const spendingTitle=page.querySelector('.sp-title'),historyButton=page.querySelector('.sp-history-open'),titleRow=document.createElement('div'),titleStack=document.createElement('div');titleRow.className='sp-title-row';titleStack.className='sp-title-stack';historyButton.innerHTML='<img src="assets/History.svg" alt="" aria-hidden="true">';historyButton.querySelector('img').style.cssText='display:block;width:22px;height:22px;object-fit:contain';historyButton.style.cssText='display:flex;align-items:center;justify-content:center;width:52px;height:52px;min-height:52px;padding:0;border:1px solid #3b3b3b;border-radius:17px;background:linear-gradient(180deg,#303030,#272727);box-shadow:inset 0 1px 0 #ffffff12,0 3px 0 #101010;color:#fff';spendingTitle.before(titleRow);titleRow.append(titleStack,historyButton);titleStack.append(spendingTitle);[page,analytics].forEach(tab=>tab.querySelector('.sp-subtitle')?.remove());
+ const spendingGuidePill=document.createElement('button');spendingGuidePill.type='button';spendingGuidePill.className='sp-safe-pill';spendingGuidePill.setAttribute('aria-haspopup','dialog');spendingGuidePill.onclick=openSpendingSummary;titleRow.after(spendingGuidePill);page.classList.add('has-compact-guide');
  const nav=document.createElement('nav');nav.className='sp-nav';nav.setAttribute('aria-label','Main navigation');nav.innerHTML='<button type="button" data-tab="spending" aria-label="My Spending" aria-current="page"><img class="nav-icon-image" src="assets/Spending.svg?v=20261028-1551" alt="" aria-hidden="true"></button><button type="button" data-tab="limits" aria-label="My Limits"><img class="nav-icon-image" src="assets/limits-tab.svg?v=3" alt="" aria-hidden="true"></button><button type="button" data-tab="analytics" aria-label="Analytics"><img class="nav-icon-image" src="assets/analytics-tab.svg" alt="" aria-hidden="true"></button><button type="button" data-tab="bank" aria-label="My Piggy Bank"><img class="sp-nav-pig" alt="" aria-hidden="true"></button>';
  page.querySelector('[data-recap]').hidden=true;
- const keypad=page.querySelector('[data-keypad]'),addKey=keypad.querySelector('[data-key="save"]'),clearKey=keypad.querySelector('[data-key="clear"]'),decimalKey=document.createElement('button');decimalKey.className='sp-key';decimalKey.type='button';decimalKey.dataset.key='.';decimalKey.textContent='.';decimalKey.setAttribute('aria-label','Decimal point');keypad.insertBefore(decimalKey,clearKey);keypad.insertBefore(clearKey,addKey);
+ const keypad=page.querySelector('[data-keypad]'),clearKey=keypad.querySelector('[data-key="clear"]'),decimalKey=document.createElement('button');decimalKey.className='sp-key';decimalKey.type='button';decimalKey.dataset.key='.';decimalKey.textContent='.';decimalKey.setAttribute('aria-label','Decimal point');keypad.insertBefore(decimalKey,clearKey);keypad.append(clearKey);keypad.querySelector('[data-key="save"]')?.remove();
  const added=document.createElement('div');added.className='sp-added';added.setAttribute('role','status');added.innerHTML='<span class="sp-added-mark">✓</span><span data-added-message>Expense added</span>';root.append(added);
  const history=document.createElement('section');history.className='sp-history-page';history.hidden=true;history.setAttribute('aria-label','Expense history');history.innerHTML='<header class="sp-history-head"><button type="button" class="sp-history-back" data-history-back aria-label="Back to My Spending"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button><h1>Expense history</h1><button class="sp-history-filter-button" type="button" data-history-filter-open aria-label="Filter expenses" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h4m4 0h10M3 12h10m4 0h4M3 18h4m4 0h10"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></svg></button></header><div class="sp-history-entries" data-history-items aria-live="polite"></div>';
  nav.querySelector('.sp-nav-pig').src='assets/category-icons/Just_saving.svg';bank.hidden=true;result.append(page,limits,analytics,history,bank,nav);
@@ -2192,10 +2194,8 @@ const q=(s,base=page)=>base.querySelector(s), accentFor=c=>c.accent||categoryAcc
  const money=(el,cents)=>settings.setMoney(el,cents/100);
  const monthKey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
  const today=()=>{let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
- const quickDateButton=q('[data-quick-date]'),quickCategories=q('[data-quick-categories]'),quickCategoriesWrap=q('[data-quick-categories-wrap]');let quickCalendarMonth=new Date();quickCalendarMonth.setDate(1);
- let quickCategoriesInitialized=false;function updateQuickCategoryFades(){const max=quickCategories.scrollWidth-quickCategories.clientWidth,hasOverflow=max>1,scrollLeft=Math.max(0,quickCategories.scrollLeft);quickCategoriesWrap.classList.toggle('has-left-fade',hasOverflow&&scrollLeft>8);quickCategoriesWrap.classList.toggle('has-right-fade',hasOverflow&&scrollLeft<max-1)}
- quickCategories.addEventListener('scroll',updateQuickCategoryFades,{passive:true});window.addEventListener('resize',updateQuickCategoryFades,{passive:true});
- function renderQuickDate(){const date=quickDate||today();quickDateButton.textContent=date===today()?'Today':new Date(date+'T00:00:00').toLocaleDateString('en',{month:'short',day:'numeric'})}
+ const quickDateButton=q('[data-quick-date]'),quickCategories=q('[data-quick-categories]');let quickCalendarMonth=new Date();quickCalendarMonth.setDate(1);
+ function renderQuickDate(){const date=quickDate||today(),label=q('[data-quick-date-label]',quickDateButton);if(label)label.textContent=date===today()?'Today':new Date(date+'T00:00:00').toLocaleDateString('en',{month:'short',day:'numeric'})}
  function quickDatePicker(){const selected=quickDate||today();quickCalendarMonth=new Date(selected+'T00:00:00');quickCalendarMonth.setDate(1);const dateKey=date=>date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');function draw(){const year=quickCalendarMonth.getFullYear(),monthIndex=quickCalendarMonth.getMonth(),first=new Date(year,monthIndex,1),offset=(first.getDay()+6)%7,start=new Date(year,monthIndex,1-offset),cells=Array.from({length:42},(_,index)=>{const date=new Date(start);date.setDate(start.getDate()+index);const key=dateKey(date),outside=date.getMonth()!==monthIndex,selectedInMonth=!outside&&key===selected;return '<button type="button" class="sp-date-day'+(outside?' is-outside':'')+(key===today()?' is-today':'')+'" data-calendar-date="'+key+'" aria-pressed="'+String(selectedInMonth)+'">'+date.getDate()+'</button>'}).join('');open('Choose date','<div class="sp-date-picker"><div class="sp-date-picker-head"><button type="button" data-calendar-prev aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><strong>'+quickCalendarMonth.toLocaleDateString('en',{month:'long',year:'numeric'})+'</strong><button type="button" data-calendar-next aria-label="Next month"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button></div><div class="sp-date-weekdays" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div class="sp-date-grid">'+cells+'</div></div>');const content=q('[data-sheet-content]',overlay);content.querySelector('[data-calendar-prev]').onclick=()=>{quickCalendarMonth=new Date(year,monthIndex-1,1);draw()};content.querySelector('[data-calendar-next]').onclick=()=>{quickCalendarMonth=new Date(year,monthIndex+1,1);draw()};content.querySelectorAll('[data-calendar-date]').forEach(button=>button.onclick=()=>{quickDate=button.dataset.calendarDate;renderQuickDate();close()})}draw()}
  quickDateButton.addEventListener('click',quickDatePicker);renderQuickDate();
  function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(_){};window.dispatchEvent(new Event('money-playground-spending-updated'));try{parent.postMessage({type:'money-playground-spending-save',payload:state},'*')}catch(_){} }
@@ -2240,7 +2240,7 @@ function calculateSpendingGuide({available, expenses, now}) {
  panel.innerHTML='<div class="sp-plan"><section class="sp-daily" style="touch-action:pan-y"><div class="sp-daily-heading"><div class="sp-guide-period-heading"><span class="sp-daily-label">Safe to spend</span><details class="sp-period-select"><summary aria-label="Choose spending guide period, '+labels[kind]+'">'+labels[kind]+'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="sp-category-options">'+enabled.map(k=>'<button class="sp-category-option" type="button" data-guide-period="'+k+'" aria-pressed="'+(k===kind)+'">'+labels[k]+(k===kind?'<span class="sp-selected-check" aria-hidden="true"></span>':'')+'</button>').join('')+'</div></details></div></div><div class="sp-daily-balance"><strong>'+esc(fmt(item.left))+'</strong><span>left</span><button class="sp-daily-set" data-guide-explain type="button" aria-label="How your spending guide is calculated">Auto · How it works</button></div><div class="sp-daily-meter" role="meter" aria-label="'+name[kind]+' remaining" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+item.percent+'">'+Array.from({length:10},(_,i)=>'<span class="sp-daily-segment"><i style="--fill:'+Math.max(0,Math.min(100,item.percent*10-i*100))+'%"></i></span>').join('')+'</div><div class="sp-daily-caption"><span>'+esc(fmt(item.used))+' spent</span><span>'+Math.round(item.percent)+'% left</span></div>'+'</section></div>';
  const change=k=>{guidancePeriod=k;render()};
  panel.querySelectorAll('[data-guide-period]').forEach(button=>button.onclick=()=>{change(button.dataset.guidePeriod);q('.sp-period-select summary',panel)?.focus({preventScroll:true})});const picker=q('.sp-period-select',panel),menu=q('.sp-category-options',picker);picker.ontoggle=()=>{menu.classList.remove('is-opening');if(picker.open){void menu.offsetWidth;menu.classList.add('is-opening')}};picker.onkeydown=e=>{if(e.key==='Escape'&&picker.open){picker.open=false;q('summary',picker).focus();e.stopPropagation()}};
- panel.querySelector('[data-guide-explain]').onclick=()=>open('Your spending guide','<div class="sp-guide-copy"><p>Your monthly balance already accounts for expenses, spending and money set aside in Piggy Bank.</p><p><strong>Today</strong><br>We divide your balance before today’s spending by the days left this month, then subtract today’s spending.</p><p><strong>This week</strong><br>We allocate a share of your balance for this week, up to Sunday or month-end, then subtract this week’s spending.</p><p>Both estimates adjust as your finances change. Category limits are reminders and aren’t deducted again.</p></div>');
+ panel.querySelector('[data-guide-explain]').onclick=openSpendingGuideExplanation;
  let x=0,y=0;panel.ontouchstart=e=>{x=e.touches[0].clientX;y=e.touches[0].clientY};panel.ontouchend=e=>{const dx=e.changedTouches[0].clientX-x,dy=e.changedTouches[0].clientY-y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)){const i=enabled.indexOf(kind);change(enabled[(i+(dx<0?1:-1)+enabled.length)%enabled.length])}};
  }
  function dailyLimitForm(){const config=limitConfig(),names={daily:'Daily',weekly:'Weekly',monthly:'Monthly'};open('Your spending limits','<form data-period-form>'+Object.keys(names).map(k=>'<div class="sp-period-field"><label><input type="checkbox" name="'+k+'Enabled" '+(config[k]!==null?'checked':'')+'> '+names[k]+' spending limit</label><input class="sp-input" aria-label="'+names[k]+' limit amount" name="'+k+'" inputmode="decimal" value="'+((config[k]??({daily:2500,weekly:17500,monthly:75000}[k]))/100).toFixed(2)+'" '+(config[k]===null?'disabled':'')+'></div>').join('')+'<p>Weekly: Monday–Sunday. Monthly: calendar month. Limits track your expenses; savings are kept separate.</p><p class="sp-error" data-error hidden></p><button class="sp-add">Save limits</button></form>');const form=q('[data-period-form]',overlay);Object.keys(names).forEach(k=>{form.elements[k+'Enabled'].onchange=()=>form.elements[k].disabled=!form.elements[k+'Enabled'].checked});form.onsubmit=e=>{e.preventDefault();const next={};for(const k of Object.keys(names)){const v=form.elements[k].value.trim().replace(',','.');if(form.elements[k+'Enabled'].checked&&(!/^\d+(?:\.\d{1,2})?$/.test(v)||Number(v)>100000000)){q('[data-error]',form).hidden=false;q('[data-error]',form).textContent='Enter a valid amount with up to two decimal places.';return}next[k]=form.elements[k+'Enabled'].checked?Math.round(Number(v)*100):null}state.periodLimits=next;pending=true;save();render();close()}}
@@ -2348,8 +2348,8 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   form.querySelectorAll('[data-goal-sheet-currency]').forEach(el=>settings.setSymbol(el));
   let submitting=false;
   const parse=(input,optional=false)=>{const raw=input.value.trim().replace(/\s/g,'').replace(',','.');if(optional&&!raw)return 0;if(!/^\d+(?:\.\d{1,2})?$/.test(raw))return null;const cents=Math.round(Number(raw)*100);return Number.isSafeInteger(cents)&&cents<=10000000000?cents:null};
-  function validate(showError=false){
   const targetAmount=()=>allowEmptyTarget&&!targetInput.value.trim()?null:parse(targetInput);
+  function validate(showError=false){
    const target=targetAmount(),saved=parse(savedInput,true),badTarget=!(allowEmptyTarget&&!targetInput.value.trim())&&(target===null||target<=0),badSaved=saved===null,badName=selectedGoal==='Custom'&&!nameInput.value.trim();
    submit.disabled=submitting||badTarget||badSaved||badName;
    targetInput.setAttribute('aria-invalid',String(showError&&badTarget));savedInput.setAttribute('aria-invalid',String(showError&&badSaved));nameInput.setAttribute('aria-invalid',String(showError&&badName));
@@ -2383,8 +2383,8 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   };
  }
  bank.openGoalEditor=goalEditorSheet;
- function savingsSheet(mode){
  bank.querySelector('[data-goal-card-edit]').addEventListener('click',()=>goalEditorSheet({fromCard:true}));
+ function savingsSheet(mode){
   sheetBackHandler=null;
   const taking=mode==='take',balance=bank.getPiggyBalanceCents(),target=Math.max(0,Number(bank.dataset.savingsTargetCents)||0);
   const sourceLabel=taking?'Return money to':'Money comes from';
@@ -2548,6 +2548,41 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   recap.addEventListener('click',async e=>{if(e.target.closest('[data-recap-edit]')){recapForm(true);recap.querySelector('.mr-page').scrollTop=0;animatePage(rc);animatePage(recap.querySelector('.mr-form-action'));return}const button=e.target.closest('[data-export-pdf],[data-export-excel]');if(!button)return;button.disabled=true;const error=rc.querySelector('.mr-export-error');error.hidden=true;try{if(button.hasAttribute('data-export-pdf'))await exportPDF(report);else await exportExcel(report)}catch(err){console.error(err);error.textContent='Could not create the file. Please try again.';error.hidden=false}finally{button.disabled=false}});
 
 
+ function updateSafePill(){
+  const now=new Date(),period=monthKey(now),kind=guidancePeriod==='weekly'?'weekly':'daily',label=kind==='weekly'?'This week':'Today';
+  let item=null,amount='—';
+  if(bank.dataset.incomeEntered!=='false'){
+   const income=settings.cents(bank.querySelector('#pb-income')),fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),spent=state.expenses.filter(expense=>expense.date?.slice(0,7)===period).reduce((sum,expense)=>sum+expense.amount,0);
+   item=calculateSpendingGuide({available:income-fixed-spent-reservedSavings(period),expenses:state.expenses,now})[kind];amount=fmt(item.left);
+  }
+  const progress=item?'<span class="sp-daily-meter sp-safe-meter" aria-hidden="true">'+Array.from({length:10},(_,i)=>'<span class="sp-daily-segment"><i style="--fill:'+Math.max(0,Math.min(100,item.percent*10-i*100))+'%"></i></span>').join('')+'</span>':'<span class="sp-safe-caption">Add income to see your spending guide</span>';
+  spendingGuidePill.innerHTML='<span class="sp-safe-banner-head"><span class="sp-safe-copy">Safe to spend<small>'+label+'</small></span><strong>'+esc(amount)+'</strong><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>'+progress;
+  spendingGuidePill.setAttribute('aria-label','Safe to spend '+label.toLowerCase()+': '+amount+(item?'. '+fmt(item.used)+' spent, '+Math.round(item.percent)+'% left':'')+'. Open spending details');
+ }
+ function spendingGuideExplanationHtml(){return '<div class="sp-guide-copy"><p>Your monthly balance already accounts for expenses, spending and money set aside in Piggy Bank.</p><p><strong>Today</strong><br>We divide your balance before today’s spending by the days left this month, then subtract today’s spending.</p><p><strong>This week</strong><br>We allocate a share of your balance for this week, up to Sunday or month-end, then subtract this week’s spending.</p><p>Both estimates adjust as your finances change. Category limits are reminders and aren’t deducted again.</p></div>'}
+ function openSpendingGuideExplanation(){open('Your spending guide',spendingGuideExplanationHtml())}
+ function openSpendingSummary(){
+  sheetBackHandler=null;month=new Date();month.setDate(1);render();
+  open('Spending guide','<div class="sp-guide-tooltip" id="sp-guide-tooltip" role="tooltip" data-guide-tooltip tabindex="0" hidden>'+spendingGuideExplanationHtml()+'</div><div class="sp-page sp-summary-sheet" aria-label="My Spending" data-summary-sheet></div>');
+  q('h2',overlay).innerHTML='<span>Spending guide</span><button class="sp-guide-info" type="button" data-guide-info aria-label="How safe to spend is calculated" aria-expanded="false" aria-controls="sp-guide-tooltip"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></button>';
+  const info=q('[data-guide-info]',overlay),tooltip=q('[data-guide-tooltip]',overlay);
+  info.onclick=()=>{const show=tooltip.hidden;tooltip.hidden=!show;info.setAttribute('aria-expanded',String(show));if(show)info.setAttribute('aria-describedby','sp-guide-tooltip');else info.removeAttribute('aria-describedby')};
+  syncSpendingSummary();
+ }
+ function syncSpendingSummary(){
+  const host=overlay.querySelector('[data-summary-sheet]');if(!host)return;
+  const plan=page.querySelector('[data-spending-plan]').cloneNode(true),metrics=page.querySelector('.sp-summary-metrics').cloneNode(true),hasGuide=!!plan.querySelector('.sp-daily');
+  plan.querySelector('[data-guide-explain]')?.remove();
+  metrics.querySelectorAll('[data-total],[data-available-spend]').forEach(element=>element.style.fontSize='');
+  host.innerHTML='<section class="sp-summary-card sp-summary-guide-card'+(hasGuide?'':' is-empty')+'" aria-label="Safe to spend">'+(hasGuide?'':'<h3>Safe to spend</h3>')+plan.innerHTML+'</section><section class="sp-summary-card sp-summary-month-card" aria-label="Current month overview"><div class="sp-summary-card-heading"><h3>This month</h3><span>'+esc(new Date().toLocaleDateString('en',{month:'long',year:'numeric'}))+'</span></div>'+metrics.outerHTML+'</section>';
+  host.onclick=event=>{
+   const button=event.target.closest('[data-guide-period]');if(!button)return;
+   page.querySelector('[data-guide-period="'+button.dataset.guidePeriod+'"]')?.click();
+   host.querySelector('.sp-period-select summary')?.focus({preventScroll:true});
+  };
+  const picker=host.querySelector('.sp-period-select');
+  if(picker){picker.ontoggle=()=>{const menu=picker.querySelector('.sp-category-options');menu.classList.remove('is-opening');if(picker.open){void menu.offsetWidth;menu.classList.add('is-opening')}};picker.onkeydown=event=>{if(event.key==='Escape'&&picker.open){event.preventDefault();event.stopPropagation();picker.open=false;picker.querySelector('summary').focus()}}}
+ }
  function render(){
   const period=monthKey(month), items=state.expenses.filter(e=>e.date?.slice(0,7)===period).sort((a,b)=>b.date.localeCompare(a.date)||b.created-a.created);
   q('[data-month]').textContent=month.toLocaleDateString('en',{month:'long',year:'numeric'});
@@ -2555,19 +2590,19 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   const hasIncome=bank.dataset.incomeEntered!=='false',income=hasIncome?settings.cents(bank.querySelector('#pb-income')):0,fixed=[...bank.querySelectorAll('.pb-expenses input')].reduce((sum,input)=>sum+settings.cents(input),settings.cents(bank.querySelector('#pb-housing'))),available=income-fixed-totalSpent-reservedSavings(period),availableEl=q('[data-available-spend]'),hasCurrentPlan=hasIncome&&period===monthKey(new Date());
   if(hasCurrentPlan){settings.setMoney(availableEl,Math.abs(available)/100,available<0?'−':'');availableEl.closest('.sp-summary-available').classList.toggle('is-over',available<0)}else{availableEl.textContent='—';availableEl.closest('.sp-summary-available').classList.remove('is-over')}let savingsNote=q('[data-reserved-note]');if(!savingsNote){savingsNote=document.createElement('p');savingsNote.dataset.reservedNote='';savingsNote.className='sp-savings-note';availableEl.closest('.sp-summary-available').after(savingsNote)}const reserved=reservedSavings(period);savingsNote.hidden=!hasCurrentPlan||!reserved;savingsNote.textContent=reserved>=0?fmt(reserved)+' set aside in Piggy Bank · already excluded':fmt(-reserved)+' returned from Piggy Bank · included';renderSpendingPlan(totalSpent,period);if(!limits.hidden){renderLimits();setupLimitSwipe()}
   const quickChoices=renderQuickCategories();money(q('[data-quick-amount]'),Math.round(Number(quickAmount||0)*100));
-  q('[data-quick-hint]').textContent=quickAmount?(quickCategory?'Ready to add to '+find(quickCategory).name+'.':'Choose a category to continue.'):quickChoices.length?'Recently used — or choose from all.':'Choose a category, then enter an amount.';
-  renderSpendingPie();renderDailySpending();if(!history.hidden)renderHistory();
+  renderSpendingPie();renderDailySpending();if(!history.hidden)renderHistory();updateSafePill();syncSpendingSummary();
  }
  function renderQuickCategories(){
-  const quickCats=q('[data-quick-categories]');let quickChoices=recentQuickCategories();if(!quickChoices.length)quickChoices=activeCategories().slice(0,2);if(!quickCategory||!find(quickCategory))quickCategory=quickChoices[0]?.id||'';
-  quickCats.innerHTML=quickChoices.map(c=>'<button class="sp-quick-category" type="button" data-quick-category="'+esc(c.id)+'" aria-pressed="'+(quickCategory===c.id)+'">'+icon(c)+'<span>'+esc(c.name)+'</span></button>').join('')+'<button class="sp-quick-category is-all" type="button" data-all-quick-categories aria-haspopup="dialog"><span>'+(quickChoices.length?'All categories':'Choose category')+'</span><b aria-hidden="true">+</b></button>';
-  if(!quickCategoriesInitialized){quickCategories.scrollLeft=0;quickCategoriesInitialized=true;requestAnimationFrame(updateQuickCategoryFades)}updateQuickCategoryFades();
-  return quickChoices;
+  const choices=activeCategories(),recent=Array.isArray(state.recentQuickCategories)?state.recentQuickCategories:[],latest=[...state.expenses].sort((a,b)=>(Number(b.created)||Date.parse(b.date)||0)-(Number(a.created)||Date.parse(a.date)||0))[0]?.category;
+  const current=choices.find(c=>c.id===quickCategory)||recent.map(id=>choices.find(c=>c.id===id)).find(Boolean)||choices.find(c=>c.id===latest)||choices[0];
+  quickCategory=current?.id||'';
+  const label=current?current.name:'Category';
+  quickCategories.innerHTML='<button class="sp-quick-category-select" type="button" data-quick-category-open aria-haspopup="dialog" aria-label="Choose expense category">'+(current?icon(current):'<span class="sp-quick-category-placeholder" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v6H4zM14 15h6v6h-6z"/></svg></span>')+'<span class="sp-quick-category-name">'+esc(label)+'</span><svg class="sp-quick-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>';
+  return choices;
  }
- function recentQuickCategories(){const usage=new Map();state.expenses.forEach(item=>{if(!find(item.category))return;const current=usage.get(item.category)||{count:0,latest:0};current.count++;current.latest=Math.max(current.latest,Number(item.created)||Date.parse(item.date)||0);usage.set(item.category,current)});const fromExpenses=[...usage.entries()].sort((a,b)=>b[1].count-a[1].count||b[1].latest-a[1].latest).map(([id])=>id),saved=Array.isArray(state.recentQuickCategories)?state.recentQuickCategories:[],ids=[...saved,...fromExpenses].filter((id,index,list)=>list.indexOf(id)===index);return ids.map(find).filter(Boolean)}
  function markQuickCategory(id){state.recentQuickCategories=[id,...(Array.isArray(state.recentQuickCategories)?state.recentQuickCategories:[]).filter(item=>item!==id)]}
  let notificationFrame=0;function notify(message,tone='success'){const mark=q('.sp-added-mark',added),neutral=tone==='neutral'||tone==='saved';added.classList.toggle('is-neutral',neutral);added.classList.toggle('is-expense-added',message==='Expense added'&&tone==='success');added.classList.toggle('is-lock',tone==='lock');added.classList.toggle('is-unlock',tone==='unlock');mark.innerHTML=message==='Expense added'&&tone==='success'?'<img src="assets/Check.svg" alt="" aria-hidden="true">':tone==='saved'?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>':neutral?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>':tone==='lock'?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2m-11 0h12v10H6V10Z"/></svg>':tone==='unlock'?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10V8a5 5 0 0 0-9.5-2.1M6 10h12v10H6V10Z"/></svg>':'✓';q('[data-added-message]',added).textContent=message;added.classList.remove('is-visible');cancelAnimationFrame(notificationFrame);notificationFrame=requestAnimationFrame(()=>{notificationFrame=requestAnimationFrame(()=>added.classList.add('is-visible'))})}
- function addQuickExpense(){const n=Number(quickAmount),expenseDate=quickDate||today();if(!quickCategory){q('[data-quick-hint]').textContent='Choose a category first.';return}if(!Number.isFinite(n)||n<=0){q('[data-quick-hint]').textContent='Enter an amount first.';return}state.expenses.push({id:'expense-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),category:quickCategory,amount:Math.round(n*100),note:'',date:expenseDate,created:Date.now()});markQuickCategory(quickCategory);month=new Date(expenseDate+'T00:00:00');month.setDate(1);quickAmount='';quickDate='';renderQuickDate();pending=true;save();render();notify('Expense added')}
+ function addQuickExpense(){const n=Number(quickAmount),expenseDate=quickDate||today();if(!quickCategory){notify('Choose a category first','neutral');return}if(!Number.isFinite(n)||n<=0){notify('Enter an amount first','neutral');return}state.expenses.push({id:'expense-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),category:quickCategory,amount:Math.round(n*100),note:'',date:expenseDate,created:Date.now()});markQuickCategory(quickCategory);month=new Date(expenseDate+'T00:00:00');month.setDate(1);quickAmount='';quickDate='';renderQuickDate();pending=true;save();render();notify('Expense added')}
  keypad.addEventListener('click',e=>{const button=e.target.closest('[data-key]');if(!button)return;e.stopPropagation();const key=button.dataset.key;if(key==='save'){addQuickExpense();return}if(key==='clear')quickAmount=quickAmount.slice(0,-1);else if(key==='.'&&!quickAmount.includes('.')&&quickAmount.length<9)quickAmount=quickAmount?quickAmount+'.':'0.';else if(/^\d$/.test(key)&&(!quickAmount.includes('.')||quickAmount.split('.')[1].length<2)&&quickAmount.replace('.','').length<9)quickAmount+=key;render()});
  function historyAmountCents(value){
   const text=String(value).trim().replace(',','.');
@@ -2678,74 +2713,30 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
    closingPromise=null;
   });return closingPromise;
  }
+ function dismissSpendingTooltip(restoreFocus=false){
+  const tooltip=q('[data-guide-tooltip]',overlay),info=q('[data-guide-info]',overlay);
+  if(!tooltip||tooltip.hidden)return false;
+  tooltip.hidden=true;info?.setAttribute('aria-expanded','false');info?.removeAttribute('aria-describedby');
+  if(restoreFocus)info?.focus({preventScroll:true});return true;
+ }
+ overlay.addEventListener('click',event=>{if(!event.target.closest('[data-guide-info],[data-guide-tooltip]'))dismissSpendingTooltip()});
+ overlay.addEventListener('keydown',event=>{if(event.key==='Escape'&&dismissSpendingTooltip(true)){event.preventDefault();event.stopImmediatePropagation()}},true);
  q('.sp-close',overlay).onclick=()=>{if(!categoryTransferBusy)close()};
  overlay.addEventListener('click',e=>{if(!categoryTransferBusy&&(e.target===overlay||e.target===scrim))close()});
  overlay.addEventListener('cancel',e=>{e.preventDefault();if(!categoryTransferBusy)close()});
  async function selectQuickCategory(choice){
   if(categoryTransferBusy||overlay.classList.contains('is-closing'))return;
   categoryTransferBusy=true;
-  let flight,target,changed=false;const transferMotion=[];
   try{
-   const content=q('[data-sheet-content]',overlay);
-   content.querySelectorAll('[data-quick-picker-category]').forEach(button=>{
-    button.setAttribute('aria-pressed',String(button===choice));button.querySelector('.sp-selected-check')?.remove();
-   });
-   choice.insertAdjacentHTML('beforeend','<span class="sp-selected-check" aria-hidden="true"></span>');
-   // Finish an opening motion before measuring the selected card's screen position.
-   await Promise.all(sheetMotion.map(animation=>animation.finished.catch(()=>{})));
-   const from=choice.getBoundingClientRect();
-   const previous=new Map([...quickCategories.querySelectorAll('[data-quick-category]')].map(button=>[button.dataset.quickCategory,button.getBoundingClientRect()]));
-   quickCategory=choice.dataset.quickPickerCategory;markQuickCategory(quickCategory);pending=true;changed=true;renderQuickCategories();
-   quickCategories.scrollTo({left:0,behavior:'instant'});updateQuickCategoryFades();
-   target=[...quickCategories.querySelectorAll('[data-quick-category]')].find(button=>button.dataset.quickCategory===quickCategory);
-   if(!target){await close();return}
-   const viewport=page.getBoundingClientRect(),targetBounds=target.getBoundingClientRect();
-   if(targetBounds.top<Math.max(0,viewport.top)||targetBounds.bottom>Math.min(innerHeight,viewport.bottom))target.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
-   const to=target.getBoundingClientRect();
-   let arrival=Promise.resolve();
-   if(!reducedMotion()&&from.width&&to.width){
-    // Freeze both layouts inside one moving surface: the text never stretches or reflows.
-    const sourceStyle=getComputedStyle(choice),targetStyle=getComputedStyle(target);
-    flight=document.createElement('div');flight.className='sp-category-flight';flight.setAttribute('aria-hidden','true');
-    const sourceRadius=Math.min(parseFloat(sourceStyle.borderTopLeftRadius)||15,from.height/2);
-    const targetRadius=Math.min(parseFloat(targetStyle.borderTopLeftRadius)||to.height/2,to.height/2);
-    Object.assign(flight.style,{left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px',border:'1px solid '+targetStyle.borderColor,borderRadius:sourceRadius+'px',background:targetStyle.backgroundColor});
-    function frozenFace(element,rect,style){
-     const face=element.cloneNode(true);
-     face.removeAttribute('data-quick-category');face.removeAttribute('data-quick-picker-category');face.tabIndex=-1;
-     Object.assign(face.style,{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',boxSizing:'border-box',width:rect.width+'px',height:rect.height+'px',minHeight:'0',maxWidth:'none',margin:'0',padding:style.padding,font:style.font,color:style.color,borderColor:'transparent',background:'transparent',boxShadow:'none',pointerEvents:'none',transition:'none'});
-     return face;
-    }
-    const sourceFace=frozenFace(choice,from,sourceStyle),targetFace=frozenFace(target,to,targetStyle);
-    const sourceCheck=sourceFace.querySelector('.sp-selected-check');
-    if(sourceCheck)Object.assign(sourceCheck.style,{position:'absolute',right:'8px',top:'50%',transform:'translateY(-50%)'});
-    targetFace.style.opacity='0';flight.append(sourceFace,targetFace);overlay.append(flight);
-    choice.style.visibility='hidden';target.style.visibility='hidden';
-    const duration=700,easing='cubic-bezier(.38,0,.2,1)',options={duration,easing,fill:'forwards'};
-    transferMotion.push(
-     sourceFace.animate([{opacity:1,offset:0},{opacity:0,offset:.45},{opacity:0}],options),
-     targetFace.animate([{opacity:0},{opacity:0,offset:.15},{opacity:1,offset:.65},{opacity:1}],options)
-    );
-    for(const button of quickCategories.querySelectorAll('[data-quick-category]')){
-     if(button===target)continue;
-     const old=previous.get(button.dataset.quickCategory),next=button.getBoundingClientRect();
-     const shift=old&&Math.abs(old.left-next.left)<quickCategories.clientWidth?old.left-next.left:24;
-     button.animate([{transform:'translateX('+shift+'px)',opacity:old?1:0},{transform:'translateX(0)',opacity:1}],{duration:600,delay:80,easing:'cubic-bezier(.38,0,.2,1)',fill:'backwards'});
-    }
-    transferMotion.push(flight.animate([
-     {transform:'translate3d(0,0,0)',width:from.width+'px',height:from.height+'px',borderRadius:sourceRadius+'px'},
-     {transform:'translate3d('+(to.left-from.left)+'px,'+(to.top-from.top)+'px,0)',width:to.width+'px',height:to.height+'px',borderRadius:targetRadius+'px'}
-    ],options));
-    arrival=Promise.all(transferMotion.map(animation=>animation.finished.catch(()=>{}))).then(()=>{
-     target.style.visibility='';flight.remove();
-    });
-   }
-   await close({waitFor:arrival,focusTarget:target});
-  }finally{transferMotion.forEach(animation=>animation.cancel());flight?.remove();choice.style.visibility='';if(target)target.style.visibility='';categoryTransferBusy=false;if(changed)save()}
+   quickCategory=choice.dataset.quickPickerCategory;
+   markQuickCategory(quickCategory);pending=true;save();render();
+   await close({focusTarget:q('[data-quick-category-open]')});
+  }finally{categoryTransferBusy=false}
  }
  function quickCategoryPicker(){
-  const choices=activeCategories();
-  open('Choose a category','<div class="sp-picker">'+choices.map(c=>'<button class="sp-pick" type="button" data-quick-picker-category="'+esc(c.id)+'" aria-pressed="'+(quickCategory===c.id)+'">'+icon(c)+'<span class="sp-pick-name">'+esc(c.name)+'</span>'+(quickCategory===c.id?'<span class="sp-selected-check" aria-hidden="true"></span>':'')+'</button>').join('')+'</div>');
+  sheetBackHandler=null;
+  const choices=activeCategories(),selectedId=quickCategory;
+  open('Choose a category','<div class="sp-picker">'+choices.map(c=>'<button class="sp-pick" type="button" data-quick-picker-category="'+esc(c.id)+'" aria-pressed="'+(selectedId===c.id)+'">'+icon(c)+'<span class="sp-pick-name">'+esc(c.name)+'</span>'+(selectedId===c.id?'<span class="sp-selected-check" aria-hidden="true"></span>':'')+'</button>').join('')+'</div>');
   q('[data-sheet-content]',overlay).onclick=e=>{const choice=e.target.closest('[data-quick-picker-category]');if(choice)selectQuickCategory(choice)};
  }
  function manage(){
@@ -2804,7 +2795,9 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
  function openHistory(){historyFilters={dateFrom:'',dateTo:'',min:'',max:'',category:''};renderHistory();page.hidden=true;nav.hidden=true;history.hidden=false;history.scrollIntoView({block:'start',behavior:'auto'});animatePage(history);history.querySelector('[data-history-back]').focus({preventScroll:true})}
  function closeHistory(){history.hidden=true;nav.hidden=false;showTab('spending');animatePage(page);q('[data-open-history]').focus({preventScroll:true})}
 nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const changed=activeTab!==btn.dataset.tab;showTab(btn.dataset.tab);const target={spending:page,limits,analytics,bank}[btn.dataset.tab];if(changed)animatePage(target)};limits.onclick=e=>{if(e.target.closest('[data-limits-back]')){returnFromLimits();return}if(e.target.closest('[data-add-limit]')){limitPicker();return}if(e.target.closest('[data-limit-target]')){targetForm();return}const remove=e.target.closest('[data-remove-limit]');if(remove){confirmDeleteLimit(remove.dataset.removeLimit,remove);return}const edit=e.target.closest('[data-edit-limit]');if(edit){const id=edit.dataset.editLimit;saveLimits(readLimits().map(item=>item.id===id?{...item,locked:false}:item));q('[data-limit-slider="'+CSS.escape(id)+'"]',limits)?.focus({preventScroll:true});return}const lock=e.target.closest('[data-lock-limit]');if(!lock)return;const card=lock.closest('[data-limit-card]'),slider=q('[data-limit-slider]',card),id=slider.dataset.limitSlider,plan=readLimits().map(item=>item.id===id?{...item,limitCents:Math.round(Number(slider.value)*100),locked:true}:item);if(!saveLimits(plan))return;limitDrafts.delete(id);q('[data-edit-limit="'+CSS.escape(id)+'"]',limits)?.focus({preventScroll:true});notify('New limit saved','saved')};limits.oninput=e=>{const slider=e.target.closest('[data-limit-slider]');if(!slider)return;const id=slider.dataset.limitSlider;limitDrafts.set(id,Math.round(Number(slider.value)*100));const plan=previewLimits(),item=plan.find(entry=>entry.id===id),spent=limitSpending(id,monthKey(new Date())),card=slider.closest('[data-limit-card]'),over=spent>item.limitCents,left=Math.max(0,item.limitCents-spent),percent=item.limitCents?Math.min(100,Math.round(spent/item.limitCents*100)):0;card.classList.toggle('is-over',over);q('[data-limit-status="'+CSS.escape(id)+'"]',card).textContent=over?settings.money((spent-item.limitCents)/100):settings.money(left/100);q('[data-limit-status-label="'+CSS.escape(id)+'"]',card).textContent=over?'over limit':'left this month';q('[data-limit-percent="'+CSS.escape(id)+'"]',card).textContent=(item.limitCents?Math.max(0,Math.round(left/item.limitCents*100)):0)+'% left';q('[data-limit-spent="'+CSS.escape(id)+'"]',card).textContent=settings.money(spent/100)+' spent';const projection=limitProjection(plan);updateLimitGoal(plan,projection);limits.querySelectorAll('[data-limit-saving-preview]').forEach(preview=>{preview.innerHTML=limitSavingsCopy(projection)})};
- page.onclick=e=>{if(e.target.closest('[data-open-limit-settings]')){openLimitsFromSpending();return}const quick=e.target.closest('[data-key]'),quickCat=e.target.closest('[data-quick-category]');if(quick){const key=quick.dataset.key;if(key==='save'){addQuickExpense();return}else if(key==='clear')quickAmount=quickAmount.slice(0,-1);else if(quickAmount.length<9)quickAmount+=key;render()}else if(e.target.closest('[data-all-quick-categories]'))quickCategoryPicker();else if(quickCat){quickCategory=quickCat.dataset.quickCategory;markQuickCategory(quickCategory);pending=true;save();render()}else if(e.target.closest('[data-open-history]'))openHistory();else if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-set-daily]'))dailyLimitForm();else if(e.target.closest('[data-set-target]'))targetForm();else if(e.target.closest('[data-add]'))expenseForm();else if(e.target.closest('[data-prev]')){month=new Date(month.getFullYear(),month.getMonth()-1,1);render()}else if(e.target.closest('[data-next-month]')){month=new Date(month.getFullYear(),month.getMonth()+1,1);render()}else if(e.target.closest('[data-expense]'))expenseForm(state.expenses.find(x=>x.id===e.target.closest('[data-expense]').dataset.expense))};analytics.onclick=e=>{const mode=e.target.closest('[data-overview-mode]'),previous=e.target.closest('[data-overview-prev]'),next=e.target.closest('[data-overview-next]');if(mode||previous||next){if(mode)analyticsPeriod=mode.dataset.overviewMode;else if(analyticsPeriod==='year')analyticsDate=new Date(analyticsDate.getFullYear()+(next?1:-1),analyticsDate.getMonth(),1);else analyticsDate=new Date(analyticsDate.getFullYear(),analyticsDate.getMonth()+(next?1:-1),1);transitionSpendingOverview(renderSpendingPie);q(mode?'.sp-overview-picker summary':next?'[data-overview-next]':'[data-overview-prev]',analytics)?.focus({preventScroll:true});return}if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-chart-open]')){const panel=q('[data-spending-chart]');panel.hidden=false;q('[data-chart-open]').setAttribute('aria-expanded','true');panel.scrollIntoView({block:'nearest',behavior:'smooth'})}else if(e.target.closest('[data-chart-close]')){q('[data-spending-chart]').hidden=true;q('[data-chart-open]').setAttribute('aria-expanded','false');q('[data-chart-open]').focus()}else if(e.target.closest('[data-close-month]'))closeMonthSheet();else{const day=e.target.closest('[data-analytics-day]'),previousWeek=e.target.closest('[data-week-prev]'),nextWeek=e.target.closest('[data-week-next]');if(!day&&!previousWeek&&!nextWeek)return;if(day)selectedAnalyticsDay=day.dataset.analyticsDay;else{const date=new Date(selectedAnalyticsDay+'T12:00:00');date.setDate(date.getDate()+(nextWeek?7:-7));selectedAnalyticsDay=date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')}renderDailySpending();q(day?'[data-analytics-day="'+selectedAnalyticsDay+'"]':nextWeek?'[data-week-next]':'[data-week-prev]',analytics)?.focus({preventScroll:true})}};
+ page.onclick=e=>{if(e.target.closest('[data-open-limit-settings]')){openLimitsFromSpending();return}const quick=e.target.closest('[data-key]'),quickCat=e.target.closest('[data-quick-category]');if(quick){const key=quick.dataset.key;if(key==='save'){addQuickExpense();return}else if(key==='clear')quickAmount=quickAmount.slice(0,-1);else if(quickAmount.length<9)quickAmount+=key;render()}else if(e.target.closest('[data-quick-category-open]')){if(Number.isFinite(Number(quickAmount))&&Number(quickAmount)>0)quickCategoryPicker();else notify('Enter an amount first','neutral')}else if(e.target.closest('[data-all-quick-categories]'))quickCategoryPicker();else if(quickCat){quickCategory=quickCat.dataset.quickCategory;markQuickCategory(quickCategory);pending=true;save();render()}else if(e.target.closest('[data-open-history]'))openHistory();else if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-set-daily]'))dailyLimitForm();else if(e.target.closest('[data-set-target]'))targetForm();else if(e.target.closest('[data-add]'))expenseForm();else if(e.target.closest('[data-prev]')){month=new Date(month.getFullYear(),month.getMonth()-1,1);render()}else if(e.target.closest('[data-next-month]')){month=new Date(month.getFullYear(),month.getMonth()+1,1);render()}else if(e.target.closest('[data-expense]'))expenseForm(state.expenses.find(x=>x.id===e.target.closest('[data-expense]').dataset.expense))};analytics.onclick=e=>{const mode=e.target.closest('[data-overview-mode]'),previous=e.target.closest('[data-overview-prev]'),next=e.target.closest('[data-overview-next]');if(mode||previous||next){if(mode)analyticsPeriod=mode.dataset.overviewMode;else if(analyticsPeriod==='year')analyticsDate=new Date(analyticsDate.getFullYear()+(next?1:-1),analyticsDate.getMonth(),1);else analyticsDate=new Date(analyticsDate.getFullYear(),analyticsDate.getMonth()+(next?1:-1),1);transitionSpendingOverview(renderSpendingPie);q(mode?'.sp-overview-picker summary':next?'[data-overview-next]':'[data-overview-prev]',analytics)?.focus({preventScroll:true});return}if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-chart-open]')){const panel=q('[data-spending-chart]');panel.hidden=false;q('[data-chart-open]').setAttribute('aria-expanded','true');panel.scrollIntoView({block:'nearest',behavior:'smooth'})}else if(e.target.closest('[data-chart-close]')){q('[data-spending-chart]').hidden=true;q('[data-chart-open]').setAttribute('aria-expanded','false');q('[data-chart-open]').focus()}else if(e.target.closest('[data-close-month]'))closeMonthSheet();else{const day=e.target.closest('[data-analytics-day]'),previousWeek=e.target.closest('[data-week-prev]'),nextWeek=e.target.closest('[data-week-next]');if(!day&&!previousWeek&&!nextWeek)return;if(day)selectedAnalyticsDay=day.dataset.analyticsDay;else{const date=new Date(selectedAnalyticsDay+'T12:00:00');date.setDate(date.getDate()+(nextWeek?7:-7));selectedAnalyticsDay=date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')}renderDailySpending();q(day?'[data-analytics-day="'+selectedAnalyticsDay+'"]':nextWeek?'[data-week-next]':'[data-week-prev]',analytics)?.focus({preventScroll:true})}};
+ const handleSpendingClick=page.onclick;
+ page.onclick=e=>{if(e.target.closest('[data-quick-submit]')){addQuickExpense();return}if(e.target.closest('[data-quick-category-open]')){quickCategoryPicker();return}return handleSpendingClick(e)};
  function confirmDeleteLimit(id,returnTarget){
   const limit=readLimits().find(item=>item.id===id);if(!limit)return;
   const category=find(id)||{id,name:limit.name,icon:'other',color:'neutral'};
@@ -3025,6 +3018,15 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 #piggy-onboarding .on-icon.goal-custom,#piggy-onboarding .pb-goal[data-goal-tone="goal-custom"]{--on-accent:#ffe14b;--on-ink:#45380b}
 #piggy-onboarding .on-icon.green{--on-accent:#a7ff27;--on-ink:#26310d}
 </style>
+<style id="piggy-goal-category-background">
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal{background:linear-gradient(120deg,color-mix(in srgb,var(--on-accent,#b58cff) 36%,#f3f1f8),color-mix(in srgb,var(--on-accent,#b58cff) 48%,#eeeefa));color:var(--on-ink,#30213d);box-shadow:0 5px 0 color-mix(in srgb,var(--on-accent,#b58cff) 50%,var(--on-ink,#30213d))}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-caption,#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-amount,#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-progress-caption{color:color-mix(in srgb,var(--on-ink,#30213d) 82%,white)}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-name,#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-amount strong{color:var(--on-ink,#30213d)}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-progress{background:color-mix(in srgb,var(--on-ink,#30213d) 20%,transparent)}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-savings-actions button[data-savings-action="take"]{background:color-mix(in srgb,var(--on-accent,#b58cff) 16%,white);color:var(--on-ink,#30213d);box-shadow:0 4px 0 color-mix(in srgb,var(--on-accent,#b58cff) 38%,var(--on-ink,#30213d))}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-savings-actions button[data-savings-action="take"]:active{box-shadow:0 2px 0 color-mix(in srgb,var(--on-accent,#b58cff) 38%,var(--on-ink,#30213d))}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-savings-actions button:focus-visible{outline-color:var(--on-ink,#30213d)}
+</style>
 
 <style>
 #piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-balance .sp-daily-set{margin-left:auto;flex:none}
@@ -3047,15 +3049,6 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-complete-copy small{display:block;margin:0;color:inherit;opacity:.8;font:500 11px/1.35 'DM Sans',Arial,sans-serif}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-confetti{color:#a7ff27;font-size:20px;line-height:1}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-result.is-short .pb-goal-confetti{color:#ffc2d2}
-</style>
-<style id="piggy-goal-category-background">
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal{background:linear-gradient(120deg,color-mix(in srgb,var(--on-accent,#b58cff) 36%,#f3f1f8),color-mix(in srgb,var(--on-accent,#b58cff) 48%,#eeeefa));color:var(--on-ink,#30213d);box-shadow:0 5px 0 color-mix(in srgb,var(--on-accent,#b58cff) 50%,var(--on-ink,#30213d))}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-caption,#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-amount,#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-progress-caption{color:color-mix(in srgb,var(--on-ink,#30213d) 82%,white)}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-name,#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-amount strong{color:var(--on-ink,#30213d)}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-progress{background:color-mix(in srgb,var(--on-ink,#30213d) 20%,transparent)}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-savings-actions button[data-savings-action="take"]{background:color-mix(in srgb,var(--on-accent,#b58cff) 16%,white);color:var(--on-ink,#30213d);box-shadow:0 4px 0 color-mix(in srgb,var(--on-accent,#b58cff) 38%,var(--on-ink,#30213d))}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-savings-actions button[data-savings-action="take"]:active{box-shadow:0 2px 0 color-mix(in srgb,var(--on-accent,#b58cff) 38%,var(--on-ink,#30213d))}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-savings-actions button:focus-visible{outline-color:var(--on-ink,#30213d)}
 </style>
 
 <style id="piggy-goal-editor-controls">
@@ -3111,4 +3104,187 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 #piggy-onboarding .pb-plan-edit svg{display:block;width:19px;height:19px}
 #piggy-onboarding .pb-plan-saved{padding:0 0 2px;color:#fff;font:600 15px/1.3 'DM Sans',Arial,sans-serif}
 #piggy-onboarding .pb-plan-edit:focus-visible{outline:2px solid #c6a5ff;outline-offset:2px}
+</style>
+<style id="spending-summary-sheet-style">
+#piggy-onboarding .sp-page.has-compact-guide>.sp-summary{display:none!important}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title-row{margin-bottom:0}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title-row{align-items:flex-start}
+#piggy-onboarding .sp-title-stack{display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:0;min-width:0}
+#piggy-onboarding .sp-title-stack .sp-title{margin:0}
+#piggy-onboarding .sp-title-stack .sp-safe-pill{margin-top:1px}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title-row>.sp-history-open{align-self:flex-start}
+#piggy-onboarding .sp-safe-pill{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-height:26px;margin:0 0 18px;padding:1px 1px;border:0;border-radius:0;background:transparent;color:#c3c6bf;font:500 11px/1.3 'DM Sans',Arial,sans-serif;cursor:pointer}
+#piggy-onboarding .sp-safe-pill>span{min-width:0;white-space:nowrap}
+#piggy-onboarding .sp-safe-pill>span{text-decoration:underline dotted #8a8d86;text-underline-offset:4px;text-decoration-thickness:1px}
+#piggy-onboarding .sp-safe-pill strong{color:#a7ff27;font:700 12px/1.2 'DM Sans',Arial,sans-serif;white-space:nowrap}
+#piggy-onboarding .sp-safe-pill svg{display:block;flex:none;width:13px;height:13px;fill:none;stroke:#aeb3aa;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#piggy-onboarding .sp-page[aria-label="My Spending"].has-compact-guide{box-sizing:border-box;height:100%;min-height:0;display:flex;flex-direction:column;padding-bottom:calc(104px + env(safe-area-inset-bottom))}
+#piggy-onboarding .sp-page.has-compact-guide>.sp-quick{display:flex;flex:1 1 auto;flex-direction:column;min-height:0;margin-top:12px}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick{padding:8px 0 0;border:0;border-radius:0;background:transparent;box-shadow:none}
+#piggy-onboarding .sp-quick-amount-row{position:relative;display:grid;place-items:center;min-height:43px;margin:0 0 8px}
+#piggy-onboarding .sp-quick-amount{margin:0;text-align:center}
+#piggy-onboarding .sp-quick-head{position:absolute;inset:0 0 auto auto;display:flex;align-items:center;justify-content:flex-end;min-height:40px}
+#piggy-onboarding .sp-quick-date{padding:5px 10px}
+#piggy-onboarding .sp-quick-categories-wrap{position:relative;display:flex;flex:1 1 auto;min-height:0;flex-direction:column;justify-content:center;margin:2px 0 0;overflow:visible}
+#piggy-onboarding .sp-quick-categories-wrap::before,#piggy-onboarding .sp-quick-categories-wrap::after{display:none}
+#piggy-onboarding .sp-quick-categories{display:grid;flex:none;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,76px);gap:16px 10px;overflow:visible;padding:4px 0 0;mask-image:none!important;-webkit-mask-image:none!important}
+#piggy-onboarding .sp-quick-category{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;width:100%;max-width:none;min-width:0;min-height:76px;padding:0 2px;border:0;border-radius:12px;background:transparent;color:#c7c9c4;text-align:center;white-space:normal;font:500 10px/1.15 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-quick-category .sp-icon{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:13px;font-size:18px}
+#piggy-onboarding .sp-quick-category .sp-icon svg,#piggy-onboarding .sp-quick-category .sp-icon img{width:20px;height:20px}
+#piggy-onboarding .sp-quick-category>span:not(.sp-icon){display:block;width:100%;overflow:hidden;text-overflow:ellipsis;text-align:center!important;white-space:nowrap}
+#piggy-onboarding .sp-quick-category[aria-pressed=true]{background:#ffffff08;color:#fff}
+#piggy-onboarding .sp-quick-category[aria-pressed=true] .sp-icon{box-shadow:0 0 0 2px #a7ff27}
+#piggy-onboarding .sp-quick-category:disabled{cursor:default;opacity:1;pointer-events:none}
+#piggy-onboarding .sp-quick-category-pagination{display:flex;flex:none;justify-content:center;align-items:center;gap:10px;min-height:23px;margin:0 0 7px}
+#piggy-onboarding .sp-quick-category-pagination button{width:7px;height:7px;min-height:0;padding:0;border:0;border-radius:50%;background:#5b5d59;cursor:pointer;transition:background .2s ease,transform .25s cubic-bezier(.2,.78,.25,1)}
+#piggy-onboarding .sp-quick-category-pagination button[aria-current=true]{background:#e5e7e2;transform:scale(1.25)}
+#piggy-onboarding .sp-quick .sp-keypad{margin-top:auto}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title-stack .sp-safe-pill{margin-bottom:8px}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick{margin-top:4px;padding-top:0}
+#piggy-onboarding .sp-quick-categories-wrap{margin-top:0}
+#piggy-onboarding .sp-quick-categories{padding-top:0}
+#piggy-onboarding .sp-quick-amount-row{margin:8px 0 18px}
+#piggy-onboarding .sp-quick .sp-keypad{flex:none;margin-top:0;padding:0;border:0;border-radius:0;background:transparent;gap:8px}
+#piggy-onboarding .sp-quick .sp-key{min-height:46px;border-radius:14px;background:#363636}
+@media(max-height:780px){#piggy-onboarding .sp-page[aria-label="My Spending"].has-compact-guide{padding-bottom:calc(104px + env(safe-area-inset-bottom))}#piggy-onboarding .sp-quick-categories{grid-template-rows:repeat(3,70px);gap:12px 10px}#piggy-onboarding .sp-quick-category .sp-icon{width:38px;height:38px;border-radius:12px}#piggy-onboarding .sp-quick-category{min-height:70px;gap:7px}#piggy-onboarding .sp-quick .sp-keypad{padding:0;gap:6px}#piggy-onboarding .sp-quick .sp-key{min-height:40px}}
+#piggy-onboarding .sp-overlay .sp-page.sp-summary-sheet{display:block;position:static;box-sizing:border-box;width:100%;height:340px;min-height:0;max-height:340px;margin:14px 0 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#ffffff1c transparent;animation:none;transform:none}
+#piggy-onboarding .sp-overlay .sp-page.sp-summary-sheet>.sp-summary{display:block!important;box-sizing:border-box;min-height:340px;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+#piggy-onboarding .sp-summary-sheet .sp-plan-note{font-size:12px;line-height:1.5}
+#piggy-onboarding .sp-summary-sheet .sp-period-select .sp-category-options{z-index:10}
+#piggy-onboarding .sp-quick-amount-row{display:grid;place-items:center;flex:none;min-height:122px;margin:0 0 14px}
+#piggy-onboarding .sp-quick-amount{margin:0;font-size:40px;line-height:1;letter-spacing:-1.8px}
+#piggy-onboarding .sp-quick-controls{display:flex;flex:none;align-items:center;gap:10px;margin:0 0 20px}
+#piggy-onboarding .sp-quick-categories-wrap{flex:1 1 0;min-width:0;margin:0;overflow:visible}
+#piggy-onboarding .sp-quick-categories{display:block;overflow:visible;padding:0;mask-image:none!important;-webkit-mask-image:none!important}
+#piggy-onboarding .sp-quick-category-select{display:flex;align-items:center;gap:9px;width:100%;min-width:0;min-height:48px;padding:5px 12px;border:1px solid #454545;border-radius:999px;background:#303030;color:#dededb;text-align:left;font:600 12px/1.2 'DM Sans',Arial,sans-serif;cursor:pointer}
+#piggy-onboarding .sp-quick-category-select .sp-icon{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:11px;font-size:16px}
+#piggy-onboarding .sp-quick-category-select .sp-icon img{width:18px;height:18px}
+#piggy-onboarding .sp-quick-category-placeholder{display:grid;place-items:center;flex:none;width:34px;height:34px;border:1px solid #5a5a5a;border-radius:11px;background:#383838;color:#bdbdbd}
+#piggy-onboarding .sp-quick-category-placeholder svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#piggy-onboarding .sp-quick-category-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#piggy-onboarding .sp-quick-select-chevron{display:block;flex:none;width:16px;height:16px;fill:none;stroke:#bdbdbd;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s ease}
+#piggy-onboarding .sp-quick-category-select:active,#piggy-onboarding .sp-quick-date:active{transform:scale(.98)}
+#piggy-onboarding .sp-quick-date{display:inline-flex;flex:none;align-items:center;justify-content:center;min-height:48px;padding:0 13px;border-radius:999px}
+#piggy-onboarding .sp-quick .sp-keypad{flex:none;margin-top:auto}
+@media(max-height:780px){#piggy-onboarding .sp-quick-amount-row{min-height:100px;margin-bottom:12px}#piggy-onboarding .sp-quick-controls{margin-bottom:14px}#piggy-onboarding .sp-quick-category-select,#piggy-onboarding .sp-quick-date{min-height:44px}#piggy-onboarding .sp-quick-category-select .sp-icon,#piggy-onboarding .sp-quick-category-placeholder{width:32px;height:32px}}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick-select-chevron{transition:none}}
+
+#piggy-onboarding .sp-quick-amount-row{flex:none}
+#piggy-onboarding .sp-keypad-panel{display:flex;flex:1 1 auto;min-height:0;flex-direction:column;padding:12px;border:1px solid #3c4036;border-radius:24px;background:#222;box-shadow:inset 0 1px #ffffff05}
+#piggy-onboarding .sp-quick-controls{flex:none;align-items:center;gap:9px;margin:0 0 12px}
+#piggy-onboarding .sp-quick-categories-wrap{flex:1 1 0;min-width:0}
+#piggy-onboarding .sp-quick-category-select{min-height:44px;padding:4px 9px;gap:7px;font-size:11px}
+#piggy-onboarding .sp-quick-category-select .sp-icon,#piggy-onboarding .sp-quick-category-placeholder{width:30px;height:30px;border-radius:10px}
+#piggy-onboarding .sp-quick-category-select .sp-icon img{width:17px;height:17px}
+#piggy-onboarding .sp-quick-category-name{font-size:11px}
+#piggy-onboarding .sp-quick-date{min-height:44px;gap:7px;padding:0 10px;font-size:11px}
+#piggy-onboarding .sp-quick-date>svg:first-child{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#piggy-onboarding .sp-quick .sp-keypad{display:grid;flex:1 1 auto;grid-template-rows:repeat(4,minmax(38px,1fr));gap:8px;margin:0;padding:0;border:0;border-radius:0;background:transparent}
+#piggy-onboarding .sp-quick .sp-key{min-height:0;border-radius:14px;background:#343434}
+#piggy-onboarding .sp-quick .sp-key.is-save{margin:0;background:#a7ff27;color:#26310d;font-size:13px}
+@media(max-height:780px){#piggy-onboarding .sp-keypad-panel{padding:10px;border-radius:21px}#piggy-onboarding .sp-quick-controls{margin-bottom:9px}#piggy-onboarding .sp-quick .sp-keypad{grid-template-rows:repeat(4,minmax(34px,1fr));gap:6px}}
+
+/* Full-width Quick Add dock: controls and keys share one bottom surface. */
+#piggy-onboarding .on-result .sp-page[aria-label="My Spending"].has-compact-guide{--quick-gutter:23px;padding-right:var(--quick-gutter);padding-left:var(--quick-gutter);padding-bottom:0;overflow-x:hidden}
+#piggy-onboarding .sp-page.has-compact-guide>.sp-quick{flex:1 0 auto;justify-content:flex-end;margin:0;padding:0}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick-amount-row{flex:0 0 auto;min-height:0;height:116px;margin:0;padding:18px 0 26px;box-sizing:border-box;place-items:center}
+#piggy-onboarding .sp-quick-amount{font-size:44px;line-height:1.1;letter-spacing:-1.6px;font-variant-numeric:tabular-nums}
+#piggy-onboarding .sp-keypad-panel{box-sizing:border-box;flex:none;width:calc(100% + 2 * var(--quick-gutter));margin:0 calc(-1 * var(--quick-gutter));padding:var(--quick-gutter) var(--quick-gutter) calc(106px + env(safe-area-inset-bottom,0px));border:0;border-radius:28px 28px 0 0;background:#252525;box-shadow:inset 0 1px 0 #ffffff09}
+#piggy-onboarding .sp-keypad-panel .sp-quick-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin:0 0 16px}
+#piggy-onboarding .sp-keypad-panel .sp-quick-categories-wrap{display:block;min-width:0;margin:0}
+#piggy-onboarding .sp-keypad-panel .sp-quick-category-select,#piggy-onboarding .sp-keypad-panel .sp-quick-date{box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:100%;min-width:0;height:44px;min-height:44px;gap:7px;padding:0 10px;border:1px solid #ffffff0b;border-radius:14px;background:#333;color:#dededb;font:500 13px/1.2 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-keypad-panel .sp-quick-category-name{flex:0 1 auto;font:inherit}
+#piggy-onboarding .sp-keypad-panel .sp-quick-category-select .sp-icon,#piggy-onboarding .sp-keypad-panel .sp-quick-category-placeholder{width:24px;height:24px;border-radius:8px;font-size:13px}
+#piggy-onboarding .sp-keypad-panel .sp-quick-category-select .sp-icon img,#piggy-onboarding .sp-keypad-panel .sp-quick-category-placeholder svg{width:14px;height:14px}
+#piggy-onboarding .sp-keypad-panel .sp-quick-select-chevron{width:13px;height:13px}
+#piggy-onboarding .sp-keypad-panel [data-quick-date-label]{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#piggy-onboarding .sp-quick .sp-keypad{flex:none;grid-template-rows:repeat(4,clamp(44px,6.5dvh,56px));gap:6px 10px;margin:0}
+#piggy-onboarding .sp-quick .sp-key{height:100%;min-height:0;padding:0;border-radius:14px;background:transparent;color:#f4f4f4;font:500 24px/1 'DM Sans',Arial,sans-serif;transition:background .12s ease,transform .12s ease}
+#piggy-onboarding .sp-quick .sp-key:active{background:#ffffff0d;transform:scale(.96)}
+@media(max-height:700px){#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick-amount-row{height:90px;padding:12px 0 18px}#piggy-onboarding .sp-keypad-panel .sp-quick-controls{margin-bottom:10px}}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick .sp-key{transition:none}}
+#piggy-onboarding .sp-quick .sp-key[data-key="clear"]{display:grid;place-items:center}
+#piggy-onboarding .sp-quick .sp-key[data-key="clear"] svg{display:block;width:24px;height:24px;pointer-events:none}
+
+#piggy-onboarding .sp-quick .sp-keypad{gap:8px;grid-template-rows:repeat(4,clamp(42px,6dvh,52px))}
+#piggy-onboarding .sp-quick .sp-key{background:transparent;border-radius:13px;box-shadow:none}
+#piggy-onboarding .sp-quick .sp-key:active{background:#ffffff0d}
+#piggy-onboarding .sp-quick-submit{display:flex;flex:none;align-items:center;justify-content:center;width:100%;min-height:50px;margin:8px 0 4px;padding:0 18px;border:0;border-radius:17px;background:#a7ff27;color:#26310d;box-shadow:inset 0 1px #ffffff66,0 4px 0 #608d15;font:700 15px/1.2 'DM Sans',Arial,sans-serif;cursor:pointer;transition:background .15s ease,transform .12s ease,box-shadow .12s ease}
+#piggy-onboarding .sp-quick-submit:not(:disabled):active{transform:translateY(2px);box-shadow:inset 0 1px #ffffff66,0 2px 0 #608d15}
+@media(max-height:700px){#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick-amount-row{height:70px;padding:8px 0 14px}#piggy-onboarding .sp-quick-submit{min-height:46px;margin-top:8px}}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick-submit{transition:none}}
+
+#piggy-onboarding .on-result .sp-page.has-compact-guide>.sp-title-row{flex:none;margin-bottom:14px}
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill{display:flex;flex:none;align-items:center;gap:12px;width:100%;max-width:none;min-height:72px;margin:0 0 12px;padding:14px 16px;box-sizing:border-box;border:1px solid #ffffff14;border-radius:19px;background:radial-gradient(ellipse at 100% 0, #c6a5ff0c,transparent 70%),#242424;box-shadow:inset 0 1px #ffffff04;text-align:left}
+#piggy-onboarding .sp-safe-pill>.sp-safe-copy{flex:1;white-space:normal;text-decoration:none;color:#dededb;font:600 13px/1.25 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-safe-copy small{display:block;margin-top:4px;color:#a9ada5;font:500 11px/1.2 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill strong{flex:none;color:#a7ff27;font:700 24px/1.1 'DM Sans',Arial,sans-serif;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill>svg{width:16px;height:16px;color:#b8bcb4}
+@media(max-height:700px){#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill{min-height:64px;padding-top:10px;padding-bottom:10px;margin-bottom:8px}}
+
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-height:0;padding:14px 16px;border-radius:20px}
+#piggy-onboarding .sp-safe-banner-head{display:grid;grid-template-columns:minmax(0,1fr) auto 16px;align-items:center;gap:12px;text-decoration:none!important;white-space:normal!important}
+#piggy-onboarding .sp-safe-banner-head .sp-safe-copy{color:#dededb;font:600 13px/1.2 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill .sp-safe-banner-head strong{color:#e6daf8;font-size:20px;font-weight:600;letter-spacing:-.3px}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-safe-meter{width:100%;height:6px;gap:4px;text-decoration:none}
+#piggy-onboarding .sp-safe-meter .sp-daily-segment{border-radius:3px;background:#ffffff0b}
+#piggy-onboarding .sp-safe-pill>.sp-safe-caption{display:flex;justify-content:space-between;gap:10px;text-decoration:none;white-space:normal;color:#aeb3a8;font:500 11px/1.3 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick-amount-row{height:84px;padding:14px 0 18px}
+@media(max-height:700px){#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill{padding:12px 14px;gap:8px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick-amount-row{height:60px;padding:8px 0 10px}}
+
+/* Amount and controls form one expense-entry surface. */
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill{background:linear-gradient(125deg,#342b43,#282330);border-color:#c6a5ff26;box-shadow:inset 0 1px 0 #ffffff06}
+#piggy-onboarding .sp-safe-banner-head .sp-safe-copy{color:#e0d6ed;font-weight:500}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-keypad-panel>.sp-quick-amount-row{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:auto;min-height:0;margin:0;padding:0 0 20px}
+#piggy-onboarding .sp-quick-amount-label{color:#a9ada5;font:500 12px/1.3 'DM Sans',Arial,sans-serif;letter-spacing:0}
+#piggy-onboarding .sp-keypad-panel .sp-quick-amount{max-width:100%;margin:0;color:#fff;font-size:44px;line-height:1.1}
+@media(max-height:700px){#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-keypad-panel>.sp-quick-amount-row{gap:4px;padding-bottom:14px}#piggy-onboarding .sp-keypad-panel .sp-quick-amount{font-size:40px}}
+
+/* Quiet lavender budget banner, secondary to the expense action. */
+#piggy-onboarding .sp-safe-pill .sp-safe-copy small,#piggy-onboarding .sp-safe-pill>.sp-safe-caption{color:#bdb1cd}
+#piggy-onboarding .sp-safe-banner-head>svg{stroke:#bdb1cd}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-safe-pill .sp-daily-segment{background:#c6a5ff16;box-shadow:none}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-safe-pill .sp-daily-segment i{background:linear-gradient(90deg,#af91d9,#ccb4ec)}
+
+/* Warm cream surface with the app's darker lower layer. */
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill{background:linear-gradient(125deg,#faefd7,#f3e4c0);border-color:#fff3d9;border-radius:20px;box-shadow:inset 0 1px 0 #ffffff80,0 5px 0 #b9a77f;margin-bottom:22px}
+#piggy-onboarding .sp-safe-banner-head .sp-safe-copy{color:#3d392f;font-weight:600}
+#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill .sp-safe-banner-head strong{color:#353528}
+#piggy-onboarding .sp-safe-pill .sp-safe-copy small,#piggy-onboarding .sp-safe-pill>.sp-safe-caption{color:#706750}
+#piggy-onboarding .sp-safe-banner-head>svg{stroke:#706750}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-safe-pill .sp-daily-segment{background:#554a281c;box-shadow:none}
+#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-safe-pill .sp-daily-segment i{background:linear-gradient(90deg,#71875d,#8ba36f)}
+@media(max-height:700px){#piggy-onboarding .sp-page.has-compact-guide>.sp-safe-pill{margin-bottom:18px}}
+
+
+
+/* Current spending guide and monthly totals are separate surfaces. */
+#piggy-onboarding .sp-overlay .sp-page.sp-summary-sheet{display:flex;flex-direction:column;gap:14px;height:auto;max-height:none;min-height:0;margin-top:18px;overflow:visible}
+#piggy-onboarding .sp-summary-sheet .sp-summary-card{box-sizing:border-box;container-type:inline-size;padding:16px;border:1px solid #ffffff12;border-radius:20px;background:#2b2b2b}
+#piggy-onboarding .sp-summary-sheet .sp-summary-guide-card{min-height:190px}
+#piggy-onboarding .sp-summary-sheet .sp-summary-guide-card.is-empty{min-height:0}
+#piggy-onboarding .sp-summary-sheet .sp-summary-month-card{background:#272727}
+#piggy-onboarding .sp-summary-sheet .sp-summary-card h3{margin:0;color:#e6e8e1;font:600 13px/1.3 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-summary-sheet .sp-summary-card-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+#piggy-onboarding .sp-summary-card-heading>span{color:#aeb3aa;font:500 11px/1.3 'DM Sans',Arial,sans-serif;text-align:right}
+#piggy-onboarding .sp-page.sp-summary-sheet .sp-summary-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start;margin:18px 0 0;padding:0}
+#piggy-onboarding .sp-page.sp-summary-sheet .sp-summary-available{align-items:flex-start;text-align:left;gap:7px;margin:0;padding:0;border:0}
+#piggy-onboarding .sp-page.sp-summary-sheet .sp-total,#piggy-onboarding .sp-page.sp-summary-sheet .sp-summary-available strong{font-size:clamp(18px,7.8cqi,26px);line-height:1.15;letter-spacing:-.7px;white-space:normal;overflow-wrap:anywhere}
+#piggy-onboarding .sp-summary-sheet [data-reserved-note]{grid-column:1/-1;margin:0}
+#piggy-onboarding .sp-page.sp-summary-sheet .sp-daily-label{font-size:13px}
+#piggy-onboarding .sp-page.sp-summary-sheet .sp-daily-balance{margin:20px 0 16px}
+#piggy-onboarding .sp-page.sp-summary-sheet .sp-daily-meter{height:16px}
+#piggy-onboarding .sp-page.sp-summary-sheet .sp-daily-caption{font-size:11px}
+#piggy-onboarding .sp-summary-sheet .sp-summary-help{display:flex;align-items:center;justify-content:center;gap:7px;align-self:center;min-height:44px;padding:0 12px;border:0;background:transparent;color:#c6a5ff;font:600 12px/1.3 'DM Sans',Arial,sans-serif;cursor:pointer}
+#piggy-onboarding .sp-summary-help svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+#piggy-onboarding .sp-sheet-head h2:has(.sp-guide-info){display:flex;align-items:center;gap:7px;min-width:0}
+#piggy-onboarding .sp-guide-info{display:grid;place-items:center;flex:none;width:32px;height:32px;padding:6px;border:0;border-radius:50%;background:transparent;color:#b6b9b0;cursor:pointer}
+#piggy-onboarding .sp-guide-info svg{display:block;width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#piggy-onboarding .sp-guide-info[aria-expanded="true"]{color:#c6a5ff;background:#c6a5ff14}
+#piggy-onboarding .sp-guide-tooltip{position:absolute;z-index:30;top:80px;left:22px;right:22px;max-height:min(360px,50dvh);overflow-y:auto;overscroll-behavior:contain;padding:16px;border:1px solid #55505c;border-radius:16px;background:#333036;box-shadow:0 12px 32px #0007;color:#d9d6df}
+#piggy-onboarding .sp-guide-tooltip[hidden]{display:none!important}
+#piggy-onboarding .sp-guide-tooltip .sp-guide-copy p{margin:0 0 12px;font:400 12px/1.55 'DM Sans',Arial,sans-serif}
+#piggy-onboarding .sp-guide-tooltip .sp-guide-copy p:last-child{margin-bottom:0}
+#piggy-onboarding .sp-guide-tooltip strong{color:#f2eef7;font-weight:600}
 </style>
