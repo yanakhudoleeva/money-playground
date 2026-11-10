@@ -2613,6 +2613,9 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   renderSpendingPie();renderDailySpending();if(!history.hidden)renderHistory();updateSafePill();syncSpendingSummary();
  }
  const quickVersion=new URLSearchParams(window.location.search).get('spending')==='v1'?'v1':'v2';let quickIconPage=0,quickSwipeStartX=null,quickSwipeStartY=null,quickPointerStart=null,quickSwipeUntil=0,quickWheelDelta=0,quickWheelTimer=null;
+ const quickCompactMedia=window.matchMedia('(max-height:760px)');
+ const quickPageSize=()=>quickCompactMedia.matches?6:9;
+ quickCompactMedia.addEventListener('change',()=>{quickIconPage=0;renderQuickCategories()});
  if(quickVersion==='v2'){
   titleStack.append(spendingGuidePill);
   q('.sp-quick').prepend(q('[data-quick-categories-wrap]'));
@@ -2627,7 +2630,7 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   quickCategory=quickVersion==='v2'?(choices.some(category=>category.id===quickCategory)?quickCategory:''):(current?.id||'');
   const label=current?current.name:'Category';
   page.classList.toggle('is-quick-v2',quickVersion==='v2');
-  if(quickVersion==='v2'){const pages=Math.max(1,Math.ceil(choices.length/9));quickIconPage=Math.min(quickIconPage,pages-1);quickCategories.innerHTML=choices.slice(quickIconPage*9,quickIconPage*9+9).map(category=>'<button type="button" class="sp-quick-icon-choice" data-quick-icon="'+esc(category.id)+'" aria-pressed="'+String(category.id===quickCategory)+'" title="'+esc(category.name)+'">'+icon(category)+'<span>'+esc(category.name)+'</span></button>').join('');let dots=q('[data-quick-pages]');if(!dots){dots=document.createElement('div');dots.className='sp-quick-pages';dots.dataset.quickPages='';quickCategories.after(dots)}dots.innerHTML=pages>1?Array.from({length:pages},(_,index)=>'<button type="button" data-quick-page="'+index+'" aria-label="Category page '+(index+1)+'" aria-current="'+String(index===quickIconPage)+'"></button>').join(''):'';return choices}
+  if(quickVersion==='v2'){const pageSize=quickPageSize(),pages=Math.max(1,Math.ceil(choices.length/pageSize));quickIconPage=Math.min(quickIconPage,pages-1);quickCategories.innerHTML=choices.slice(quickIconPage*pageSize,quickIconPage*pageSize+pageSize).map(category=>'<button type="button" class="sp-quick-icon-choice" data-quick-icon="'+esc(category.id)+'" aria-pressed="'+String(category.id===quickCategory)+'" title="'+esc(category.name)+'">'+icon(category)+'<span>'+esc(category.name)+'</span></button>').join('');let dots=q('[data-quick-pages]');if(!dots){dots=document.createElement('div');dots.className='sp-quick-pages';dots.dataset.quickPages='';quickCategories.after(dots)}dots.innerHTML=pages>1?Array.from({length:pages},(_,index)=>'<button type="button" data-quick-page="'+index+'" aria-label="Category page '+(index+1)+'" aria-current="'+String(index===quickIconPage)+'"></button>').join(''):'';return choices}
   q('[data-quick-pages]')?.remove();
   quickCategories.innerHTML='<button class="sp-quick-category-select" type="button" data-quick-category-open aria-haspopup="dialog" aria-label="Choose expense category">'+(current?icon(current):'<span class="sp-quick-category-placeholder" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v6H4zM14 15h6v6h-6z"/></svg></span>')+'<span class="sp-quick-category-name">'+esc(label)+'</span><svg class="sp-quick-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>';
   return choices;
@@ -2832,7 +2835,7 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
  const categoryTrack=q('[data-quick-categories-wrap]');
  function moveQuickPage(direction){
   if(quickVersion!=='v2'||Date.now()<quickSwipeUntil)return;
-  const pages=Math.max(1,Math.ceil(activeCategories().length/9));
+  const pages=Math.max(1,Math.ceil(activeCategories().length/quickPageSize()));
   const next=Math.max(0,Math.min(pages-1,quickIconPage+direction));
   if(next===quickIconPage)return;
   quickSwipeUntil=Date.now()+390;
@@ -3388,7 +3391,7 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 #piggy-onboarding .sp-page.is-quick-v2 .sp-quick-icon-choice{gap:9px;font-size:11px}
 #piggy-onboarding .sp-page.is-quick-v2 .sp-quick-icon-choice .sp-icon{width:42px;height:42px;border-radius:13px}
 #piggy-onboarding .sp-page.is-quick-v2 .sp-quick-icon-choice .sp-icon img{width:20px;height:20px}
-@media(max-height:720px){#piggy-onboarding .sp-page.is-quick-v2 .sp-quick-categories{grid-template-rows:repeat(3,68px);gap:12px 10px}#piggy-onboarding .sp-page.is-quick-v2 .sp-quick-icon-choice .sp-icon{width:38px;height:38px}}
+@media(max-height:760px){#piggy-onboarding .sp-page.is-quick-v2>.sp-quick>.sp-quick-categories-wrap{min-height:0;margin-bottom:8px}#piggy-onboarding .sp-page.is-quick-v2 .sp-quick-categories{grid-template-rows:repeat(2,68px);gap:10px 10px}#piggy-onboarding .sp-page.is-quick-v2 .sp-keypad-panel>.sp-quick-amount-row{margin-bottom:10px}#piggy-onboarding .sp-page.is-quick-v2 .sp-keypad-panel{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}}
 #piggy-onboarding .sp-page.is-quick-v2 .sp-title-stack>.sp-safe-pill{display:inline-flex;flex-direction:row;align-items:center;align-self:flex-start;gap:8px;width:auto;max-width:100%;min-height:28px;margin:6px 0 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;white-space:nowrap}
 #piggy-onboarding .sp-page.is-quick-v2 .sp-title-stack>.sp-safe-pill .sp-safe-inline-label{color:#c9cdc4;text-decoration:none;font:600 13px/1.2 'DM Sans',Arial,sans-serif}
 #piggy-onboarding .sp-page.is-quick-v2 .sp-title-stack>.sp-safe-pill strong{color:#f5f5f3;font:700 14px/1.2 'DM Sans',Arial,sans-serif}
