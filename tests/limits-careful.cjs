@@ -24,6 +24,7 @@ for(const file of ['piggy-onboarding.html','dist/index.html']){
  assert.equal(ctx.limitNudgeMessage('custom-test'),ctx.limitNudgeMessage('other'));
  assert.equal(warnings([e('eating',1)],[{id:'eating',limitCents:0}]).length,1);
  assert.equal(warnings([],[{id:'eating',limitCents:0}]).length,0);
+ for(const [spent,tone] of [[49,''],[50,'is-warning'],[74,'is-warning'],[75,'is-caution'],[89,'is-caution'],[90,'is-critical'],[100,'is-critical'],[101,'is-over']])assert.equal(ctx.limitTone(spent,100),tone,'Color threshold '+spent);
  assert.equal(ctx.limitTone(1,0),'is-over');assert.equal(ctx.limitTone(0,0),'');
  for(const id of ['home','groceries','eating','transport','fun','travel','shopping','care','health','subscriptions','gifts','education','pets','family','debt','other'])assert.ok(ctx.limitNudgeMessage(id));
  assert.ok(!html.includes('function buildInsights('),'Analytics prototype is excluded');
