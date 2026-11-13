@@ -3535,9 +3535,11 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 </style>
 
 <style id="quick-category-tap-feedback">
-/* A subtle tap confirmation survives the immediate expense-save render. */
-#piggy-onboarding .sp-quick-icon-choice{transition:background .12s ease}
-#piggy-onboarding .sp-quick-icon-choice:active,#piggy-onboarding .sp-quick-icon-choice.is-just-added{background:#ffffff0d}
-#piggy-onboarding .sp-quick-icon-choice:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
-@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick-icon-choice{transition:none}}
+/* Keep tap feedback inside the category icon's rounded silhouette. */
+#piggy-onboarding .sp-quick-icon-choice .sp-icon{position:relative}
+#piggy-onboarding .sp-quick-icon-choice .sp-icon::after{content:'';position:absolute;inset:0;border-radius:inherit;background:#ffffff24;opacity:0;pointer-events:none;transition:opacity .12s ease}
+#piggy-onboarding .sp-quick-icon-choice:active .sp-icon::after,#piggy-onboarding .sp-quick-icon-choice.is-just-added .sp-icon::after{opacity:1}
+#piggy-onboarding .sp-quick-icon-choice:focus-visible{outline:none}
+#piggy-onboarding .sp-quick-icon-choice:focus-visible .sp-icon{outline:2px solid #c6a5ff;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick-icon-choice .sp-icon::after{transition:none}}
 </style>
