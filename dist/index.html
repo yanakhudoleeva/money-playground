@@ -2700,7 +2700,12 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
  }
  function markQuickCategory(id){state.recentQuickCategories=[id,...(Array.isArray(state.recentQuickCategories)?state.recentQuickCategories:[]).filter(item=>item!==id)]}
  let notificationFrame=0;function notify(message,tone='success'){const mark=q('.sp-added-mark',added),neutral=tone==='neutral'||tone==='saved';added.classList.toggle('is-neutral',neutral);added.classList.toggle('is-expense-added',message==='Expense added'&&tone==='success');added.classList.toggle('is-lock',tone==='lock');added.classList.toggle('is-unlock',tone==='unlock');mark.innerHTML=message==='Expense added'&&tone==='success'?'<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTUgMzBDNSAxNi4xOTI5IDE2LjE5MjkgNSAzMCA1QzQzLjgwNyA1IDU1IDE2LjE5MjkgNTUgMzBDNTUgNDMuODA3IDQzLjgwNyA1NSAzMCA1NUMxNi4xOTI5IDU1IDUgNDMuODA3IDUgMzBaTTM5LjI2NzcgMjMuMjMyMkM0MC4yNDQgMjQuMjA4NSA0MC4yNDQgMjUuNzkxNSAzOS4yNjc3IDI2Ljc2NzdMMzAuMDYwNyAzNS45NzQ4QzI4LjY0NjUgMzcuMzg5IDI2LjM1MzUgMzcuMzg5IDI0LjkzOTIgMzUuOTc0OEwyMC43MzIyIDMxLjc2NzdDMTkuNzU1OSAzMC43OTE1IDE5Ljc1NTkgMjkuMjA4NSAyMC43MzIyIDI4LjIzMjNDMjEuNzA4NSAyNy4yNTYgMjMuMjkxNSAyNy4yNTYgMjQuMjY3OCAyOC4yMzIzTDI3LjUgMzEuNDY0NUwzNS43MzIzIDIzLjIzMjJDMzYuNzA4NSAyMi4yNTU5IDM4LjI5MTUgMjIuMjU1OSAzOS4yNjc3IDIzLjIzMjJaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI0E3RkYyNyIvPgo8L3N2Zz4K" alt="" aria-hidden="true">':tone==='saved'?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>':neutral?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>':tone==='lock'?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2m-11 0h12v10H6V10Z"/></svg>':tone==='unlock'?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10V8a5 5 0 0 0-9.5-2.1M6 10h12v10H6V10Z"/></svg>':'✓';q('[data-added-message]',added).textContent=message;added.classList.remove('is-visible');cancelAnimationFrame(notificationFrame);notificationFrame=requestAnimationFrame(()=>{notificationFrame=requestAnimationFrame(()=>added.classList.add('is-visible'))})}
- function addQuickExpense(){const n=Number(quickAmount),expenseDate=quickDate||today();if(!quickCategory){notify('Choose a category first','neutral');return}if(!Number.isFinite(n)||n<=0){notify('Enter an amount first','neutral');return}state.expenses.push({id:'expense-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),category:quickCategory,amount:Math.round(n*100),note:'',date:expenseDate,created:Date.now()});markQuickCategory(quickCategory);if(quickVersion==='v2')quickCategory='';month=new Date(expenseDate+'T00:00:00');month.setDate(1);quickAmount='';quickDate='';renderQuickDate();pending=true;save();render();notify('Expense added')}
+ function flashAddedCategory(id){
+  const button=q('[data-quick-icon="'+CSS.escape(id)+'"]');if(!button)return;
+  button.classList.add('is-just-added');
+  window.setTimeout(()=>button.classList.remove('is-just-added'),850);
+ }
+ function addQuickExpense(){const n=Number(quickAmount),expenseDate=quickDate||today(),addedCategory=quickCategory;if(!quickCategory){notify('Choose a category first','neutral');return}if(!Number.isFinite(n)||n<=0){notify('Enter an amount first','neutral');return}state.expenses.push({id:'expense-'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),category:quickCategory,amount:Math.round(n*100),note:'',date:expenseDate,created:Date.now()});markQuickCategory(quickCategory);if(quickVersion==='v2')quickCategory='';month=new Date(expenseDate+'T00:00:00');month.setDate(1);quickAmount='';quickDate='';renderQuickDate();pending=true;save();render();if(quickVersion==='v2')flashAddedCategory(addedCategory);notify('Expense added')}
  keypad.addEventListener('click',e=>{const button=e.target.closest('[data-key]');if(!button)return;e.stopPropagation();const key=button.dataset.key;if(key==='save'){addQuickExpense();return}if(key==='clear')quickAmount=quickAmount.slice(0,-1);else if(key==='.'&&!quickAmount.includes('.')&&quickAmount.length<9)quickAmount=quickAmount?quickAmount+'.':'0.';else if(/^\d$/.test(key)&&(!quickAmount.includes('.')||quickAmount.split('.')[1].length<2)&&quickAmount.replace('.','').length<9)quickAmount+=key;renderQuickAmount()});
  function historyAmountCents(value){
   const text=String(value).trim().replace(',','.');
@@ -3529,4 +3534,16 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card:is(.is-warning,.is-caution,.is-critical,.is-over) .sp-limit-card-meter i{background:var(--status-fill)}
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card:is(.is-warning,.is-caution,.is-critical,.is-over) .sp-limit-card-bottom{color:var(--status-text)}
 
+</style>
+
+<style id="quick-category-tap-feedback">
+/* Confirm the tapped category even though saving immediately clears the entry. */
+#piggy-onboarding .sp-quick-icon-choice{transition:background .12s ease,transform .12s ease}
+#piggy-onboarding .sp-quick-icon-choice:active{background:#a7ff2718;transform:scale(.95)}
+#piggy-onboarding .sp-quick-icon-choice:active .sp-icon{outline:2px solid #a7ff27;outline-offset:3px}
+#piggy-onboarding .sp-quick-icon-choice.is-just-added{background:#a7ff2718;color:#fff}
+#piggy-onboarding .sp-quick-icon-choice.is-just-added .sp-icon{position:relative;outline:2px solid #a7ff27;outline-offset:3px;box-shadow:0 0 16px #a7ff2740}
+#piggy-onboarding .sp-quick-icon-choice.is-just-added .sp-icon::after{content:'✓';position:absolute;right:-7px;top:-7px;display:grid;place-items:center;width:16px;height:16px;border:2px solid #202020;border-radius:50%;background:#a7ff27;color:#233015;font:700 11px/1 Arial}
+#piggy-onboarding .sp-quick-icon-choice:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick-icon-choice{transition:none}#piggy-onboarding .sp-quick-icon-choice:active{transform:none}}
 </style>
