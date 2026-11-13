@@ -3535,13 +3535,9 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const ch
 </style>
 
 <style id="quick-category-tap-feedback">
-/* Confirm the tapped category even though saving immediately clears the entry. */
-#piggy-onboarding .sp-quick-icon-choice{transition:background .12s ease,transform .12s ease}
-#piggy-onboarding .sp-quick-icon-choice:active{background:#a7ff2718;transform:scale(.95)}
-#piggy-onboarding .sp-quick-icon-choice:active .sp-icon{outline:2px solid #a7ff27;outline-offset:3px}
-#piggy-onboarding .sp-quick-icon-choice.is-just-added{background:#a7ff2718;color:#fff}
-#piggy-onboarding .sp-quick-icon-choice.is-just-added .sp-icon{position:relative;outline:2px solid #a7ff27;outline-offset:3px;box-shadow:0 0 16px #a7ff2740}
-#piggy-onboarding .sp-quick-icon-choice.is-just-added .sp-icon::after{content:'✓';position:absolute;right:-7px;top:-7px;display:grid;place-items:center;width:16px;height:16px;border:2px solid #202020;border-radius:50%;background:#a7ff27;color:#233015;font:700 11px/1 Arial}
+/* A subtle tap confirmation survives the immediate expense-save render. */
+#piggy-onboarding .sp-quick-icon-choice{transition:background .12s ease}
+#piggy-onboarding .sp-quick-icon-choice:active,#piggy-onboarding .sp-quick-icon-choice.is-just-added{background:#ffffff0d}
 #piggy-onboarding .sp-quick-icon-choice:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
-@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick-icon-choice{transition:none}#piggy-onboarding .sp-quick-icon-choice:active{transform:none}}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-quick-icon-choice{transition:none}}
 </style>
