@@ -16,11 +16,12 @@ fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 fs.cpSync(path.join(root, 'dist/assets'), path.join(output, 'assets'), { recursive: true });
 fs.cpSync(path.join(root, 'mobile/fonts'), path.join(output, 'fonts'), { recursive: true });
+fs.cpSync(path.join(root, 'mobile/splash'), path.join(output, 'splash'), { recursive: true });
 fs.copyFileSync(path.join(root, 'mobile/native-layout.css'), path.join(output, 'native-layout.css'));
 for (const file of ['jszip-LICENSE.txt', 'pdf-lib-LICENSE.txt']) {
   fs.copyFileSync(path.join(root, 'dist', file), path.join(output, file));
 }
-fs.writeFileSync(path.join(output, 'index.html'), `<!doctype html>\n<html lang="en">\n<head>\n${meta.join('\n')}\n<title>Money Playground</title>\n<link rel="stylesheet" href="fonts/fonts.css">\n</head>\n<body>\n${body}\n<link rel="stylesheet" href="native-layout.css">\n</body>\n</html>\n`);
+fs.writeFileSync(path.join(output, 'index.html'), `<!doctype html>\n<html lang="en">\n<head>\n${meta.join('\n')}\n<title>Money Playground</title>\n<link rel="stylesheet" href="splash/splash.css">\n<link rel="stylesheet" href="fonts/fonts.css">\n</head>\n<body>\n<div id="mp-launch" class="mp-launch" aria-hidden="true"><div class="mp-launch-mark"><img class="mp-launch-spring" src="splash/spring.png" alt=""><img class="mp-launch-star" src="splash/star.png" alt=""></div></div>\n<script src="splash/splash.js"></script>\n${body}\n<link rel="stylesheet" href="native-layout.css">\n</body>\n</html>\n`);
 fs.writeFileSync(path.join(output, 'build-info.json'), JSON.stringify({
   source: 'piggy-onboarding.html',
   sha256: crypto.createHash('sha256').update(source).digest('hex'),

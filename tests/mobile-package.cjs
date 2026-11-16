@@ -13,7 +13,7 @@ const mobile = fs.readFileSync(path.join(root, '.capacitor-web/index.html'), 'ut
 assert.equal(fs.readFileSync(sourcePath, 'utf8'), source);
 assert.equal(fs.readFileSync(distPath, 'utf8'), dist);
 const scripts = html => [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map(m => m[1]);
-assert.deepEqual(scripts(mobile), scripts(source), 'Packaging must preserve every application script verbatim');
+assert.deepEqual(scripts(mobile).filter(script => script.trim()), scripts(source).filter(script => script.trim()), 'Packaging must preserve every application script verbatim');
 for (const script of scripts(mobile)) new vm.Script(script);
 assert.equal((mobile.match(/<head>/g) || []).length, 1);
 assert.equal((mobile.match(/<body>/g) || []).length, 1);
