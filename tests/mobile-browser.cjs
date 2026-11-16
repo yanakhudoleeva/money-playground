@@ -63,6 +63,29 @@ fs.mkdirSync(artifacts, { recursive: true });
         await page.screenshot({ path: path.join(artifacts, `${variant}-${width}-onboarding.png`) });
         for (let i = 0; i < 3; i++) await page.getByRole('button', { name: 'Skip for now', exact: true }).click();
         await page.getByRole('button', { name: 'Open expense history', exact: true }).waitFor();
+        // Touch navigation must coexist with vertical scrolling and tab taps.
+        await page.evaluate(() => {
+          const nav=document.querySelector('.sp-nav'), result=nav.parentElement;
+          const active=()=>nav.querySelector('[aria-current="page"]').dataset.tab;
+          const tabs=Array.from(nav.querySelectorAll('[data-tab]'));
+          function gesture(target,x,y,dx,dy){
+            const point=(a,b)=>new Touch({identifier:1,target,clientX:a,clientY:b});
+            target.dispatchEvent(new TouchEvent('touchstart',{bubbles:true,touches:[point(x,y)]}));
+            target.dispatchEvent(new TouchEvent('touchmove',{bubbles:true,cancelable:true,touches:[point(x+dx,y+dy)]}));
+            target.dispatchEvent(new TouchEvent('touchend',{bubbles:true,touches:[]}));
+          }
+          const spending=result.querySelector('.sp-page');
+          gesture(spending,240,200,0,100);
+          if(active()!=='spending')throw Error('Vertical scroll changed tab');
+          gesture(spending,240,200,-100,0);
+          if(active()!==tabs[1].dataset.tab)throw Error('Screen swipe did not select next tab');
+          const first=tabs[0].getBoundingClientRect(),last=tabs.at(-1).getBoundingClientRect();
+          gesture(tabs[0],first.x+22,first.y+22,last.x-first.x,0);
+          if(active()!==tabs.at(-1).dataset.tab)throw Error('Menu scrub did not select last tab');
+        });
+        await page.waitForTimeout(450);
+        await page.locator('.sp-nav [data-tab="spending"]').click();
+
         await checkFullscreen('#piggy-onboarding .on-result');
         await page.getByRole('button', { name: '1', exact: true }).click();
         await page.getByRole('button', { name: '2', exact: true }).click();

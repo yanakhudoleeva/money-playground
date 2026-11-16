@@ -194,6 +194,13 @@
 #piggy-bank-plan .pb-savings-actions button span{font-size:21px;line-height:1}
 #piggy-onboarding .pb-savings-preview{display:flex;justify-content:space-between;gap:14px;margin:14px 0;color:#c5c7c1;font-size:14px}
 #piggy-onboarding .pb-savings-preview strong{color:#fff;text-align:right}
+/* A single floating highlight follows the selected tab. */
+#piggy-onboarding .sp-nav{touch-action:pan-y}
+#piggy-onboarding .sp-nav button[aria-current="page"]::before{display:none}
+#piggy-onboarding .sp-nav .sp-tab-indicator{position:absolute;left:0;top:6px;width:62px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.9);background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(255,255,255,.62));box-shadow:inset 0 1px 1px #fff,0 4px 14px #ffffff29;pointer-events:none;transition:transform .24s cubic-bezier(.22,1,.36,1)}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-nav .sp-tab-indicator{transition:none}}
+
+#piggy-onboarding .on-result.is-tab-dragging,#piggy-onboarding .on-result.is-tab-dragging *{cursor:grabbing!important;user-select:none!important;-webkit-user-select:none!important}
 </style>
 <script>
 (() => {
@@ -2919,7 +2926,86 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
  }
  function openHistory(){historyFilters={dateFrom:'',dateTo:'',min:'',max:'',category:''};renderHistory();page.hidden=true;nav.hidden=true;history.hidden=false;history.scrollIntoView({block:'start',behavior:'auto'});animatePage(history);history.querySelector('[data-history-back]').focus({preventScroll:true})}
  function closeHistory(){history.hidden=true;nav.hidden=false;showTab('spending');animatePage(page);q('[data-open-history]').focus({preventScroll:true})}
-nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(!btn)return;const changed=activeTab!==btn.dataset.tab;showTab(btn.dataset.tab);const target={spending:page,limits,analytics,bank}[btn.dataset.tab];if(changed)animatePage(target);if(changed&&btn.dataset.tab==='bank')bank.dispatchEvent(new Event('piggy-bank-enter'))};limits.onclick=e=>{if(e.target.closest('[data-limits-back]')){returnFromLimits();return}if(e.target.closest('[data-add-limit]')){limitPicker();return}if(e.target.closest('[data-limit-target]')){targetForm();return}const remove=e.target.closest('[data-remove-limit]');if(remove){confirmDeleteLimit(remove.dataset.removeLimit,remove);return}const edit=e.target.closest('[data-edit-limit]');if(edit){const id=edit.dataset.editLimit;saveLimits(readLimits().map(item=>item.id===id?{...item,locked:false}:item));q('[data-limit-slider="'+CSS.escape(id)+'"]',limits)?.focus({preventScroll:true});return}const lock=e.target.closest('[data-lock-limit]');if(!lock)return;const card=lock.closest('[data-limit-card]'),slider=q('[data-limit-slider]',card),id=slider.dataset.limitSlider,plan=readLimits().map(item=>item.id===id?{...item,limitCents:Math.round(Number(slider.value)*100),locked:true}:item);if(!saveLimits(plan))return;limitDrafts.delete(id);q('[data-edit-limit="'+CSS.escape(id)+'"]',limits)?.focus({preventScroll:true});notify('New limit saved','saved')};limits.oninput=e=>{const slider=e.target.closest('[data-limit-slider]');if(!slider)return;const id=slider.dataset.limitSlider;limitDrafts.set(id,Math.round(Number(slider.value)*100));const plan=previewLimits(),item=plan.find(entry=>entry.id===id),spent=limitSpending(id,monthKey(new Date())),card=slider.closest('[data-limit-card]'),over=spent>item.limitCents,left=Math.max(0,item.limitCents-spent),percent=item.limitCents?Math.min(100,Math.round(spent/item.limitCents*100)):0;card.classList.remove('is-warning','is-caution','is-critical','is-over');const tone=limitTone(spent,item.limitCents);if(tone)card.classList.add(tone);q('[data-limit-status="'+CSS.escape(id)+'"]',card).textContent=over?settings.money((spent-item.limitCents)/100):settings.money(left/100);q('[data-limit-status-label="'+CSS.escape(id)+'"]',card).textContent=over?'over limit':'left this month';q('[data-limit-percent="'+CSS.escape(id)+'"]',card).textContent=(item.limitCents?Math.max(0,Math.round(left/item.limitCents*100)):0)+'% left';q('[data-limit-spent="'+CSS.escape(id)+'"]',card).textContent=settings.money(spent/100)+' spent';const projection=limitProjection(plan);updateLimitGoal(plan,projection);limits.querySelectorAll('[data-limit-saving-preview]').forEach(preview=>{preview.innerHTML=limitSavingsCopy(projection)});renderLimitNudge()};
+ // Shared navigation for taps, screen swipes and scrubbing the floating menu.
+ const tabOrder=Array.from(nav.querySelectorAll('[data-tab]'),button=>button.dataset.tab);
+ const tabPages={spending:page,limits,analytics,bank};
+ function navigateTab(tab,direction=0){
+  if(!tab||tab===activeTab)return;
+  showTab(tab);
+  const target=tabPages[tab];
+  if(direction&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+   target.animate?.([{opacity:.8,transform:'translateX('+direction*32+'px)'},{opacity:1,transform:'translateX(0)'}],{duration:240,easing:'cubic-bezier(.22,1,.36,1)'});
+  else animatePage(target);
+  if(tab==='bank')bank.dispatchEvent(new Event('piggy-bank-enter'));
+ }
+ const tabIndicator=document.createElement('span');tabIndicator.className='sp-tab-indicator';tabIndicator.setAttribute('aria-hidden','true');nav.prepend(tabIndicator);
+ function positionTabIndicator(){
+  const button=nav.querySelector('[aria-current="page"]');
+  if(button)tabIndicator.style.transform='translateX('+(button.offsetLeft+button.offsetWidth/2-31)+'px)';
+ }
+ new MutationObserver(positionTabIndicator).observe(nav,{subtree:true,attributes:true,attributeFilter:['aria-current','hidden']});
+ new ResizeObserver(positionTabIndicator).observe(nav);positionTabIndicator();
+ let tabGesture=null,tabClickUntil=0;
+ function nearestTab(x){return Array.from(nav.querySelectorAll('[data-tab]')).reduce((best,button)=>{const r=button.getBoundingClientRect(),distance=Math.abs(x-r.left-r.width/2);return !best||distance<best.distance?{tab:button.dataset.tab,distance}:best},null)?.tab}
+ result.addEventListener('touchstart',event=>{
+  tabGesture=null;
+  if(event.touches.length!==1||nav.hidden||overlay.open||!result.getClientRects().length)return;
+  const target=event.target,inNav=nav.contains(target);
+  if(!inNav&&(!tabPages[activeTab]?.contains(target)||target.closest('input,textarea,select,button,a,summary,[contenteditable],.sp-limit-swipe,[data-quick-categories-wrap],[data-history-swipe],[role="slider"],dialog')))return;
+  const touch=event.touches[0];
+  tabGesture={x:touch.clientX,y:touch.clientY,dx:0,inNav,locked:false,startTab:activeTab};
+ },{passive:true});
+ result.addEventListener('touchmove',event=>{
+  const g=tabGesture;if(!g)return;
+  if(event.touches.length!==1){tabGesture=null;return}
+  const t=event.touches[0],dx=t.clientX-g.x,dy=t.clientY-g.y;
+  if(!g.locked){if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){tabGesture=null;return}if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(dy)*1.3)return;g.locked=true}
+  event.preventDefault();g.dx=dx;
+  if(g.inNav)navigateTab(nearestTab(t.clientX));
+ },{passive:false});
+ result.addEventListener('touchend',()=>{
+  const g=tabGesture;tabGesture=null;if(!g?.locked)return;
+  tabClickUntil=Date.now()+400;
+  if(!g.inNav&&Math.abs(g.dx)>=55&&activeTab===g.startTab){const direction=g.dx<0?1:-1;navigateTab(tabOrder[tabOrder.indexOf(activeTab)+direction],direction)}
+ },{passive:true});
+ result.addEventListener('touchcancel',()=>{tabGesture=null},{passive:true});
+
+ // Mouse/pen dragging mirrors touch navigation without claiming control gestures.
+ let mouseTabGesture=null;
+ function endMouseTabGesture(commit){
+  const g=mouseTabGesture;mouseTabGesture=null;
+  result.classList.remove('is-tab-dragging');
+  if(!g)return;
+  if(result.hasPointerCapture?.(g.id))result.releasePointerCapture(g.id);
+  if(!g.locked)return;
+  tabClickUntil=Date.now()+400;
+  if(commit&&!g.inNav&&Math.abs(g.dx)>=55&&activeTab===g.startTab){const direction=g.dx<0?1:-1;navigateTab(tabOrder[tabOrder.indexOf(activeTab)+direction],direction)}
+ }
+ result.addEventListener('pointerdown',event=>{
+  if(event.pointerType==='touch'||event.button!==0||!event.isPrimary||nav.hidden||overlay.open)return;
+  const target=event.target,inNav=nav.contains(target);
+  if(!inNav&&(!tabPages[activeTab]?.contains(target)||target.closest('input,textarea,select,button,a,summary,[contenteditable],.sp-limit-swipe,[data-quick-categories-wrap],[data-history-swipe],[role="slider"],dialog')))return;
+  mouseTabGesture={id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,inNav,locked:false,startTab:activeTab};
+ });
+ window.addEventListener('pointermove',event=>{
+  const g=mouseTabGesture;if(!g||event.pointerId!==g.id)return;
+  if(!(event.buttons&1)){endMouseTabGesture(false);return}
+  const dx=event.clientX-g.x,dy=event.clientY-g.y;
+  if(!g.locked){
+   if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){endMouseTabGesture(false);return}
+   if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(dy)*1.3)return;
+   g.locked=true;result.setPointerCapture(event.pointerId);result.classList.add('is-tab-dragging');window.getSelection()?.removeAllRanges();
+  }
+  event.preventDefault();g.dx=dx;
+  if(g.inNav)navigateTab(nearestTab(event.clientX));
+ });
+ window.addEventListener('pointerup',event=>{if(event.pointerId===mouseTabGesture?.id)endMouseTabGesture(true)});
+ window.addEventListener('pointercancel',event=>{if(event.pointerId===mouseTabGesture?.id)endMouseTabGesture(false)});
+ result.addEventListener('lostpointercapture',event=>{if(event.pointerId===mouseTabGesture?.id)endMouseTabGesture(false)});
+ window.addEventListener('blur',()=>endMouseTabGesture(false));
+ result.addEventListener('dragstart',event=>{if(mouseTabGesture)event.preventDefault()});
+ result.addEventListener('click',event=>{if(Date.now()<tabClickUntil){event.preventDefault();event.stopImmediatePropagation()}},true);
+nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)navigateTab(btn.dataset.tab)};limits.onclick=e=>{if(e.target.closest('[data-limits-back]')){returnFromLimits();return}if(e.target.closest('[data-add-limit]')){limitPicker();return}if(e.target.closest('[data-limit-target]')){targetForm();return}const remove=e.target.closest('[data-remove-limit]');if(remove){confirmDeleteLimit(remove.dataset.removeLimit,remove);return}const edit=e.target.closest('[data-edit-limit]');if(edit){const id=edit.dataset.editLimit;saveLimits(readLimits().map(item=>item.id===id?{...item,locked:false}:item));q('[data-limit-slider="'+CSS.escape(id)+'"]',limits)?.focus({preventScroll:true});return}const lock=e.target.closest('[data-lock-limit]');if(!lock)return;const card=lock.closest('[data-limit-card]'),slider=q('[data-limit-slider]',card),id=slider.dataset.limitSlider,plan=readLimits().map(item=>item.id===id?{...item,limitCents:Math.round(Number(slider.value)*100),locked:true}:item);if(!saveLimits(plan))return;limitDrafts.delete(id);q('[data-edit-limit="'+CSS.escape(id)+'"]',limits)?.focus({preventScroll:true});notify('New limit saved','saved')};limits.oninput=e=>{const slider=e.target.closest('[data-limit-slider]');if(!slider)return;const id=slider.dataset.limitSlider;limitDrafts.set(id,Math.round(Number(slider.value)*100));const plan=previewLimits(),item=plan.find(entry=>entry.id===id),spent=limitSpending(id,monthKey(new Date())),card=slider.closest('[data-limit-card]'),over=spent>item.limitCents,left=Math.max(0,item.limitCents-spent),percent=item.limitCents?Math.min(100,Math.round(spent/item.limitCents*100)):0;card.classList.remove('is-warning','is-caution','is-critical','is-over');const tone=limitTone(spent,item.limitCents);if(tone)card.classList.add(tone);q('[data-limit-status="'+CSS.escape(id)+'"]',card).textContent=over?settings.money((spent-item.limitCents)/100):settings.money(left/100);q('[data-limit-status-label="'+CSS.escape(id)+'"]',card).textContent=over?'over limit':'left this month';q('[data-limit-percent="'+CSS.escape(id)+'"]',card).textContent=(item.limitCents?Math.max(0,Math.round(left/item.limitCents*100)):0)+'% left';q('[data-limit-spent="'+CSS.escape(id)+'"]',card).textContent=settings.money(spent/100)+' spent';const projection=limitProjection(plan);updateLimitGoal(plan,projection);limits.querySelectorAll('[data-limit-saving-preview]').forEach(preview=>{preview.innerHTML=limitSavingsCopy(projection)});renderLimitNudge()};
  page.onclick=e=>{if(e.target.closest('[data-open-limit-settings]')){openLimitsFromSpending();return}const quick=e.target.closest('[data-key]'),quickCat=e.target.closest('[data-quick-category]');if(quick){const key=quick.dataset.key;if(key==='save'){addQuickExpense();return}else if(key==='clear')quickAmount=quickAmount.slice(0,-1);else if(quickAmount.length<9)quickAmount+=key;renderQuickAmount()}else if(e.target.closest('[data-quick-category-open]')){if(Number.isFinite(Number(quickAmount))&&Number(quickAmount)>0)quickCategoryPicker();else notify('Enter an amount first','neutral')}else if(e.target.closest('[data-all-quick-categories]'))quickCategoryPicker();else if(quickCat){quickCategory=quickCat.dataset.quickCategory;markQuickCategory(quickCategory);pending=true;save();render()}else if(e.target.closest('[data-open-history]'))openHistory();else if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-set-daily]'))dailyLimitForm();else if(e.target.closest('[data-set-target]'))targetForm();else if(e.target.closest('[data-add]'))expenseForm();else if(e.target.closest('[data-prev]')){month=new Date(month.getFullYear(),month.getMonth()-1,1);render()}else if(e.target.closest('[data-next-month]')){month=new Date(month.getFullYear(),month.getMonth()+1,1);render()}else if(e.target.closest('[data-expense]'))expenseForm(state.expenses.find(x=>x.id===e.target.closest('[data-expense]').dataset.expense))};analytics.onclick=e=>{const mode=e.target.closest('[data-overview-mode]'),previous=e.target.closest('[data-overview-prev]'),next=e.target.closest('[data-overview-next]');if(mode||previous||next){if(mode)analyticsPeriod=mode.dataset.overviewMode;else if(analyticsPeriod==='year')analyticsDate=new Date(analyticsDate.getFullYear()+(next?1:-1),analyticsDate.getMonth(),1);else analyticsDate=new Date(analyticsDate.getFullYear(),analyticsDate.getMonth()+(next?1:-1),1);transitionSpendingOverview(renderSpendingPie);q(mode?'.sp-overview-picker summary':next?'[data-overview-next]':'[data-overview-prev]',analytics)?.focus({preventScroll:true});return}if(e.target.closest('[data-recap]'))openRecap();else if(e.target.closest('[data-chart-open]')){const panel=q('[data-spending-chart]');panel.hidden=false;q('[data-chart-open]').setAttribute('aria-expanded','true');panel.scrollIntoView({block:'nearest',behavior:'smooth'})}else if(e.target.closest('[data-chart-close]')){q('[data-spending-chart]').hidden=true;q('[data-chart-open]').setAttribute('aria-expanded','false');q('[data-chart-open]').focus()}else if(e.target.closest('[data-close-month]'))closeMonthSheet();else{const day=e.target.closest('[data-analytics-day]'),previousWeek=e.target.closest('[data-week-prev]'),nextWeek=e.target.closest('[data-week-next]');if(!day&&!previousWeek&&!nextWeek)return;if(day)selectedAnalyticsDay=day.dataset.analyticsDay;else{const date=new Date(selectedAnalyticsDay+'T12:00:00');date.setDate(date.getDate()+(nextWeek?7:-7));selectedAnalyticsDay=date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')}renderDailySpending();q(day?'[data-analytics-day="'+selectedAnalyticsDay+'"]':nextWeek?'[data-week-next]':'[data-week-prev]',analytics)?.focus({preventScroll:true})}};
  const categoryTrack=q('[data-quick-categories-wrap]');
  function moveQuickPage(direction){
