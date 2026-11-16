@@ -56,3 +56,18 @@ body {
 #piggy-onboarding .on-result .sp-nav {
   bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
 }
+
+/* iOS zooms focused text fields smaller than 16px and can retain that zoom
+   after onboarding hides the focused field. Keep editable names/amounts safe. */
+#piggy-onboarding .on-rent .on-rent-name,
+#piggy-onboarding .on-expense-form .on-expense-name,
+#piggy-onboarding .on-expense-input-amount .on-expense-amount {
+  font-size: 16px;
+}
+
+#piggy-onboarding .on-phone input[data-income],
+#piggy-onboarding .on-phone input[data-rent],
+#piggy-onboarding .on-phone input[data-on-custom-limit],
+#piggy-onboarding .on-phone input[data-on-daily-limit] {
+  font-size: 16px !important;
+}
