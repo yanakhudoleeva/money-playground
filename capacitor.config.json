@@ -2,10 +2,10 @@
   "appId": "com.moneyplayground.preview",
   "appName": "Money Playground",
   "webDir": ".capacitor-web",
-  "backgroundColor": "#171717",
+  "backgroundColor": "#000000",
   "ios": {
     "contentInset": "never",
-    "backgroundColor": "#171717",
+    "backgroundColor": "#000000",
     "preferredContentMode": "mobile"
   }
 }
