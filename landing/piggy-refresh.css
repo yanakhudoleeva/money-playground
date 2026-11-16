@@ -1,0 +1,31 @@
+.piggy-example .limits-layout{align-items:center}
+.piggy-playground{position:relative;min-width:0;align-self:center}
+.piggy-example .limits-native{height:320px;background:#000;border-color:#303030;transition:height .2s ease}
+.piggy-example .limits-native.is-editing{height:540px}
+.piggy-example .limits-native iframe{background:#000}
+.limits-intro .piggy-note{font-size:12px!important;line-height:1.6;margin-top:24px;color:#888!important;max-width:360px}
+.piggy-feedback{text-align:center;font-size:13px;color:#c6a5ff;margin:17px 0 0;min-height:21px}
+.signup-art{align-self:center;height:370px;isolation:isolate}
+.signup-art img{left:50%;bottom:0;width:min(100%,340px);transform:translateX(-50%);z-index:1}
+.money-dollar{position:absolute;color:#c6a5ff;font-family:'DM Sans',sans-serif;font-weight:900;font-size:76px;line-height:1;text-shadow:2px 2px #8b54c5,4px 4px #532a82,-1px -2px #e8d5ff;z-index:2}
+.dollar-one{left:0;top:27px;transform:rotate(-18deg)}.dollar-two{right:0;bottom:7px;transform:rotate(17deg);font-size:59px}
+.money-coin{position:absolute;display:grid;place-items:center;width:62px;height:72px;border-radius:50%;background:linear-gradient(130deg,#f5ffb1,#c5ff32 45%,#7bb300);border:5px solid #dcff68;box-shadow:5px 4px #5e8a00,inset 2px 1px 5px #5b9500;color:#669600;font:700 30px 'DM Sans',sans-serif;z-index:2}
+.coin-one{right:10px;top:5px;transform:rotate(24deg)}.coin-two{left:12px;bottom:12px;transform:rotate(-24deg) scale(.7)}
+.footer{justify-content:space-between;align-items:center;flex-wrap:nowrap;border:0;padding-top:0}
+.footer-socials{display:flex;align-items:center;gap:14px}
+.footer-social{width:40px;height:40px;display:grid;place-items:center;color:#c6a5ff;border:1px solid #333;border-radius:13px;background:#141414}
+.footer-social svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.footer-social .social-dot{fill:currentColor;stroke:none}
+@media(max-width:700px){.footer-socials{gap:8px}.footer-social{width:34px;height:34px}.footer .logo{width:120px}}
+@media(max-width:700px){.piggy-example .limits-native{height:335px}.piggy-example .limits-native.is-editing{height:540px}.signup-art{height:300px;width:300px;margin:30px auto 0}.signup-art img{width:270px;bottom:0}.money-dollar{font-size:60px}.dollar-two{font-size:45px}.money-coin{width:48px;height:57px;font-size:24px}.coin-one{right:0;top:0}.dollar-one{top:10px}}
+@media(prefers-reduced-motion:reduce){.piggy-playground *{animation:none!important}.piggy-example .limits-native{transition:none}}
+
+/* Balanced signup composition and shared hero CTA details. */
+.signup-panel{align-items:center}
+.signup-copy h2{margin-top:0}
+.signup-art{height:370px;display:grid;place-items:center}
+.signup-art img{position:relative;left:auto;bottom:auto;width:min(110%,400px);max-width:none;transform:none}
+.form-row button{font-family:inherit;font-size:18px;font-weight:700;gap:18px;padding:12px 14px 12px 22px;color:#101807;border:1px solid #caff77;box-shadow:0 4px 0 #557e17,0 10px 28px #a7ff2714}
+.form-row .welcome-cta-arrow{width:36px;height:36px}
+.form-row .welcome-cta-arrow svg{width:18px;height:18px}
+@media(max-width:740px){.signup-art{width:100%;height:310px;margin:24px auto 0}.signup-art img{width:310px;max-width:100%;left:auto;bottom:auto}.form-row button{font-size:18px}}

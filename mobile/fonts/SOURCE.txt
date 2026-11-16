@@ -1,0 +1,3 @@
+Downloaded from Google Fonts for offline parity with the existing web app.
+https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=DM+Sans:wght@800&family=Google+Sans+Flex:wght@400;500;600;700&display=swap
+Families: Baloo 2 (700), DM Sans (800), Google Sans Flex (400/500/600/700).

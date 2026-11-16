@@ -1,0 +1,6 @@
+html,body{margin:0!important;padding:0!important;background:#171716!important;overflow:hidden!important}
+#piggy-onboarding{padding:0!important;margin:0!important;background:#171716!important;min-height:100vh!important}
+#piggy-onboarding .on-phone,#piggy-onboarding .on-result{margin:0!important;width:100%!important;max-width:none!important;height:100vh!important;border-radius:0!important;box-shadow:none!important}
+#piggy-onboarding .on-phone{padding-top:45px!important}
+#piggy-onboarding .on-result{overflow:hidden!important}
+.demo-touch{position:fixed;z-index:99999;width:34px;height:34px;border:2px solid #fff;border-radius:50%;background:#ffffff33;opacity:0;pointer-events:none}

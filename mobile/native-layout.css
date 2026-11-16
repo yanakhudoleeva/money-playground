@@ -1,0 +1,58 @@
+/* iOS-only presentation. Keep the website's preview frame out of the app. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #171717;
+}
+
+body {
+  overflow: hidden;
+}
+
+#piggy-onboarding {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #171717;
+}
+
+#piggy-onboarding .on-phone,
+#piggy-onboarding .on-result {
+  width: 100%;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+#piggy-onboarding .on-phone {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 16px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+}
+
+#piggy-onboarding .on-phone .on-head {
+  padding-top: 0;
+}
+
+#piggy-onboarding .on-result > .sp-page,
+#piggy-onboarding .sp-history-page,
+#piggy-onboarding .on-result > #piggy-bank-plan .pb-phone {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Background reaches the screen edge; interactive navigation stays above Home. */
+#piggy-onboarding .on-result .sp-nav {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+}

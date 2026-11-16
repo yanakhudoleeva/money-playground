@@ -1,0 +1,22 @@
+# Local review exports and previous visual iterations
+/*.png
+/*.jpg
+/*.zip
+/canva/
+/build-demos.py
+
+# Only the assets used by the current landing page
+/assets/*
+!/assets/logo-transparent.svg
+!/assets/welcome-illustration-refined.png
+!/assets/step-01-current.png
+!/assets/step-02-current.png
+!/assets/step-03-current.png
+!/assets/piggy-open-eyes.png
+!/assets/piggy-with-coins.png
+
+.DS_Store
+
+
+!/assets/motion-coin.png
+!/assets/piggy-original-no-stacks.png

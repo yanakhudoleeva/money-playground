@@ -1,0 +1,21 @@
+/* Shared display treatment: the same voice as the welcome headline. */
+:root{--landing-display-size:clamp(52px,4.6cqw,80px);--landing-display-tracking:-.36cqw}
+.how-it-works h2,
+.limits-intro h2,
+.signup-copy h2{
+  color:#fff;
+  font-family:'DM Sans',Arial,sans-serif;
+  font-size:var(--landing-display-size);
+  font-weight:700;
+  letter-spacing:var(--landing-display-tracking);
+  line-height:.94;
+}
+.how-it-works h2{margin:0 0 38px}
+#piggy-bank .limits-intro h2{margin:0}
+#why .limits-intro h2{margin:0 0 28px}
+.signup-copy h2{margin:0 0 28px}
+@media(max-width:700px){
+  :root{--landing-display-size:clamp(42px,11vw,60px);--landing-display-tracking:-.62vw}
+  .how-it-works h2{margin-bottom:30px}
+  #why .limits-intro h2,.signup-copy h2{margin-bottom:24px}
+}
