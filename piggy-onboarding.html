@@ -234,6 +234,7 @@
   let soundOn = true;
   soundToggles.forEach(toggle => toggle.addEventListener('click', () => {
     soundOn = !soundOn;
+    if (!soundOn) { try { activeCoinSound?.stop(); } catch (_) {} }
     soundToggles.forEach(item => {
       item.setAttribute('aria-pressed', String(soundOn));
       item.textContent = soundOn ? '♫ Sound on' : '♫ Sound off';
@@ -245,25 +246,66 @@
   celebrationPig.replaceWith(celebration);
   const celebrationBody = document.createElement('div');
   celebrationBody.className = 'pb-pig-body';
-  const celebrationEye = q('.on-pig-open-eye').cloneNode();
-  celebrationEye.className = 'pb-pig-open-eye';
-  celebrationEye.src = 'assets/pig-eyes-open.png';
-  celebrationEye.alt = '';
-  celebrationEye.setAttribute('aria-hidden', 'true');
-  const celebrationCoin = document.createElement('span');
-  celebrationCoin.className = 'pb-celebration-coin';
-  celebrationCoin.setAttribute('aria-hidden', 'true');
-  celebrationBody.append(celebrationPig, celebrationEye);
-  celebration.append(celebrationBody, celebrationCoin);
-  let celebrationTimer;
+  // Preserve the onboarding artwork; replace only the My Piggy Bank mascot.
+  celebrationPig.src = window.moneyAsset('assets/piggy-landing-refined.png');
+  celebrationPig.alt = 'Pink piggy bank with a lime coin';
+  celebrationBody.innerHTML = '<svg class="pb-pig-motion" viewBox="0 0 1312 1199" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">\n<defs>\n <image id="pb-pig-source" href="assets/piggy-landing-refined.png" width="1312" height="1199"/>\n <image id="pb-pig-clean" href="assets/piggy-clean-plate.png" width="1312" height="1199"/><linearGradient id="pb-original-blend" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="black"/><stop offset=".23" stop-color="black"/><stop offset=".28" stop-color="white"/><stop offset="1" stop-color="white"/></linearGradient><mask id="pb-original-body"><rect width="1312" height="1199" fill="url(#pb-original-blend)"/></mask><radialGradient id="pb-eyelid-feather"><stop offset=".72" stop-color="white"/><stop offset="1" stop-color="black"/></radialGradient><mask id="pb-eyelid-mask"><ellipse cx="944" cy="512" rx="61" ry="84" fill="url(#pb-eyelid-feather)"/></mask><path id="pb-coin-outline" d="M508 243 C496 209 499 143 524 101 C545 62 588 43 622 56 C681 71 719 125 726 191 L727 274 Q714 281 696 277 Z"/>\n <mask id="pb-without-coin"><rect width="1312" height="1199" fill="white"/><use href="#pb-coin-outline" fill="black" stroke="black" stroke-width="5"/></mask>\n <clipPath id="pb-coin-cut"><use href="#pb-coin-outline"/></clipPath>\n <clipPath id="pb-slot-front"><path d="M450 0 H780 V267 Q748 290 696 278 Q603 249 490 238 H450 Z"/></clipPath>\n <clipPath id="pb-eye-cut"><ellipse cx="944" cy="512" rx="38" ry="60" transform="rotate(-12 944 512)"/></clipPath>\n <linearGradient id="pb-skin" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fa5e93"/><stop offset=".55" stop-color="#f25086"/><stop offset="1" stop-color="#ee4c80"/></linearGradient>\n <linearGradient id="pb-slot" x2="0" y2="1"><stop stop-color="#68192e"/><stop offset="1" stop-color="#ac2753"/></linearGradient>\n</defs>\n<g class="pb-mascot-body">\n <use href="#pb-pig-clean"/><use href="#pb-pig-source" mask="url(#pb-original-body)"/>\n <g clip-path="url(#pb-slot-front)"><g class="pb-mascot-coin"><use href="#pb-pig-source" clip-path="url(#pb-coin-cut)"/></g></g>\n <g class="pb-mascot-eyelid">\n  <rect x="875" y="420" width="145" height="185" fill="url(#pb-skin)" mask="url(#pb-eyelid-mask)"/>\n  <g class="pb-mascot-open-eye"><use href="#pb-pig-source" clip-path="url(#pb-eye-cut)"/></g>\n  <path class="pb-mascot-closed-eye" d="M919 508 Q941 525 966 503" fill="none" stroke="#242023" stroke-width="11" stroke-linecap="round"/>\n </g>\n</g></svg>';
+  celebrationBody.append(celebrationPig);
+  celebration.append(celebrationBody);
+  let celebrationTimer, celebrationFrame, celebrationRun = 0;
+  let coinAudioContext, coinAudioBuffer, coinAudioLoading, activeCoinSound;
+  function prepareCoinSound() {
+    if (!soundOn) return;
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      coinAudioContext ||= new AudioContext();
+      // Resume while the tab tap is still a user gesture (required on iOS).
+      coinAudioContext.resume().catch(() => {});
+      coinAudioLoading ||= fetch('assets/sounds/01-soft-plop.wav')
+        .then(response => response.arrayBuffer())
+        .then(bytes => coinAudioContext.decodeAudioData(bytes))
+        .then(buffer => { coinAudioBuffer = buffer; })
+        .catch(() => { coinAudioLoading = null; });
+    } catch (_) { /* Audio must not block navigation. */ }
+  }
+  function playCoinImpact() {
+    if (!soundOn || document.hidden || !celebration.getClientRects().length) return;
+    if (coinAudioBuffer && coinAudioContext?.state === 'running') {
+      const source = coinAudioContext.createBufferSource();
+      source.buffer = coinAudioBuffer;
+      source.connect(coinAudioContext.destination);
+      activeCoinSound = source;
+      source.onended = () => { if (activeCoinSound === source) activeCoinSound = null; };
+      source.start(0, .03); // Skip the sound file’s 30ms leading silence.
+    } else playRewardSound('deposit', .03);
+  }
   function celebrate() {
+    const run = ++celebrationRun;
     celebration.classList.remove('is-playing');
     clearTimeout(celebrationTimer);
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      // Start on the next frame so editing the plan and creating it again replays the reward.
-      requestAnimationFrame(() => requestAnimationFrame(() => celebration.classList.add('is-playing')));
-      celebrationTimer = setTimeout(() => celebration.classList.remove('is-playing'), 2100);
-    }
+    cancelAnimationFrame(celebrationFrame);
+    try { activeCoinSound?.stop(); } catch (_) {}
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    prepareCoinSound();
+    celebrationFrame = requestAnimationFrame(() => {
+      celebrationFrame = requestAnimationFrame(() => {
+        if (run !== celebrationRun || !celebration.getClientRects().length) return;
+        celebration.classList.add('is-playing');
+        const coin = celebration.querySelector('.pb-mascot-coin');
+        // Follow the rendered coin timeline: it reaches the slot at 38%.
+        function followCoin() {
+          if (run !== celebrationRun || document.hidden || !celebration.getClientRects().length) return;
+          const animation = coin.getAnimations().find(item => item.animationName === 'pb-own-coin');
+          if (!animation) return;
+          const impact = Number(animation.effect.getTiming().duration) * .38;
+          if (animation.currentTime >= impact) { playCoinImpact(); return; }
+          celebrationFrame = requestAnimationFrame(followCoin);
+        }
+        celebrationFrame = requestAnimationFrame(followCoin);
+        celebrationTimer = setTimeout(() => celebration.classList.remove('is-playing'), 2600);
+      });
+    });
   }
   original.addEventListener('piggy-bank-enter', celebrate);
   function playChime(delay = 0) {
@@ -293,16 +335,22 @@
     deposit: new Audio('assets/sounds/01-soft-plop.wav')
   };
   Object.values(rewardSounds).forEach(audio => { audio.preload = 'auto'; });
-  function playRewardSound(kind) {
+  function playRewardSound(kind, offset = 0) {
     if (!soundOn) return;
     const audio = rewardSounds[kind];
     if (!audio) return;
     try {
-      audio.currentTime = 0;
+      audio.currentTime = offset;
       audio.play().catch(() => {});
     } catch (_) { /* Audio must never interrupt saving the plan or deposit. */ }
   }
-  root.playPiggyDepositSound = () => playRewardSound('deposit');
+  root.playPiggyDepositSound = () => {
+    prepareCoinSound();
+    requestAnimationFrame(() => {
+      if (celebration.getClientRects().length) celebrate();
+      else playRewardSound('deposit');
+    });
+  };
   let selectedCurrency = 'EUR';
   const currencySymbols = {EUR:'€', USD:'$', GBP:'£'};
   const currencySymbol = () => currencySymbols[selectedCurrency] || '';
@@ -1258,14 +1306,24 @@
   #piggy-onboarding .pb-pig-stage{position:relative;width:50%;max-width:188px;flex:none;aspect-ratio:1}
   #piggy-onboarding .pb-pig-body{position:relative;width:100%;height:100%}
   #piggy-onboarding .pb-pig-stage .pb-pig{display:block;width:100%;max-width:none;height:100%}
-  #piggy-onboarding .pb-pig-open-eye{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;clip-path:ellipse(11% 11% at 73% 45%)}
-  #piggy-onboarding .pb-pig-stage.is-playing .pb-pig-body{animation:celebration-pig 1.35s cubic-bezier(.2,.7,.3,1) .38s both}
-  #piggy-onboarding .pb-pig-stage.is-playing .pb-pig-open-eye{animation:celebration-wink 1.35s steps(1,end) .38s both}
-  #piggy-onboarding .pb-celebration-coin{position:absolute;z-index:2;top:-12%;left:39%;width:16%;height:20%;border:3px solid #d4fa35;border-radius:50%;background:linear-gradient(115deg,#d2fa33,#8fbd00 60%,#c6eb12);box-shadow:2px 2px 0 #739900,0 4px 9px #0005;opacity:0;pointer-events:none}
-  #piggy-onboarding .pb-pig-stage.is-playing .pb-celebration-coin{animation:celebration-coin .75s ease-in .1s both}
-  @keyframes celebration-coin{0%{opacity:0;transform:translateY(-50%) rotate(-20deg)}20%{opacity:1}72%{opacity:1;transform:translateY(105%) rotate(8deg) scale(.85)}100%{opacity:0;transform:translateY(130%) rotate(8deg) scale(.55)}}
-  @keyframes celebration-wink{0%,35%,58%,100%{opacity:1}36%,57%{opacity:0}}
-  @keyframes celebration-pig{0%,28%,100%{transform:translateY(0) scale(1)}44%{transform:translateY(5%) scale(1.05,.94)}64%{transform:translateY(-15%) scale(.97,1.03)}82%{transform:translateY(0) scale(1.04,.96)}}
+  #piggy-onboarding .pb-pig-body > .pb-pig{display:none!important}
+  #piggy-onboarding .pb-pig-motion{display:block;width:100%;height:100%;overflow:visible}
+  .pb-mascot-body{transform-origin:650px 1080px}
+  .pb-mascot-coin{transform-origin:620px 265px}
+  .pb-mascot-eyelid{opacity:0}
+  .pb-mascot-open-eye{transform-origin:944px 512px}
+  .pb-mascot-closed-eye{opacity:0}
+  #piggy-onboarding .is-playing .pb-mascot-body{animation:pb-gentle-reaction 2.5s ease-in-out both}
+  #piggy-onboarding .is-playing .pb-mascot-coin{animation:pb-own-coin 2.5s both}
+  #piggy-onboarding .is-playing .pb-mascot-eyelid{animation:pb-eye-patch 2.5s both}
+  #piggy-onboarding .is-playing .pb-mascot-open-eye{animation:pb-soft-wink 2.5s ease-in-out both}
+  #piggy-onboarding .is-playing .pb-mascot-closed-eye{animation:pb-wink-line 2.5s ease-in-out both}
+  @keyframes pb-own-coin{0%,12%{transform:translateY(0);opacity:1;animation-timing-function:cubic-bezier(.45,0,.85,.55)}38%,76%{transform:translateY(260px);opacity:1}77%{transform:translateY(0);opacity:0}100%{transform:translateY(0);opacity:1}}
+  @keyframes pb-gentle-reaction{0%,34%,65%,100%{transform:none}43%{transform:translateY(6px) scale(1.012,.985)}53%{transform:translateY(-4px) scale(.995,1.006)}}
+  @keyframes pb-eye-patch{0%,45.5%,54.5%,100%{opacity:0}46%,54%{opacity:1}}
+  @keyframes pb-soft-wink{0%,46%,54%,100%{transform:scaleY(1)}49%,50%{transform:scaleY(0)}}
+  @keyframes pb-wink-line{0%,48%,53%,100%{opacity:0}49%,50%{opacity:1}}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding .pb-pig-motion *{animation:none!important}}
   @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-primary,#piggy-onboarding .on-goals button{transition:none}#piggy-onboarding .on-primary:active,#piggy-onboarding .on-goals button:active{transform:none;filter:brightness(.88)}#piggy-onboarding .on-goals button[aria-pressed="true"] .on-icon{animation:none}#piggy-onboarding .on-pig-open-eye{animation:none;opacity:0}}
   @media(max-width:390px){#piggy-onboarding .on-phone,#piggy-onboarding .on-result-intro{padding:24px 18px;border-radius:26px}.on-screen h1{font-size:34px}.on-goals button{font-size:13px}.on-money input{width:60px}}
   /* Keep the chosen number font consistent across setup and the finished plan. */
@@ -1670,7 +1728,7 @@
 #piggy-onboarding .on-screen[data-step="3"]>.on-actions>.on-action-links{grid-column:1/-1}
 #piggy-onboarding .on-screen[data-step="3"]>.on-actions>.on-back svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #piggy-bank-plan .pb-hero .pb-pig-stage{flex:0 0 110px;width:110px;max-width:110px;height:110px}
-#piggy-bank-plan .pb-hero .pb-pig-open-eye{display:block;top:-14px;animation:pig-wink 5s steps(1,end) infinite}
+#piggy-bank-plan .pb-hero .pb-pig-body{top:-10px}
 #piggy-onboarding .sp-head .sp-sparkle{display:none}
 #piggy-onboarding .sp-page[aria-label="My Spending"]{padding-top:20px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-head{padding-top:0}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title-row{margin:20px 0 14px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title{font-size:32px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-history-open{width:46px!important;height:46px!important;min-height:46px!important;border-radius:15px!important}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary{padding:11px 12px 12px;border-radius:17px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-month{font-size:11px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-month button{width:28px;height:27px;border-radius:9px;font-size:18px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-total-label{margin-top:9px;font-size:10px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-total{font-size:25px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available{margin-top:8px;padding-top:8px;font-size:10px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available strong{font-size:16px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-plan{margin-top:8px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily{gap:2px 9px;padding-top:8px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-label{font-size:11px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-set,#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-value{font-size:10px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily .sp-progress{height:5px;margin-top:4px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick{margin-top:12px}
 #piggy-onboarding .sp-history-page{box-sizing:border-box;height:100%;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding-bottom:max(22px,env(safe-area-inset-bottom));box-shadow:none}

@@ -1,0 +1,20 @@
+<svg class="pb-pig-motion" viewBox="0 0 1312 1199" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <image id="pb-pig-source" href="piggy-landing-refined.png" width="1312" height="1199"/>
+ <image id="pb-pig-clean" href="piggy-clean-plate.png" width="1312" height="1199"/><linearGradient id="pb-original-blend" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="black"/><stop offset=".23" stop-color="black"/><stop offset=".28" stop-color="white"/><stop offset="1" stop-color="white"/></linearGradient><mask id="pb-original-body"><rect width="1312" height="1199" fill="url(#pb-original-blend)"/></mask><radialGradient id="pb-eyelid-feather"><stop offset=".72" stop-color="white"/><stop offset="1" stop-color="black"/></radialGradient><mask id="pb-eyelid-mask"><ellipse cx="944" cy="512" rx="61" ry="84" fill="url(#pb-eyelid-feather)"/></mask><path id="pb-coin-outline" d="M508 243 C496 209 499 143 524 101 C545 62 588 43 622 56 C681 71 719 125 726 191 L727 274 Q714 281 696 277 Z"/>
+ <mask id="pb-without-coin"><rect width="1312" height="1199" fill="white"/><use href="#pb-coin-outline" fill="black" stroke="black" stroke-width="5"/></mask>
+ <clipPath id="pb-coin-cut"><use href="#pb-coin-outline"/></clipPath>
+ <clipPath id="pb-slot-front"><path d="M450 0 H780 V267 Q748 290 696 278 Q603 249 490 238 H450 Z"/></clipPath>
+ <clipPath id="pb-eye-cut"><ellipse cx="944" cy="512" rx="38" ry="60" transform="rotate(-12 944 512)"/></clipPath>
+ <linearGradient id="pb-skin" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fa5e93"/><stop offset=".55" stop-color="#f25086"/><stop offset="1" stop-color="#ee4c80"/></linearGradient>
+ <linearGradient id="pb-slot" x2="0" y2="1"><stop stop-color="#68192e"/><stop offset="1" stop-color="#ac2753"/></linearGradient>
+</defs>
+<g class="pb-mascot-body">
+ <use href="#pb-pig-clean"/><use href="#pb-pig-source" mask="url(#pb-original-body)"/>
+ <g clip-path="url(#pb-slot-front)"><g class="pb-mascot-coin"><use href="#pb-pig-source" clip-path="url(#pb-coin-cut)"/></g></g>
+ <g class="pb-mascot-eyelid">
+  <rect x="875" y="420" width="145" height="185" fill="url(#pb-skin)" mask="url(#pb-eyelid-mask)"/>
+  <g class="pb-mascot-open-eye"><use href="#pb-pig-source" clip-path="url(#pb-eye-cut)"/></g>
+  <path class="pb-mascot-closed-eye" d="M919 508 Q941 525 966 503" fill="none" stroke="#242023" stroke-width="11" stroke-linecap="round"/>
+ </g>
+</g></svg>
