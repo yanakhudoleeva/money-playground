@@ -30,5 +30,18 @@ for(const file of ['piggy-onboarding.html','dist/index.html']){
  assert.ok(!html.includes('function buildInsights('),'Analytics prototype is excluded');
  assert.ok(!html.includes('money-insights-preview'),'Demo storage is excluded');
  assert.ok(!html.includes('data-mi-opt'),'Analytics optimization is excluded');
+ // A reminder carousel owns gestures starting anywhere inside it, in either direction.
+ for(const pointer of [false,true])for(const inReminder of [false,true])for(const dx of [-100,100]){
+  const handlers={},navigated=[];let prevented=false;
+  const target={closest:selector=>inReminder&&selector.includes('[data-limit-nudge]')?{}:null};
+  const listen=(type,fn)=>handlers[type]=fn;
+  const gestureContext={result:{addEventListener:listen,getClientRects:()=>[{}],classList:{add(){},remove(){}},setPointerCapture(){},hasPointerCapture:()=>false},window:{addEventListener:listen,getSelection:()=>null},nav:{hidden:false,contains:()=>false},overlay:{open:false},tabPages:{limits:{contains:()=>true}},activeTab:'limits',tabOrder:['spending','limits','analytics','bank'],navigateTab:tab=>navigated.push(tab)};
+  vm.runInNewContext(extract(' let tabGesture=null,tabClickUntil=0;', 'nav.onclick='),gestureContext);
+  const preventDefault=()=>{prevented=true};
+  if(pointer){handlers.pointerdown({pointerType:'mouse',button:0,isPrimary:true,pointerId:1,target,clientX:200,clientY:100});handlers.pointermove({pointerId:1,buttons:1,clientX:200+dx,clientY:100,preventDefault});handlers.pointerup({pointerId:1});}
+  else {handlers.touchstart({target,touches:[{clientX:200,clientY:100}]});handlers.touchmove({touches:[{clientX:200+dx,clientY:100}],preventDefault});handlers.touchend();}
+  assert.equal(navigated.length,inReminder?0:1,'Reminder swipe must not switch tabs; ordinary page swipe must still work');
+  assert.equal(prevented,!inReminder,'Reminder swipe must remain available for native carousel scrolling');
+ }
  console.log('PASS '+file+': syntax, monthly category totals, thresholds, multiple/custom/zero limits, limit updates, no Analytics/demo code');
 }
