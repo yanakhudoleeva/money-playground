@@ -1760,7 +1760,7 @@
 #piggy-onboarding .on-screen[data-step="3"]>.on-actions>.on-action-links{grid-column:1/-1}
 #piggy-onboarding .on-screen[data-step="3"]>.on-actions>.on-back svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #piggy-bank-plan .pb-hero .pb-pig-stage{flex:0 0 110px;width:110px;max-width:110px;height:110px}
-#piggy-bank-plan .pb-hero .pb-pig-body{top:-10px}
+#piggy-bank-plan .pb-hero .pb-pig-body{top:-18px}
 #piggy-onboarding .sp-head .sp-sparkle{display:none}
 #piggy-onboarding .sp-page[aria-label="My Spending"]{padding-top:20px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-head{padding-top:0}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title-row{margin:20px 0 14px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-title{font-size:32px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-history-open{width:46px!important;height:46px!important;min-height:46px!important;border-radius:15px!important}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary{padding:11px 12px 12px;border-radius:17px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-month{font-size:11px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-month button{width:28px;height:27px;border-radius:9px;font-size:18px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-total-label{margin-top:9px;font-size:10px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-total{font-size:25px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available{margin-top:8px;padding-top:8px;font-size:10px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-summary-available strong{font-size:16px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-plan{margin-top:8px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily{gap:2px 9px;padding-top:8px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-label{font-size:11px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-set,#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily-value{font-size:10px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-daily .sp-progress{height:5px;margin-top:4px}#piggy-onboarding .sp-page[aria-label="My Spending"] .sp-quick{margin-top:12px}
 #piggy-onboarding .sp-history-page{box-sizing:border-box;height:100%;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding-bottom:max(22px,env(safe-area-inset-bottom));box-shadow:none}
@@ -1957,7 +1957,7 @@
 #piggy-onboarding .on-result .sp-page[aria-label="Analytics"] .sp-title{margin-bottom:22px}
 #piggy-onboarding .on-result .sp-page[aria-label="My Spending"] .sp-title{font-size:37px}
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-hero h1{font-size:37px;line-height:1.05}
-#piggy-onboarding .on-result>#piggy-bank-plan .pb-hero{margin-bottom:8px}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-hero{margin-bottom:0}
 @media(max-width:390px){#piggy-onboarding .on-result .sp-page[aria-label="My Spending"] .sp-title,#piggy-onboarding .on-result>#piggy-bank-plan .pb-hero h1{font-size:34px}}
 /* Inline amount editing for the Piggy Bank overview. */
 #piggy-onboarding .on-result>#piggy-bank-plan .pb-hero{align-items:flex-start}
@@ -2669,7 +2669,7 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   function showRecap(){
    report=collectRecap();if(report.income===null){recapForm();return}
    recapEditingFromReport=false;recap.querySelector('.mr-actions').hidden=false;recap.querySelector('.mr-form-action').hidden=true;
-   const r=report,headline=r.status==='good'?'Congrats on your month!':r.status==='short'?'A little reset.':r.status==='empty'?'Your month, so far.':'Your month<br>at a glance';
+   const r=report,headline=esc(new Date(r.period+'-01T12:00:00').toLocaleDateString('en',{month:'long'}))+'<br>at a glance';
    const sub=r.status==='good'?'Your recorded spending leaves room for your savings target.':r.status==='short'?(r.balance<0?'Your recorded expenses were higher than your income. Every step still counts.':'Your recorded spending leaves less than your savings target. Every step still counts.'):r.status==='empty'?'Add expenses to see a fuller picture of your month.':'A little look at where your money went.';
    const goalText=r.target===null?(r.balance<0?'Expenses were higher than your income':'No savings target set for this month'):r.status==='empty'?'Add expenses for a meaningful comparison':r.status==='good'?'On track for your goal':'Below your savings goal';
    const gap=r.target===null||r.status==='empty'?'':r.balance-r.target>=0?'+'+fmt(r.balance-r.target)+' above target':fmt(r.target-r.balance)+' below target';
@@ -2914,6 +2914,7 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
  window.addEventListener('resize',()=>{if(overlay.open)positionSheetOverlay()});
  function open(title,html){
   const wasOpen=overlay.open,wasClosing=overlay.classList.contains('is-closing');
+  spendingGuidePill.setAttribute('aria-expanded',String(html.includes('data-summary-sheet')));
   sheetVersion++;closingPromise=null;
   q('[data-guide-tooltip]',overlay)?.remove();
   const content=q('[data-sheet-content]',overlay);content.onclick=null;
@@ -2929,7 +2930,7 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   const version=++sheetVersion;
   closingPromise=Promise.all([animateSheet(false),options.waitFor||Promise.resolve()]).then(()=>{
    if(version!==sheetVersion)return;
-   overlay.close();overlay.classList.remove('is-closing');q('[data-guide-tooltip]',overlay)?.remove();q('[data-sheet-content]',overlay).innerHTML='';
+   overlay.close();spendingGuidePill.setAttribute('aria-expanded','false');overlay.classList.remove('is-closing');q('[data-guide-tooltip]',overlay)?.remove();q('[data-sheet-content]',overlay).innerHTML='';
    const focusTarget=options.focusTarget||sheetReturnFocus;
    if(focusTarget?.isConnected)focusTarget.focus({preventScroll:true});
    closingPromise=null;
@@ -3238,7 +3239,8 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)navigateTab(btn.
 #piggy-onboarding .on-result .mr-hero h1{font-size:35px}
 @media(max-width:390px){#piggy-onboarding .on-result .mr-hero h1{font-size:32px}}
 
-#piggy-onboarding .on-result .mr-edit{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;margin-top:12px;padding:0 15px;border:1px solid #555;border-radius:14px;background:#303030;box-shadow:inset 0 1px #ffffff12,0 3px 0 #151515;color:#f1f1f1;font:600 12px 'DM Sans',Arial;cursor:pointer}
+#piggy-onboarding .on-result .mr-edit{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;margin-top:12px;padding:0 15px;border:0;border-radius:14px;background:#383838;box-shadow:inset 0 1px #ffffff14,0 4px 0 #2b2b2b;color:#e3e3e0;font:600 12px 'DM Sans',Arial;cursor:pointer}
+#piggy-onboarding .on-result .mr-edit:active{box-shadow:inset 0 1px #ffffff14,0 2px 0 #2b2b2b}
 #piggy-onboarding .on-result .mr-edit svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 #piggy-onboarding .on-result .mr-actions button{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:50px;border:1px solid #caff70;box-shadow:inset 0 1px #ffffff70,0 4px 0 #608d15;font-size:clamp(11px,3.2vw,13px);transition:transform .16s ease,box-shadow .16s ease}
 #piggy-onboarding .on-result .mr-actions button:active{transform:translateY(2px);box-shadow:inset 0 1px #ffffff55,0 2px 0 #608d15}
@@ -3694,8 +3696,8 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)navigateTab(btn.
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card{--status-fill:#a7ff27;--status-text:#b9ef88;--status-border:#a7ff2735;--status-tint:#a7ff2706;border-color:var(--status-border);background:linear-gradient(145deg,var(--status-tint),transparent 75%),#282828}
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card.is-warning{--status-fill:#f0d34d;--status-text:#e9d77e;--status-border:#f0d34d45;--status-tint:#f0d34d09}
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card.is-caution{--status-fill:#ff9d45;--status-text:#ffb777;--status-border:#ff9d4555;--status-tint:#ff9d450d}
-#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card.is-critical{--status-fill:#ff5959;--status-text:#ff9292;--status-border:#ff595970;--status-tint:#ff595912}
-#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card.is-over{--status-fill:#a43b55;--status-text:#e7a2b3;--status-border:#a43b5599;--status-tint:#a43b5526}
+#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card.is-critical{--status-fill:#FF4D8D;--status-text:#ff9292;--status-border:#ff595970;--status-tint:#ff595912}
+#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card.is-over{--status-fill:#FF4D8D;--status-text:#e7a2b3;--status-border:#a43b5599;--status-tint:#a43b5526}
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card .sp-limit-card-meter i{background:var(--status-fill)}
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card .sp-limit-card-bottom{color:var(--status-text)}
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card.is-over .sp-limit-card-balance>span{color:var(--status-text)}
@@ -3703,8 +3705,8 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)navigateTab(btn.
 #piggy-onboarding .sp-category-limit{--status-fill:#a7ff27;--status-text:#b9ef88}
 #piggy-onboarding .sp-category-limit.is-warning{--status-fill:#f0d34d;--status-text:#e9d77e}
 #piggy-onboarding .sp-category-limit.is-caution{--status-fill:#ff9d45;--status-text:#ffb777}
-#piggy-onboarding .sp-category-limit.is-critical{--status-fill:#ff5959;--status-text:#ff9292}
-#piggy-onboarding .sp-category-limit.is-over{--status-fill:#a43b55;--status-text:#e7a2b3}
+#piggy-onboarding .sp-category-limit.is-critical{--status-fill:#FF4D8D;--status-text:#ff9292}
+#piggy-onboarding .sp-category-limit.is-over{--status-fill:#FF4D8D;--status-text:#e7a2b3}
 #piggy-onboarding .sp-category-limit i{background:var(--status-fill)}
 #piggy-onboarding .sp-category-limit strong{color:var(--status-text)}
 #piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card:is(.is-warning,.is-caution,.is-critical,.is-over) .sp-limit-card-meter i{background:var(--status-fill)}
@@ -3726,4 +3728,65 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)navigateTab(btn.
 /* Shared mascot finish: apply data-pig-art to each new pig artwork container, once.
    Pink skin is softened; lime coins and neutral details keep their source colors. */
 #piggy-onboarding [data-pig-art]{filter:url(#mp-pig-soft-pink)}
+</style>
+
+<style id="shared-card-spacing-and-recap-actions">
+#piggy-onboarding{--app-block-gap:16px;--recap-actions-bottom:max(28px,calc(env(safe-area-inset-bottom,0px) + 16px))}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal{margin-bottom:var(--app-block-gap)}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-result{margin-top:var(--app-block-gap)}
+#piggy-onboarding .sp-page[aria-label="Analytics"] :is(.sp-chart,.sp-daily-chart,.sp-recap-banner){margin-top:var(--app-block-gap);margin-bottom:0}
+#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-list{gap:var(--app-block-gap)}
+#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limits-forecast{margin-bottom:var(--app-block-gap)}
+#piggy-onboarding .sp-page[aria-label="My Limits"] .mi-limit-nudge{margin-top:0;margin-bottom:var(--app-block-gap)}
+#piggy-onboarding .on-result :is(.mr-stats,.mr-balance){margin-top:var(--app-block-gap)}
+#piggy-onboarding .on-result .mr-stats{column-gap:var(--app-block-gap)}
+#piggy-onboarding .on-result .mr-heading,#piggy-onboarding .on-result .mr-heading:has(+.mr-entries){margin-top:32px}
+/* Keep the home-indicator area plus 12px below the 4px button base. */
+#piggy-onboarding .on-result .mr-actions,#piggy-onboarding .on-result .mr-overlay>.mr-form-action{bottom:var(--recap-actions-bottom)}
+#piggy-onboarding .on-result .mr-page{padding-bottom:calc(var(--recap-actions-bottom) + 72px)}
+#piggy-onboarding .on-result .mr-overlay>.mr-form-action{border:1px solid #caff70;border-radius:15px;box-shadow:inset 0 1px #ffffff70,0 4px 0 #608d15;transition:box-shadow .16s ease}
+#piggy-onboarding .on-result .mr-overlay>.mr-form-action:active{box-shadow:inset 0 1px #ffffff55,0 2px 0 #608d15}
+#piggy-onboarding .sp-page.is-quick-v2 .sp-quick .sp-keypad{box-sizing:border-box;width:calc(100% + 24px);margin-left:-12px;margin-right:-12px;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:4px}
+</style>
+
+<style id="piggy-summary-card-layout">
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-plan{column-gap:16px}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget .pb-fixed-toggle{position:relative}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget .pb-value-edit .pb-edit-mark{position:absolute;top:-2px;right:-5px;width:40px;height:40px;margin:0;background:transparent}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget .pb-value-edit{gap:0}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget .pb-fixed-widget-value{min-width:0;max-width:100%;font-variant-numeric:tabular-nums}
+</style>
+<script>
+(()=>{
+ const amounts=[...document.querySelectorAll('#piggy-bank-plan .pb-fixed-widget-value')];
+ let frame=0;
+ const fit=()=>{frame=0;amounts.forEach(el=>{const width=el.parentElement.clientWidth;if(!width)return;el.style.fontSize='';const base=parseFloat(getComputedStyle(el).fontSize);if(el.scrollWidth>width)el.style.fontSize=Math.max(12,base*width/el.scrollWidth).toFixed(2)+'px'})};
+ const schedule=()=>{if(!frame)frame=requestAnimationFrame(fit)};
+ const resize=new ResizeObserver(schedule),text=new MutationObserver(schedule);
+ amounts.forEach(el=>{resize.observe(el.parentElement);text.observe(el,{childList:true,subtree:true,characterData:true})});
+ schedule();
+})();
+</script>
+
+<style id="piggy-edit-hit-areas">
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-hero{min-height:102px}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-plan>.pb-fixed-widget{position:relative}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget :is(.pb-fixed-toggle,.pb-value-edit){position:static}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget .pb-value-edit .pb-edit-mark{position:absolute;inset:0;width:100%;height:100%;margin:0;border-radius:22px;cursor:pointer}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget .pb-value-edit .pb-edit-mark svg{position:absolute;top:22px;right:22px;width:18px;height:18px}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-header{position:relative;min-height:44px;padding-right:44px}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-header .pb-goal-card-edit{position:absolute;inset:0;width:100%;height:100%;margin:0;border-radius:10px}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-goal-card-edit svg{position:absolute;right:9px;top:50%;transform:translateY(-50%)}
+#piggy-onboarding .on-result>#piggy-bank-plan .pb-fixed-widget .pb-edit-mark:focus-visible{outline:2px solid #c6a5ff;outline-offset:3px}
+</style>
+
+<style id="currency-chevron-and-limit-controls">
+#piggy-onboarding :is(.pb-savings-money,.mr-money-field,.on-euro,.on-expense-saved-amount,.on-expense-input-amount,.pb-inline-editor){column-gap:.25em!important}
+#piggy-onboarding .on-result .mr-input-card label .mr-money-currency{min-width:0}
+#piggy-onboarding .on-euro input,#piggy-onboarding .on-expense-input-amount input{padding-left:0;text-align:left}
+#piggy-onboarding .sp-safe-pill svg,#piggy-onboarding .sp-select-chevron,#piggy-onboarding .on-currency-arrow{transition:transform .18s ease}
+#piggy-onboarding .sp-safe-pill[aria-expanded="true"] svg,#piggy-onboarding [aria-expanded="true"]>.sp-select-chevron,#piggy-onboarding details[open]>summary>.sp-select-chevron{transform:rotate(180deg)}
+#piggy-onboarding .on-currency-trigger[aria-expanded="true"] .on-currency-arrow{transform:rotate(225deg)}
+#piggy-onboarding .sp-page[aria-label="My Limits"] .sp-limit-card :is(.sp-limit-card-edit,.sp-limit-lock){box-shadow:none!important}
+@media(prefers-reduced-motion:reduce){#piggy-onboarding .sp-safe-pill svg,#piggy-onboarding .sp-select-chevron,#piggy-onboarding .on-currency-arrow{transition:none}}
 </style>
