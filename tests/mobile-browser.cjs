@@ -70,7 +70,7 @@ fs.mkdirSync(artifacts, { recursive: true });
         assert.equal(await page.locator('.sp-nav [aria-current="page"]').getAttribute('data-tab'), 'bank', 'Skipping onboarding lands on the created Piggy Bank');
         await page.locator('.pb-pig-motion').waitFor();
         const pigFilters = await page.locator('[data-pig-art]').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).filter));
-        assert.ok(pigFilters.length >= 4 && pigFilters.every(filter => filter.includes('mp-pig-soft-pink')), 'Every mascot shares the approved pink finish');
+        assert.ok(pigFilters.length >= 4 && pigFilters.every(filter => filter === 'none'), 'Every mascot retains its original artwork colors');
         await page.screenshot({ path: path.join(artifacts, `${variant}-${width}-soft-pig-bank.png`) });
         await page.locator('.sp-nav [data-tab="spending"]').click();
         await page.getByRole('button', { name: 'Open expense history', exact: true }).waitFor();
