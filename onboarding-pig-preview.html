@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Onboarding · Piggy</title><style>body{margin:0;background:#171717;color:#fff;font-family:Arial;display:grid;place-items:center;min-height:100vh}main{width:min(340px,88vw)}h1{font-size:34px;margin:0}.row{display:flex;align-items:center;gap:6px}button{border:0;background:#d3ff00;border-radius:24px;padding:15px 25px;font:inherit;margin-top:35px}  #piggy-onboarding .on-pig-stage{position:relative;flex:0 0 112px;width:112px;height:104px}
+  #piggy-onboarding .on-pig-art{display:block;width:100%;height:100%;overflow:visible}
+  #piggy-onboarding .on-mascot-eyelid{opacity:0;animation:on-idle-patch 5.6s infinite}
+  #piggy-onboarding .on-mascot-open-eye{transform-origin:944px 512px;animation:on-idle-blink 5.6s ease-in-out infinite}
+  #piggy-onboarding .on-mascot-closed-eye{opacity:0;animation:on-idle-line 5.6s infinite}
+  @keyframes on-idle-patch{0%,49.9%,53.7%,100%{opacity:0}50%,53.6%{opacity:1}}
+  @keyframes on-idle-blink{0%,50%,53.6%,100%{transform:scaleY(1)}51.34%,51.79%{transform:scaleY(0)}}
+  @keyframes on-idle-line{0%,50.9%,53.3%,100%{opacity:0}51.34%,51.79%{opacity:1}}
+  #piggy-onboarding .on-pig-stage.is-winking .on-mascot-eyelid{animation:on-tap-patch .2s both}
+  #piggy-onboarding .on-pig-stage.is-winking .on-mascot-open-eye{animation:on-tap-blink .2s ease-in-out both}
+  #piggy-onboarding .on-pig-stage.is-winking .on-mascot-closed-eye{animation:on-tap-line .2s both}
+  @keyframes on-tap-patch{0%,100%{opacity:0}1%,99%{opacity:1}}
+  @keyframes on-tap-blink{0%,100%{transform:scaleY(1)}37.5%,50%{transform:scaleY(0)}}
+  @keyframes on-tap-line{0%,25%,90%,100%{opacity:0}37.5%,50%{opacity:1}}
+  @media(prefers-reduced-motion:reduce){#piggy-onboarding .on-pig-art *{animation:none!important}}
+</style><body id="piggy-onboarding"><main><div class="row"><h1>What’s your goal?</h1><div class="on-pig-stage"><svg xmlns="http://www.w3.org/2000/svg" class="on-pig-art" viewBox="0 0 1312 1199" role="img" aria-label="Pink piggy bank with lime coin stacks"><defs><image id="on-pig-source" href="assets/piggy-with-coins.png" width="1312" height="1199" />
+ <radialGradient id="on-eyelid-feather"><stop offset=".72" stop-color="white" /><stop offset="1" stop-color="black" /></radialGradient><mask id="on-eyelid-mask"><ellipse cx="944" cy="512" rx="61" ry="84" fill="url(#on-eyelid-feather)" /></mask><clipPath id="on-eye-cut"><ellipse cx="944" cy="512" rx="38" ry="60" transform="rotate(-12 944 512)" /></clipPath>
+ <linearGradient id="on-skin" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#fa5e93" /><stop offset=".55" stop-color="#f25086" /><stop offset="1" stop-color="#ee4c80" /></linearGradient>
+ </defs><use href="#on-pig-source" /><g class="on-mascot-eyelid">
+  <rect x="875" y="420" width="145" height="185" fill="url(#on-skin)" mask="url(#on-eyelid-mask)" />
+  <g class="on-mascot-open-eye"><use href="#on-pig-source" clip-path="url(#on-eye-cut)" /></g>
+  <path class="on-mascot-closed-eye" d="M919 508 Q941 525 966 503" fill="none" stroke="#242023" stroke-width="11" stroke-linecap="round" />
+ </g>
+</svg></div></div><button onclick="const e=document.querySelector('.on-pig-stage');e.classList.remove('is-winking');void e.offsetWidth;e.classList.add('is-winking');setTimeout(()=>e.classList.remove('is-winking'),250)">Replay blink</button></main></body></html>

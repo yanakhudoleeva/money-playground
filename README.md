@@ -37,3 +37,9 @@ pnpm ios:open
 В GitHub не хранятся расходы пользователей, пароли, секретные ключи, сертификаты Apple, установленные зависимости и временные сборки. Сейчас приложение использует localStorage; Supabase, аккаунты, перенос записей и резервирование пользовательской базы ещё не реализованы. Тестовые записи по решению владельца проекта не требуют резервирования.
 
 Сохранение файла на Mac не отправляет его в GitHub. После законченной задачи нужно создать commit, выполнить push рабочей ветки и проверить удалённый commit. Эта инструкция не является настроенной автоматической синхронизацией.
+
+## Shared pig artwork color
+
+Use the approved soft pink onboarding finish for every pig illustration in the app. Add `data-pig-art` to one outer artwork container for new variants. The shared `mp-pig-soft-pink` filter softens pink skin while preserving lime coins and neutral details. Do not nest marked containers or add a second saturation filter. Reference: onboarding pig approved on 16 November 2026.
+
+Completing or skipping onboarding opens My Piggy Bank. Launching an existing saved plan retains the prior startup behavior.

@@ -56,3 +56,37 @@ body {
 #piggy-onboarding .on-result .sp-nav {
   bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
 }
+
+/* The web version bounds sheets to its phone mock-up. In WKWebView that
+   measurement can be shorter than the actual device viewport, which makes a
+   tall category grid appear to jump in from the middle of the screen. Keep
+   every sheet attached to the real iPhone viewport instead. */
+#piggy-onboarding .sp-overlay {
+  inset: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  border-radius: 0 !important;
+}
+
+#piggy-onboarding .sp-sheet {
+  will-change: transform;
+}
+
+/* iOS zooms focused text fields smaller than 16px and can retain that zoom
+   after onboarding hides the focused field. Keep editable names/amounts safe. */
+#piggy-onboarding .on-rent .on-rent-name,
+#piggy-onboarding .on-expense-form .on-expense-name,
+#piggy-onboarding .on-expense-input-amount .on-expense-amount {
+  font-size: 16px;
+}
+
+#piggy-onboarding .on-phone input[data-income],
+#piggy-onboarding .on-phone input[data-rent],
+#piggy-onboarding .on-phone input[data-on-custom-limit],
+#piggy-onboarding .on-phone input[data-on-daily-limit] {
+  font-size: 16px !important;
+}

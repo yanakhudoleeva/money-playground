@@ -104,3 +104,7 @@ LaunchAgent: `~/Library/LaunchAgents/com.moneyplayground.simulator.plist`.
 ## Утверждённый splash screen — 16 ноября 2026
 
 `mobile/splash/` подключается при каждом холодном запуске мобильного приложения. Пружинка и звезда — отдельные прозрачные PNG; анимация длится около 1,9 секунды и плавно открывает приложение. Возврат из фона не перезапускает заставку. Уменьшение движения учитывается; резервный таймер удаляет заставку через 2,3 секунды. Статический системный LaunchScreen использует тот же размер 168 pt и чёрный фон. Веб-версия не затрагивается.
+
+## Splash on returning to the app — 16 November 2026
+
+The approved spring-and-star artwork, black background, size and animation timing remain unchanged. A real background-to-foreground transition now replays the same splash over the current screen. Cold launch plays once. Temporary inactive states do not replay it. The underlying onboarding progress, screen and stored data are preserved. `tests/splash-lifecycle.cjs` covers cold launch, replay, rapid returns, stale events and fallback dismissal. This supersedes the earlier cold-launch-only behavior described above.
