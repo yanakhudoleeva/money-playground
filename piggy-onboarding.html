@@ -2893,9 +2893,9 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
  const sheet=q('.sp-sheet',overlay),scrim=q('.sp-scrim',overlay);
  const reducedMotion=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  let sheetMotion=[],sheetVersion=0,sheetReturnFocus=null,closingPromise=null,categoryTransferBusy=false,sheetBackHandler=null;
- function animateSheet(opening){
+ function animateSheet(opening,fresh=false){
   // Capture the current frame so an interrupted movement continues without jumping.
-  const fromTransform=getComputedStyle(sheet).transform,fromOpacity=getComputedStyle(scrim).opacity;
+  const fromTransform=fresh?'translate3d(0,calc(100% + 48px),0)':getComputedStyle(sheet).transform,fromOpacity=fresh?'0':getComputedStyle(scrim).opacity;
   sheetMotion.forEach(animation=>animation.cancel());
   overlay.classList.toggle('is-open',opening);overlay.classList.toggle('is-closing',!opening);
   if(reducedMotion()||typeof sheet.animate!=='function'||typeof scrim.animate!=='function'){sheetMotion=[];return Promise.resolve()}
@@ -2919,9 +2919,17 @@ function renderLimits(){const panel=q('[data-limits-content]',limits),plan=previ
   q('[data-guide-tooltip]',overlay)?.remove();
   const content=q('[data-sheet-content]',overlay);content.onclick=null;
   q('h2',overlay).textContent=title;content.innerHTML=html;
-  if(!wasOpen){sheetReturnFocus=document.activeElement;sheet.scrollTop=0;overlay.classList.remove('is-open','is-closing');positionSheetOverlay();overlay.showModal()}
-  if(!wasOpen||wasClosing)animateSheet(true);
-  if(!wasOpen)q('.sp-close',overlay).focus({preventScroll:true});
+  if(!wasOpen){
+   sheetReturnFocus=document.activeElement;
+   sheetMotion.forEach(animation=>animation.cancel());sheetMotion=[];
+   // Let native dialog focus run at the final layout position. Focusing a
+   // translated-offscreen child can scroll the dialog itself in WKWebView.
+   overlay.classList.remove('is-closing');overlay.classList.add('is-open');
+   positionSheetOverlay();overlay.showModal();
+   q('.sp-close',overlay).focus({preventScroll:true});
+   overlay.scrollTop=0;overlay.scrollLeft=0;sheet.scrollTop=0;
+  }
+  if(!wasOpen||wasClosing)animateSheet(true,!wasOpen);
  }
  function close(options={}){
   if(sheetBackHandler){const back=sheetBackHandler;sheetBackHandler=null;back();return Promise.resolve()}
