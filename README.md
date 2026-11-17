@@ -1,0 +1,45 @@
+# Money Playground
+
+Исходники веб-приложения и тестового приложения iOS на Capacitor.
+
+## Где находится актуальная работа
+
+Ветка `codex/ios-capacitor-baseline` сохраняет проверенную сборку iOS и полноэкранное оформление от 16 ноября 2026. `main` остаётся веткой публикации веб-приложения. Push в эту рабочую ветку не публикует сайт и не отправляет приложение в App Store.
+
+## Состав проекта
+
+- `piggy-onboarding.html` — основной исходник приложения; GitHub Pages копирует его в `dist/index.html` при публикации из `main`.
+- `dist/`, `assets/` — веб-ресурсы.
+- `ios/`, `capacitor.config.json`, `mobile/` — iOS-проект, локальные шрифты и стили без рамки веб-мокапа.
+- `scripts/`, `tests/` — сборка и проверки.
+- `landing/` — копия утверждённого полноэкранного лендинга. Она сохранена здесь для восстановления и сама по себе не публикуется.
+- `brand-assets/` — сохранённые фирменные материалы.
+- `dynamic-spending-guidance.*`, `piggy-savings-states.html` — отдельные локальные исследования; они не входят в мобильную сборку.
+- `IOS.md` — результаты тестирования, ограничения, инструкции Xcode и сведения о локальном автозапуске.
+
+## Восстановление на другом Mac
+
+```sh
+git clone --branch codex/ios-capacitor-baseline https://github.com/yanakhudoleeva/money-playground.git
+cd money-playground
+pnpm install --frozen-lockfile
+pnpm test
+pnpm ios:build
+pnpm ios:open
+```
+
+Требуются Node.js 22+, pnpm 11.25.0, Xcode 26+ и iOS Simulator runtime. Проверенная среда: Xcode 27.2, iPhone 18 Pro / iOS 27.2. Сборка создаёт приложение для симулятора; подпись и установка на физический iPhone настраиваются отдельно.
+
+Файлы автозапуска содержат пути и идентификатор симулятора исходного Mac. На другом компьютере их нужно настроить заново, а не устанавливать без изменений.
+
+## Что хранить отдельно
+
+В GitHub не хранятся расходы пользователей, пароли, секретные ключи, сертификаты Apple, установленные зависимости и временные сборки. Сейчас приложение использует localStorage; Supabase, аккаунты, перенос записей и резервирование пользовательской базы ещё не реализованы. Тестовые записи по решению владельца проекта не требуют резервирования.
+
+Сохранение файла на Mac не отправляет его в GitHub. После законченной задачи нужно создать commit, выполнить push рабочей ветки и проверить удалённый commit. Эта инструкция не является настроенной автоматической синхронизацией.
+
+## Shared pig artwork color
+
+Use the approved soft pink onboarding finish for every pig illustration in the app. Add `data-pig-art` to one outer artwork container for new variants. The shared `mp-pig-soft-pink` filter softens pink skin while preserving lime coins and neutral details. Do not nest marked containers or add a second saturation filter. Reference: onboarding pig approved on 16 November 2026.
+
+Completing or skipping onboarding opens My Piggy Bank. Launching an existing saved plan retains the prior startup behavior.

@@ -1,0 +1,11 @@
+node_modules/
+.capacitor-web/
+.build-ios/
+.pnpm-store/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.p12
+*.p8
+*.mobileprovision

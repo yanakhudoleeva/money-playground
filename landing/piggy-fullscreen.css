@@ -1,0 +1,9 @@
+#piggy-bank{padding:76px 0 0;background:#000}
+#piggy-bank .limits-layout{display:flex;flex-direction:column;width:100%;max-width:none;gap:28px}
+#piggy-bank .limits-intro{width:min(1280px,calc(100% - 96px));display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;max-width:none}
+#piggy-bank .limits-intro h2{font-family:'DM Sans',sans-serif;font-size:clamp(42px,4.4vw,66px);line-height:1.06;letter-spacing:-2.5px;margin:0}
+#piggy-bank .limits-intro p{font-family:'Google Sans Flex',Arial,sans-serif;max-width:none;margin:0;font-size:20px;line-height:1.6}
+#piggy-bank .piggy-playground{width:100%;align-self:stretch}
+#piggy-bank .limits-native{width:100%;max-width:none;height:100svh;min-height:620px;border:0;border-radius:0;background:#000}
+#piggy-bank .limits-native iframe{width:100%;height:100%;background:#000}
+@media(max-width:700px){#piggy-bank{padding-top:48px}#piggy-bank .limits-intro{width:calc(100% - 40px);grid-template-columns:1fr;gap:22px}#piggy-bank .limits-intro h2{font-size:44px}#piggy-bank .limits-intro p{font-size:18px}#piggy-bank .limits-native{height:80svh;min-height:480px}}

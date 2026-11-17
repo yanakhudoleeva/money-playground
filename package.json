@@ -1,0 +1,21 @@
+{
+  "name": "money-playground",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node tests/limits-careful.cjs && node tests/mobile-package.cjs",
+    "build:mobile": "node scripts/build-mobile.cjs",
+    "ios:sync": "pnpm run build:mobile && cap sync ios",
+    "ios:open": "cap open ios",
+    "ios:build": "pnpm run ios:sync && bash scripts/build-ios-simulator.sh"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.6.2",
+    "@capacitor/ios": "8.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.2"
+  }
+}
