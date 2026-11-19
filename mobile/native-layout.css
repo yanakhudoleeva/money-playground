@@ -90,3 +90,80 @@ body {
 #piggy-onboarding .on-phone input[data-on-daily-limit] {
   font-size: 16px !important;
 }
+
+/* Give each main tab the space between the status bar and the tab bar.
+   Long lists can scroll inside that space without moving either bar. */
+#piggy-onboarding .on-result {
+  --tab-top: max(12px, env(safe-area-inset-top));
+  --tab-bottom: calc(env(safe-area-inset-bottom) + 82px);
+}
+#piggy-onboarding .on-result > .sp-page[aria-label],
+#piggy-onboarding .on-result > #piggy-bank-plan {
+  position: absolute;
+  inset: var(--tab-top) 0 var(--tab-bottom);
+  height: auto;
+  min-height: 0;
+  padding-block: 0;
+  overscroll-behavior-y: contain;
+}
+#piggy-onboarding .on-result > #piggy-bank-plan .pb-phone {
+  padding-block: 12px 20px;
+}
+#piggy-onboarding .on-result > #piggy-bank-plan .pb-pig-body {
+  top: 0;
+}
+#piggy-onboarding .on-result > .sp-page[aria-label="My Spending"].is-quick-v2 {
+  padding-block: 0;
+}
+#piggy-onboarding .on-result .sp-page.is-quick-v2 > .sp-title-row {
+  flex: none;
+  margin: 6px 0;
+}
+#piggy-onboarding .sp-page.is-quick-v2 > .sp-quick {
+  flex: 1 1 0;
+  min-height: 0;
+  margin-top: 4px;
+}
+#piggy-onboarding .sp-page.is-quick-v2 > .sp-quick > .sp-quick-categories-wrap {
+  flex: 1 1 0;
+  justify-content: center;
+  min-height: min-content;
+  margin: 0;
+}
+#piggy-onboarding .sp-page.is-quick-v2 .sp-quick-categories {
+  grid-template-rows: repeat(3, clamp(56px, 7.8dvh, 76px));
+  row-gap: clamp(4px, 1dvh, 12px);
+}
+#piggy-onboarding .sp-page.is-quick-v2 .sp-quick-icon-choice { gap: 4px; }
+#piggy-onboarding .sp-page.is-quick-v2 .sp-keypad-panel { padding-bottom: 0; }
+#piggy-onboarding .sp-page.is-quick-v2 .sp-keypad-panel > .sp-quick-amount-row {
+  margin: 6px 0;
+}
+@media (max-height: 760px) {
+  /* Matches the app's six-categories-per-page breakpoint. */
+  #piggy-onboarding .sp-page.is-quick-v2 .sp-quick-categories {
+    grid-template-rows: repeat(2, 60px);
+  }
+}
+
+/* Tighten the gaps in the overview cards while keeping buttons and amounts readable. */
+#piggy-onboarding .on-result > .sp-page { --app-block-gap: 10px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] :is(.sp-overview-period,.sp-week-nav,.sp-week-metrics,.sp-breakdown-list) { margin-top: 6px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-breakdown-total { margin-block: 7px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-category-bar { height: 24px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-breakdown-row { min-height: 32px; padding-block: 4px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-week-summary { padding-block: 7px; }
+#piggy-onboarding .on-result > .sp-page:is([aria-label="Analytics"],[aria-label="My Limits"]) {
+  display: flex;
+  flex-direction: column;
+}
+#piggy-onboarding .on-result > .sp-page [data-limits-content] { min-height: 0; overflow-y: auto; padding-bottom: 5px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] > * { flex: none; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-chart:has(.sp-breakdown-list) {
+  display: flex; flex-direction: column; flex: 0 1 auto; min-height: min-content;
+}
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-chart > :not(.sp-breakdown-list) { flex: none; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-breakdown-list { min-height: 32px; overflow-y: auto; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-daily-bars { height: clamp(64px, 9dvh, 98px); margin-top: 6px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-recap-button { min-height: 60px; }
+#piggy-onboarding .sp-page[aria-label="Analytics"] .sp-recap-button .sp-recap-mark { width: 44px; height: 44px; flex-basis: 44px; }

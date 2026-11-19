@@ -74,6 +74,25 @@ fs.mkdirSync(artifacts, { recursive: true });
         await page.screenshot({ path: path.join(artifacts, `${variant}-${width}-soft-pig-bank.png`) });
         await page.locator('.sp-nav [data-tab="spending"]').click();
         await page.getByRole('button', { name: 'Open expense history', exact: true }).waitFor();
+        if (variant === 'mobile') {
+          const client = await context.newCDPSession(page);
+          await client.send('Emulation.setSafeAreaInsetsOverride', {
+            insets: { top: height < 700 ? 20 : 59, bottom: height < 700 ? 0 : 34, left: 0, right: 0 }
+          });
+          const tracking = await page.locator('.sp-page[aria-label="My Spending"]').evaluate(el => {
+            const rect = selector => document.querySelector(selector).getBoundingClientRect();
+            return {
+              documentOverflow: document.scrollingElement.scrollHeight - innerHeight,
+              pageOverflow: el.scrollHeight - el.clientHeight,
+              categoryBottom: rect('.sp-quick-pages').bottom,
+              amountTop: rect('.sp-keypad-panel .sp-quick-amount-row').top,
+              keypadBottom: rect('.sp-keypad').bottom,
+              navTop: rect('.sp-nav').top
+            };
+          });
+          assert.ok(tracking.documentOverflow <= 1 && tracking.pageOverflow <= 1, 'Tracking must fit on one screen');
+          assert.ok(tracking.categoryBottom <= tracking.amountTop && tracking.keypadBottom < tracking.navTop, 'Tracking controls must not overlap');
+        }
         // Touch navigation must coexist with vertical scrolling and tab taps.
         await page.evaluate(() => {
           const nav=document.querySelector('.sp-nav'), result=nav.parentElement;
