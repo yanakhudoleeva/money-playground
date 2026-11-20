@@ -141,6 +141,11 @@
       <header data-receipt-title>Monthly balance</header>
       <div data-projection-timing hidden></div>
       <div class="pb-receipt-balance">
+        <div class="pb-contribution" hidden>
+          <label for="pb-contribution">Monthly contribution <output for="pb-contribution" data-contribution-amount></output></label>
+          <input id="pb-contribution" type="range" min="25" max="1000" step="25" value="250">
+          <div class="pb-contribution-ends" aria-hidden="true"><span><i data-currency-symbol></i>25</span><span><i data-currency-symbol></i>1,000</span></div>
+        </div>
         <strong data-savings></strong>
         <span data-result-label></span>
         <p data-result-note></p>
@@ -155,7 +160,7 @@
           <div><span>In 6 months</span><strong data-six></strong></div>
           <div><span>In a year</span><strong data-year></strong></div>
         </div>
-        <small data-forecast-note></small>
+
       </div>
     </section>
     <button type="button" class="pb-reset" data-reset-all>Reset this plan</button>
@@ -1035,6 +1040,39 @@
     }catch(_){}
   }
   let projectionTarget=null, projectionSaved=0, projectionSavedSpecified=false;
+  const contribution=root.querySelector('#pb-contribution');
+  const contributionField=root.querySelector('.pb-contribution');
+  try {
+    const plan=JSON.parse(localStorage.getItem('money-playground.personal-plan.v1')||'{}');
+    const amount=plan.piggyOverrides?.monthlyContribution;
+    if(Number.isInteger(amount)&&amount>=25&&amount<=1000&&amount%25===0) contribution.value=String(amount);
+  } catch (_) {}
+  contribution.addEventListener('change',()=>{
+    try {
+      const key='money-playground.personal-plan.v1';
+      const plan=JSON.parse(localStorage.getItem(key)||'{}');
+      plan.piggyOverrides={...plan.piggyOverrides,monthlyContribution:Number(contribution.value)};
+      localStorage.setItem(key,JSON.stringify(plan));
+    } catch (_) {}
+  });
+  contribution.addEventListener('input',()=>renderContribution(projectionSaved+savedFromHistory()));
+  function renderContribution(saved){
+    const monthly=Number(contribution.value)*100;
+    const remaining=projectionTarget-saved;
+    const months=Math.ceil(remaining/monthly);
+    const timing=root.querySelector('[data-projection-timing]');
+    timing.innerHTML=`<strong><b>${months}</b> ${monthWord(months)}</strong><small>Estimated time to your goal</small>`;
+    timing.dataset.longestMonths=String(Math.ceil(remaining/(Number(contribution.min)*100)));
+    settings.setMoney(root.querySelector('[data-contribution-amount]'),monthly/100);
+    contribution.setAttribute('aria-valuetext',(settings.currencySymbol()||'Piggy Coins')+' '+contribution.value+' per month');
+    for(const [selector,term] of [['[data-six]',6],['[data-year]',12]]){
+      const amount=Math.min(projectionTarget,saved+monthly*term);
+      const field=root.querySelector(selector);
+      const maximum=Math.min(projectionTarget,saved+Number(contribution.max)*100*term);
+      field.parentElement.dataset.longest=settings.money(maximum/100)+(maximum===projectionTarget?' · Goal reached':'');
+      settings.setMoney(field,amount/100,'',amount===projectionTarget?' · Goal reached':'');
+    }
+  }
   root.setProjectionFromOnboarding = amount => {
     projectionTarget=amount;projectionSaved=0;projectionSavedSpecified=false;
     try{const saved=JSON.parse(localStorage.getItem('money-playground.personal-plan.v1')||'{}'),opening=saved.piggyOverrides?.openingSavedCents;if(Number.isSafeInteger(opening)&&opening>=0&&opening<=10000000000){projectionSaved=opening;projectionSavedSpecified=Boolean(saved.piggyOverrides.openingSavedSpecified)}}catch(_){}
@@ -1100,29 +1138,22 @@
     root.querySelector('[data-result-note]').textContent=!hasIncome?'Add income and expenses whenever you are ready':short?'Your expenses are higher than your income. Try adjusting your plan':actualSavings<=0?'Review your monthly expenses to find room for savings':'After monthly expenses and recorded spending';
     const totalSaved=projectionTarget!==null?projectionSaved+savedFromHistory():0;
     const goalReached=projectionTarget!==null&&totalSaved>=projectionTarget;
-    const forecastAvailable=projectionTarget!==null&&hasIncome&&!short&&actualSavings>0&&!goalReached;
+    const forecastAvailable=projectionTarget!==null&&!(hasIncome&&short)&&!goalReached;
+    contributionField.hidden=!forecastAvailable;
     const projectionVisible=!(hasIncome&&short)&&(goalReached||forecastAvailable);
     root.querySelector('[data-projection-open]').hidden=!root.querySelector('.pb-goal').hidden||!hasIncome||(!short&&actualSavings<=0);
     root.querySelector('[data-projection]').hidden=!forecastAvailable;
     const timing=root.querySelector('[data-projection-timing]');
     timing.hidden=!projectionVisible;
     root.querySelector('[data-receipt-title]').textContent=hasIncome&&short?'Budget alert':projectionVisible?'Goal forecast':'Monthly balance';
-    if(projectionVisible){
-      if(goalReached){
-        timing.textContent='Goal reached!';
-      }else{
-        const months=Math.ceil((projectionTarget-totalSaved)/actualSavings);
-        timing.innerHTML=`<strong><b>${months}</b> ${monthWord(months)}</strong><small>Estimated time to your goal</small>`;
-      }
-    }
-    if(forecastAvailable){
-      settings.setMoney(root.querySelector('[data-six]'),(totalSaved+actualSavings*6)/100);
-      settings.setMoney(root.querySelector('[data-year]'),(totalSaved+actualSavings*12)/100);
-      root.querySelector('[data-forecast-note]').textContent='Your forecast assumes you save this amount every month.';
+    if(forecastAvailable) renderContribution(totalSaved);
+    else {
+      delete timing.dataset.longestMonths;
+      if(goalReached) timing.textContent='Goal reached!';
     }
     root.querySelector('.pb-receipt').classList.toggle('is-short',hasIncome && short);
     const resultActions=root.querySelector('[data-result-actions]'),addIncomeAction=root.querySelector('[data-result-add-income]'),editExpensesAction=root.querySelector('[data-result-edit-expenses]'),needsPlanAction=!hasIncome||(!short&&actualSavings<=0);
-    addIncomeAction.hidden=hasIncome;editExpensesAction.hidden=!hasIncome||!needsPlanAction;editExpensesAction.textContent='Adjust monthly expenses';resultActions.hidden=!needsPlanAction;
+    addIncomeAction.hidden=hasIncome;editExpensesAction.hidden=!hasIncome||!needsPlanAction;editExpensesAction.textContent='Adjust monthly expenses';resultActions.hidden=!needsPlanAction||forecastAvailable;
     sliders.querySelectorAll('.pb-slider').forEach(slider=>{const range=slider.querySelector('.pb-range');const amount=slider.querySelector('.pb-slider-value input');range.max=String(Math.max(1,Math.max(0,afterFixed)/100,value(amount)));range.value=String(value(amount))});
     renderBudgetUsage();
   }
@@ -3837,7 +3868,20 @@ nav.onclick=e=>{const btn=e.target.closest('[data-tab]');if(btn)navigateTab(btn.
 .pb-receipt [data-projection-timing]:not([hidden]) + div [data-result-note] { display: none; }
 .pb-receipt [data-projection] { padding: 0 20px 18px; }
 .pb-receipt-projections > div { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 7px; font-size: 14px; line-height: 1.4; }
-.pb-receipt [data-forecast-note] { display: block; margin-top: 11px; }
+/* The longest possible value reserves its line breaks while the thumb moves. */
+.pb-receipt [data-longest-months] { display:grid; grid-template-columns:minmax(0,1fr); }
+.pb-receipt [data-longest-months] strong,.pb-receipt [data-longest-months]::before { grid-area:1/1; font-variant-numeric:tabular-nums; }
+.pb-receipt [data-longest-months]::before { content:attr(data-longest-months) " months"; font-size:58px; font-weight:600; letter-spacing:-.07em; visibility:hidden; line-height:1; }
+.pb-receipt .pb-contribution { width:100%; min-width:0; padding-bottom:7px; }
+.pb-receipt .pb-contribution:not([hidden]) ~ * { display:none !important; }
+.pb-contribution label,.pb-contribution-ends { display:flex; justify-content:space-between; gap:8px; align-items:baseline; font-size:14px; }
+.pb-contribution output { font-weight:650; font-variant-numeric:tabular-nums; }
+.pb-contribution input { display:block; width:100%; height:32px; margin:3px 0 0; accent-color:#21300e; touch-action:pan-y; }
+.pb-contribution-ends { font-size:12px; color:var(--muted); }
+.pb-contribution-ends i { font-style:normal; }
+.pb-receipt-projections > [data-longest] { display:grid; grid-template-columns:auto minmax(0,1fr); }
+.pb-receipt-projections [data-longest] strong,.pb-receipt-projections [data-longest]::after { grid-area:1/2; text-align:right; font-variant-numeric:tabular-nums; }
+.pb-receipt-projections [data-longest]::after { content:attr(data-longest); visibility:hidden; font-weight:700; }
 .pb-receipt [data-result-actions], .pb-receipt [data-projection-open] { margin: 0 20px 16px; }
 .pb-receipt button { border: 0; border-radius: 12px; padding: 10px 14px; background: var(--ink); color: var(--accent); font: inherit; cursor: pointer; }
 </style>
